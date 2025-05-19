@@ -1,0 +1,82 @@
+<app-generic-list-view
+  [items]="analysisResults"
+  [pageName]="pageName"
+  [searchPlaceholder]="searchPlaceholder"
+  [searchTerm]="searchTerm"
+  (searchTermChange)="onSearch($event)"
+  [filtersTitle]="filtersTitle"
+  [emptyListMessage]="emptyListMessage"
+  [trackByFn]="trackByAnalysisResultId"
+  [useLocalSearch]="false">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate let-results let-trackByFn="trackByFn">
+    <div class="result-container">
+      @if (ifBeginLoading) {
+        <div class="loading-spinner">
+          <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+        </div>
+      } @else {
+        <!-- Replace your mat-grid-list section with this -->
+        @if (groupedResults.length === 0) {
+          <div class="empty-list-message-container">
+            <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+          </div>
+        } @else {
+          <div class="order-groups-container">
+            @for (group of groupedResults; track group.orderId) {
+              <div class="order-group">
+                <div class="order-header">
+                  <h3>Замовлення #{{ group.orderNumber }}</h3>
+                </div>
+                <mat-grid-list [cols]="cols" rowHeight="540px" gutterSize="4px">
+                  @for (result of group.results; track trackByAnalysisResultId($index, result)) {
+                    <mat-grid-tile>
+                      <app-analysis-result-view [analysisResult]="result"></app-analysis-result-view>
+                    </mat-grid-tile>
+                  }
+                </mat-grid-list>
+              </div>
+            }
+          </div>
+          @if (hasMore) {
+            <div class="load-more-container">
+              <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="isLoading">
+                @if (isLoading) {
+                  <div class="loading-spinner">
+                    <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+                  </div>
+                } @else {
+                  Завантажити ще
+                }
+              </button>
+            </div>
+          }
+        }
+      }
+    </div>
+  </ng-template>
+
+  <!-- Custom Filters Template -->
+  <ng-template #filtersTemplate>
+    <app-select-filter
+      [sectionName]="'Центр аналізу:'"
+      [placeholder]="'Оберіть центр'"
+      [items]="analysisCenterItems"
+      (filterChanged)="toggleAnalysisCenter($event)">
+    </app-select-filter>
+
+    <app-select-filter
+      [sectionName]="'Тип аналізу:'"
+      [placeholder]="'Оберіть аналіз'"
+      [items]="analysisItems"
+      (filterChanged)="toggleAnalysis($event)">
+    </app-select-filter>
+
+    <app-datetime-filter
+      sectionName="Дата виконання:"
+      [dateRange]="dateRange"
+      (dateRangeChange)="dateRange = $event; applyFilters()">
+    </app-datetime-filter>
+  </ng-template>
+</app-generic-list-view>

@@ -1,0 +1,94 @@
+<app-generic-list-view
+  [items]="biomaterialCollections"
+  [pageName]="pageName"
+  [searchOn]="false"
+  [filtersTitle]="filtersTitle"
+  [emptyListMessage]="emptyListMessage"
+  [trackByFn]="trackByBiomaterialCollectionId"
+  [useLocalSearch]="false">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate let-collections let-trackByFn="trackByFn">
+    <div class="collection-container">
+      @if (ifBeginLoading) {
+        <div class="loading-spinner">
+          <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+        </div>
+      } @else {
+        @if (groupedCollections.length === 0) {
+          <div class="empty-list-message-container">
+            <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+          </div>
+        } @else {
+          <div class="order-groups-container">
+            @for (group of groupedCollections; track group.orderId) {
+              <div class="order-group">
+                <div class="order-header">
+                  <h3>Замовлення #{{ group.orderNumber }}</h3>
+                </div>
+                <mat-grid-list [cols]="cols" rowHeight="225px" gutterSize="4px">
+                  @for (collection of group.collections; track trackByBiomaterialCollectionId($index, collection)) {
+                    <mat-grid-tile>
+                      <app-biomaterial-collection-view [biomaterialCollection]="collection"></app-biomaterial-collection-view>
+                    </mat-grid-tile>
+                  }
+                </mat-grid-list>
+              </div>
+            }
+          </div>
+          @if (hasMore) {
+            <div class="load-more-container">
+              <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="isLoading">
+                @if (isLoading) {
+                  <div class="loading-spinner">
+                    <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+                  </div>
+                } @else {
+                  Завантажити ще
+                }
+              </button>
+            </div>
+          }
+        }
+      }
+    </div>
+  </ng-template>
+
+  <!-- Custom Filters Template -->
+  <ng-template #filtersTemplate>
+    <app-select-filter
+      [sectionName]="'Лабораторія:'"
+      [placeholder]="'Оберіть лабораторію'"
+      [items]="laboratoryItems"
+      (filterChanged)="toggleLaboratory($event)">
+    </app-select-filter>
+
+    <app-select-filter
+      [sectionName]="'Біоматеріал:'"
+      [placeholder]="'Оберіть біоматеріал'"
+      [items]="biomaterialItems"
+      (filterChanged)="toggleBiomaterial($event)">
+    </app-select-filter>
+
+    <app-select-filter
+      [sectionName]="'Інвентар:'"
+      [placeholder]="'Оберіть інвентар'"
+      [items]="inventoryItems"
+      (filterChanged)="toggleInventory($event)">
+    </app-select-filter>
+
+    <!-- Collection Date Filter -->
+    <app-datetime-filter
+      sectionName="Дата збору:"
+      [dateRange]="collectionDateRange"
+      (dateRangeChange)="collectionDateRange = $event; applyFilters()">
+    </app-datetime-filter>
+
+    <!-- Expiration Date Filter -->
+    <app-datetime-filter
+      sectionName="Термін придатності:"
+      [dateRange]="expirationDateRange"
+      (dateRangeChange)="expirationDateRange = $event; applyFilters()">
+    </app-datetime-filter>
+  </ng-template>
+</app-generic-list-view>

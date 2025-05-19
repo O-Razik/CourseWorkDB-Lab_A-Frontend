@@ -1,0 +1,53 @@
+.panel{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 8px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.panel-header{
+  margin-bottom: 5px;
+  padding-left: 3px;
+}
+
+button{
+  padding: 15px;
+  background-color: #80a9da;
+  border: 3px solid #80a9da;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+button:hover{
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+button:active{
+  background-color: #0056b3;
+  border-color: #0056b3;
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.1s, border-color 0.1s;
+}
+
+button:disabled{
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  button{
+    width: 100%;
+    margin-top: 10px;
+  }
+}

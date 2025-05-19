@@ -1,0 +1,76 @@
+<app-generic-list-view
+  [items]="inventoryDirectory"
+  [pageName]="pageName"
+  [searchPlaceholder]="searchPlaceholder"
+  [searchTerm]="searchTerm"
+  (searchTermChange)="onSearch($event)"
+  [filterShown]="filterShown"
+  [filtersTitle]="filtersTitle"
+  [emptyListMessage]="emptyListMessage"
+  [trackByFn]="trackByLabInventory"
+  [useLocalSearch]="false">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate let-trackByFn="trackByFn">
+    <div class="inventory-container">
+      @if (ifBeginLoading) {
+        <div class="loading-spinner">
+          <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+        </div>
+      } @else {
+        @if (inventoryDirectory.length === 0) {
+          <div class="empty-list-message-container">
+            <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+          </div>
+        }
+        @else {
+          @for (item of inventoryDirectory; track trackByLabInventory($index, item)) {
+            <div class="laboratory">
+              @if (isAdmin){
+                <div class = "lab-address">
+                  <h2 class="lab-address-title">
+                    {{ item.laboratory.city.cityName }}, {{ item.laboratory.address }}
+                  </h2>
+                </div>
+              }
+              <div>
+                @for (group of item.inventories; track trackByInventoryGroup($index, group)) {
+                  <app-inventory-group-in-lab-view
+                    class="group"
+                    [inventoryGroup]="group"
+                    [selectedInventoryId]="selectedInventoryId"
+                    (inventorySelected)="onInventoryItemSelected($event)"/>
+                }
+              </div>
+            </div>
+          }
+        }
+      }
+    </div>
+  </ng-template>
+
+  <!-- Custom Filters Template -->
+  <ng-template #filtersTemplate>
+    <app-type-filter
+      sectionName="Інвентар"
+      [items]="getInventory()"
+      [selectedItems]="selectedInventories"
+      (itemToggled)="onInventorySelected($event)">
+    </app-type-filter>
+
+    @if (isAdmin){
+      <app-select-filter
+        sectionName="Лабораторії"
+        [items]="getLaboratories()"
+        placeholder="Виберіть лабораторію"
+        (filterChanged)="toggleLaboratories($event)">
+      </app-select-filter>
+    }
+
+    <app-datetime-filter
+      sectionName="Дата закінчення терміну придатності"
+      [dateRange]="dateRange"
+      (dateRangeChange)="onDateRangeChange($event)"
+    ></app-datetime-filter>
+  </ng-template>
+</app-generic-list-view>

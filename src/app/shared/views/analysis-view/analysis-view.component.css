@@ -1,0 +1,115 @@
+.panel{
+  display: flex;
+  flex-direction: column;
+  margin: 8px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.panel-header{
+  margin-bottom: 5px;
+  padding-left: 3px;
+}
+
+.panel-subheader{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 5px 0 10px 0;
+  justify-content: space-between;
+}
+
+.group{
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  border: #80a9da 2px solid;
+  border-radius: 10px;
+}
+
+.panel-subheader label{
+  background-color: #80a9da;
+  color: white;
+  padding: 5px 5px 5px 10px;
+  border-radius: 5px 0 0 5px;
+  font-size: 14px;
+  min-width: 70px;
+  max-width: 120px;
+}
+
+.panel-subheader p{
+  padding: 6px 5px 4px 5px;
+  font-size: 14px;
+}
+
+.group-item{
+  border-left: 2px solid #80a9da;
+}
+
+.panel-body{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.panel-body .description{
+  padding: 5px;
+  font-size: 14px;
+}
+
+.panel-body button{
+  padding: 15px;
+  background-color: #80a9da;
+  border: 3px solid #80a9da;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  min-width: 100px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.panel-body button:hover{
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.panel-body button:active{
+  background-color: #0056b3;
+  border-color: #0056b3;
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.1s, border-color 0.1s;
+}
+
+.panel-body button:disabled{
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .panel-body{
+    flex-direction: column;
+    align-items: center;
+  }
+  .panel-body button{
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .panel-subheader{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+    justify-content: left;
+  }
+
+  .panel-body .description{
+    text-align: center;
+  }
+}

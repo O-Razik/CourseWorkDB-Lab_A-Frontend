@@ -1,0 +1,38 @@
+<nav [class.open]="isOpen">
+  <div class="sidenav-header">
+    <h1 class="sidenav-title">Меню</h1>
+    <button class="close-button" (click)="navigate.emit()">
+      <span class="material-icons">
+        <svg width="32" height="32" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.64645 4.64645C4.84171 4.45118 5.15829 4.45118 5.35355 4.64645L8 7.29289L10.6464 4.64645C10.8417 4.45118 11.1583 4.45118 11.3536 4.64645C11.5488 4.84171 11.5488 5.15829 11.3536 5.35355L8.70711 8L11.3536 10.6464C11.5488 10.8417 11.5488 11.1583 11.3536 11.3536C11.1583 11.5488 10.8417 11.5488 10.6464 11.3536L8 8.70711L5.35355 11.3536C5.15829 11.5488 4.84171 11.5488 4.64645 11.3536C4.45118 11.1583 4.45118 10.8417 4.64645 10.6464L7.29289 8L4.64645 5.35355C4.45118 5.15829 4.45118 4.84171 4.64645 4.64645Z" fill="currentColor"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+
+  <div class="nav-items">
+    @for (item of filteredItems; track item.path) {
+      <div class="nav-group">
+        <a
+          [routerLink]="item.path"
+          class="nav-item"
+          (click)="onNavigate()"
+          routerLinkActive="active">
+          <span class="material-icons">{{item.icon}}</span>
+          <span>{{item.title}}</span>
+        </a>
+      </div>
+    }
+  </div>
+
+  <div class="logout-section">
+    <button class="logout-button" (click)="onLogout()">
+      <span class="material-icons">logout</span>
+      <span class="logout-label">Вийти</span>
+    </button>
+  </div>
+</nav>
+
+@if (isOpen) {
+  <div class="sidenav-backdrop" (click)="navigate.emit()"></div>
+}

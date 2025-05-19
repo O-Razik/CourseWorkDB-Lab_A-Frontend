@@ -1,0 +1,24 @@
+<div class="dashboard-container">
+  <div class="dashboard-grid">
+    <mat-grid-list [cols]="columns" [rowHeight]="250" [gutterSize]="'16px'">
+      @for (card of cards; track card.title) {
+        <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
+          <mat-card
+            [style.background]="cardColor"
+            [routerLink]="card.route"
+            class="dashboard-card">
+            <mat-card-header>
+              @if (card.icon) {
+                <mat-icon mat-card-avatar>{{card.icon}}</mat-icon>
+              }
+              <mat-card-title>{{card.title}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{card.content}}</p>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      }
+    </mat-grid-list>
+  </div>
+</div>

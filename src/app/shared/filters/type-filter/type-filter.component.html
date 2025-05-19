@@ -1,0 +1,14 @@
+<section class="filter-section">
+  <h4 class="selection-name">{{ sectionName }}</h4>
+  <ul>
+    @for (item of items; track item.id) {
+      <li>
+        <mat-checkbox
+          [checked]="selectedItems.includes(item.id)"
+          (change)="toggleItem(item.id)">
+          {{ item.name }}
+        </mat-checkbox>
+      </li>
+    }
+  </ul>
+</section>

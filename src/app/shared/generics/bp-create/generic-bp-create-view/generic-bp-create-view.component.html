@@ -1,0 +1,70 @@
+<div class="order-creation-container">
+  <!-- Left Side Panel -->
+  <div class="side-panel">
+    <div class="tab-header">
+      <h3>{{ title }}</h3>
+    </div>
+
+    <!-- Tabs Container - Custom tabs will be projected here -->
+    <div class="tabs-container">
+      <ng-content select="[tabs]"></ng-content>
+
+      <!-- Checkout Tab (always present) -->
+      <div class="tab-group checkout">
+        <div class="tab-option"
+             [class.active]="activeTabId === 'checkout'"
+             (click)="setActiveTab('checkout')">
+          <div class="tab-title">До сплати</div>
+          <div class="tab-value">{{ totalPrice }} грн</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Panel -->
+  <div class="view-panel">
+    <!-- Custom content will be projected here based on active tab -->
+    <ng-content select="[content]"></ng-content>
+
+    <!-- Checkout Content (always present) -->
+    <div class="main-content checkout" *ngIf="activeTabId === 'checkout'">
+      <h2>Підтвердження замовлення</h2>
+
+      <div class="order-summary">
+        <!-- Summary sections will be projected here -->
+        <ng-content select="[summary-content]"></ng-content>
+
+        <div class="total-section">
+          <h3>Загальна вартість</h3>
+          <div class="total-price">{{ totalPrice }} грн</div>
+        </div>
+
+        <button class="create-order-btn"
+                [class.disabled]="!canCreateOrder"
+                [disabled]="!canCreateOrder"
+                (click)="createOrder()">
+          Створити замовлення
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (showConfirmation){
+  <!-- Order Confirmation Dialog -->
+  <div class="confirmation-overlay">
+    <div class="confirmation-dialog">
+      <button class="close-button" (click)="closeConfirmation()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <h2>
+        <mat-icon>check_circle</mat-icon>
+        Замовлення успішно створено
+      </h2>
+      <ng-content select="[confirmation-content]"></ng-content>
+      <div class="dialog-actions">
+        <button class="confirm-button" (click)="closeConfirmation()">OK</button>
+      </div>
+    </div>
+  </div>
+}

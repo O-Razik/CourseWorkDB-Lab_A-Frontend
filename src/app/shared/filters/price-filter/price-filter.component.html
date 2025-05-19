@@ -1,0 +1,19 @@
+<section class="filter-section">
+  <h4 class="selection-name">{{ sectionName }}</h4>
+  <div class="price-filter">
+    <div class="price-display">
+      <span>{{ priceRange[0] }} грн</span>
+      <span>—</span>
+      <span>{{ priceRange[1] }} грн</span>
+    </div>
+    <mat-slider
+      class="price-slider"
+      [min]="minPrice"
+      [max]="maxPrice"
+      [step]="step"
+      (input)="validatePriceRange()">
+      <input matSliderStartThumb [(ngModel)]="priceRange[0]" (change)="validatePriceRange()">
+      <input matSliderEndThumb [(ngModel)]="priceRange[1]" (change)="validatePriceRange()">
+    </mat-slider>
+  </div>
+</section>

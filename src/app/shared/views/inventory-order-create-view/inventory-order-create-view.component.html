@@ -1,0 +1,170 @@
+<!-- Updated Template -->
+<div class="order-creation-container">
+  <!-- Left Side Panel -->
+  <div class="side-panel">
+    <div class="tab-header">
+      <h3>Створення замовлення інвентарю</h3>
+    </div>
+
+    <div class="tab-group">
+      <!-- Supplier Tab -->
+      <div class="tab-option"
+           [class.active]="activeTab === 'supplier'"
+           (click)="setTab('supplier')">
+        <div class="tab-title">Постачальник</div>
+        <div class="tab-value" *ngIf="selectedSupplier">
+          {{ selectedSupplier.name }}
+        </div>
+        <div class="tab-value" *ngIf="!selectedSupplier">
+          Виберіть постачальника
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-group">
+      <!-- Inventory Tab -->
+      <div class="tab-option"
+           [class.active]="activeTab === 'inventory'"
+           (click)="setTab('inventory')">
+        <div class="tab-title">Інвентар</div>
+        <div class="tab-value">{{ totalItems }} обрано</div>
+      </div>
+
+      <!-- Selected Inventory Tab Content -->
+      <div class="tab-content" *ngIf="activeTab === 'inventory'">
+        <div class="selected-items-tab">
+          <div class="selected-items-header">
+            <h4>Вибраний інвентар</h4>
+            <button class="remove-all-btn"
+                    *ngIf="selectedInventoryItems.length > 0"
+                    (click)="removeAllInventoryItems(); $event.stopPropagation()">
+              Видалити все
+            </button>
+          </div>
+          <div class="selected-list" *ngIf="selectedInventoryItems.length > 0; else emptyInventory">
+            <div class="selected-item" *ngFor="let item of selectedInventoryItems">
+              <div class="item-info">
+                <span class="item-name">{{ item.inventory.inventoryName }} ({{ item.inventory.price}} грн)</span>
+                <div class="quantity-controls">
+                  <button class="quantity-btn" (click)="decreaseQuantity(item); $event.stopPropagation()">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <span class="quantity">{{ item.quantity }}</span>
+                  <button class="quantity-btn" (click)="increaseQuantity(item); $event.stopPropagation()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                  <span class="item-price">{{ (item.inventory.price) * item.quantity }} грн</span>
+                </div>
+              </div>
+              <button class="remove-btn" (click)="removeInventoryItem(item.inventory.inventoryId); $event.stopPropagation()">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+          </div>
+          <ng-template #emptyInventory>
+            <div class="empty-state">
+              <mat-icon>inventory</mat-icon>
+              <p>Інвентар ще не вибрано</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checkout Tab -->
+    <div class="tab-group checkout">
+      <div class="tab-option"
+           [class.active]="activeTab === 'checkout'"
+           (click)="setTab('checkout')">
+        <div class="tab-title">До сплати</div>
+        <div class="tab-value">{{ totalPrice }} грн</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Panel -->
+  <div class="view-panel">
+    <!-- Supplier Selection -->
+    <div class="main-content" *ngIf="activeTab === 'supplier'">
+      <h2>Вибір постачальника</h2>
+      <app-supplier-sub-list-view
+        [suppliers]="suppliers"
+        (supplierSelected)="onSupplierSelected($event)">
+      </app-supplier-sub-list-view>
+    </div>
+
+    <!-- Inventory Selection -->
+    <div class="main-content" *ngIf="activeTab === 'inventory'">
+      <h2>Доступний інвентар</h2>
+      <app-inventory-sub-list-view
+        [inventories]="inventoryItems"
+        (inventorySelected)="addInventoryItem($event)">
+      </app-inventory-sub-list-view>
+    </div>
+
+    <!-- Checkout -->
+    <div class="main-content checkout" *ngIf="activeTab === 'checkout'">
+      <h2>Підтвердження замовлення</h2>
+
+      <div class="order-summary">
+        <div class="summary-section">
+          <h3>Постачальник</h3>
+          <p *ngIf="selectedSupplier; else noSupplier">
+            <mat-icon>local_shipping</mat-icon>
+            {{ selectedSupplier.name }}
+          </p>
+          <ng-template #noSupplier>
+            <p class="empty">Не обрано</p>
+          </ng-template>
+        </div>
+
+        <div class="summary-section">
+          <h3>Інвентар</h3>
+          <div *ngIf="selectedInventoryItems.length > 0; else noInventory">
+            <div class="summary-item" *ngFor="let item of selectedInventoryItems">
+              <span>
+                <mat-icon>medical_services</mat-icon>
+                {{ item.inventory.inventoryName }} ({{ item.quantity }})
+              </span>
+              <span>{{ (item.inventory.price) * item.quantity }} грн</span>
+            </div>
+          </div>
+          <ng-template #noInventory>
+            <p class="empty">Не обрано</p>
+          </ng-template>
+        </div>
+
+        <div class="total-section">
+          <h3>Загальна вартість</h3>
+          <div class="total-price">
+            {{ totalPrice }} грн
+          </div>
+        </div>
+
+        <button class="create-order-btn"
+                [class.disabled]="!canCreateOrder()"
+                [disabled]="!canCreateOrder()"
+                (click)="createOrder()">
+          Створити замовлення
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Confirmation Dialog -->
+<div class="confirmation-overlay" *ngIf="showConfirmation">
+  <div class="confirmation-dialog">
+    <button class="close-button" (click)="closeConfirmation()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <h2>
+      <mat-icon>check_circle</mat-icon>
+      Замовлення успішно створено
+    </h2>
+    <app-inventory-order-view [order]="confirmedOrder!" *ngIf="confirmedOrder"></app-inventory-order-view>
+    <div class="dialog-actions">
+      <button class="confirm-button" (click)="closeConfirmation()">OK</button>
+    </div>
+  </div>
+</div>

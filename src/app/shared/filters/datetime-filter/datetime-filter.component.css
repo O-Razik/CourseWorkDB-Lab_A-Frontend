@@ -1,0 +1,70 @@
+.selection-name {
+  margin: 0;
+  color: #1c55c5;
+  padding: 0 0 5px 0;
+}
+
+.date-filter {
+  padding: 14px 10px 10px 10px;
+  margin: 0 0 0 10px;
+  width: 80%;
+}
+
+.date-inputs {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+input{
+  padding: 4px 4px 4px 14px;
+}
+
+mat-form-field {
+  width: 150px;
+}
+
+.date-picker{
+  background-color: white !important;
+}
+
+.clear-button {
+  color: #1c55c5;
+  border-color: #1c55c5;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 100%;
+}
+
+::ng-deep .mat-calendar-period-button .mdc-button__label   {
+  color:black !important;
+
+}
+
+::ng-deep .mat-calendar {
+  color:black !important;
+  background-color: white;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+::ng-deep  .time-container-clock {
+  color:black !important;
+  background-color: white;
+}
+
+::ng-deep .time-container  {
+  color:black !important;
+  background-color: white;
+}
+
+::ng-deep .time-container-body-cell-content {
+  color:black;
+}
+
+::ng-deep .time-container .mat-mdc-input-element {
+  color:black !important;
+  background-color: white;
+}

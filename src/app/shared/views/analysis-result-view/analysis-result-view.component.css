@@ -1,0 +1,141 @@
+.panel {
+  margin: 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 375px;
+  height: 530px;
+}
+
+.panel-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #4e7ad0;
+  color: white;
+  border-radius: 8px 8px 0 0;
+  padding: 10px;
+  gap: 5px;
+}
+
+.panel-header .header-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.panel-header .header-buttons button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+button.download-btn{
+  background-color: #4e7ad0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.panel-header .header-buttons button:hover {
+  background-color: #3b5bb0;
+}
+
+.panel-header .header-buttons button:focus {
+  outline: none;
+}
+
+.panel-header .header-buttons button:active {
+  background-color: #2a4b8f;
+}
+
+.panel-header .analysis-name {
+  color: white;
+  font-size: 14px;
+  margin: 0;
+  font-weight: normal;
+}
+
+.info-table {
+  width: 95%;
+  padding: 4px 9px 0 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  height: calc(100% - 60px);
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  color: #4e7ad0;
+}
+
+.execution-table, .indicator-table {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: white;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+.info-value {
+  color: #333;
+  font-size: 14px;
+}
+
+.no-data {
+  color: #757575;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* Scrollbar styling */
+.info-table::-webkit-scrollbar {
+  width: 6px;
+}
+
+.info-table::-webkit-scrollbar-track {
+  border-radius: 3px;
+}
+
+.info-table::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.info-table::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

@@ -1,0 +1,16 @@
+<div class="inventory-item"
+     [class.selected]="isSelected"
+     (click)="onClick()">
+  <div class="inventory-header">
+    <span class="inventory-name">{{inventoryItem.inventory.inventoryName}}</span>
+    <span class="inventory-quantity">{{inventoryItem.quantity}}</span>
+  </div>
+  <div class="inventory-expiry">
+    <span class="expiry-label">Термін:</span>
+    @if (inventoryItem.expirationDate) {
+      <span class="expiry-date">{{ inventoryItem.expirationDate | date:'dd.MM.yyyy' }}</span>
+    } @else {
+      <span class="expiry-date none">Не вказано</span>
+    }
+  </div>
+</div>

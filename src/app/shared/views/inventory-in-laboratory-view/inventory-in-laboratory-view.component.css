@@ -1,0 +1,47 @@
+.inventory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.inventory-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.inventory-quantity {
+  font-size: 14px;
+  font-weight: bold;
+  color: #2c7be5;
+  background-color: #f0f5ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.inventory-expiry {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #555;
+}
+
+.expiry-label {
+  margin-right: 4px;
+  color: #6e84a3;
+}
+
+.expiry-date {
+  font-weight: 500;
+  &.none {
+    color: #999;
+    font-style: italic;
+  }
+}

@@ -1,0 +1,14 @@
+<div class="tab-group" [class.active-group]="isActive">
+  <div class="tab-option"
+       [class.active]="isActive"
+       (click)="activate()">
+    <div class="tab-title">{{ title }}</div>
+    <div class="tab-value">{{ value }}</div>
+  </div>
+
+  @if (isActive && hasContent){
+    <div class="tab-content">
+      <ng-content></ng-content>
+    </div>
+  }
+</div>

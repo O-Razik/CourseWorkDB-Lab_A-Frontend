@@ -1,0 +1,23 @@
+<div class="filter-container">
+  <h4 class="section-name">{{ sectionName }}</h4>
+
+  <div class="filters">
+    @if (isLoading) {
+      <p class="loading">Завантаження...</p>
+    } @else {
+      <div class="filter-group">
+        <mat-form-field>
+          <mat-label>{{ placeholder }}</mat-label>
+          <mat-select [(ngModel)]="selectedValue" (selectionChange)="applyFilter()">
+            <mat-option value="">Будь-який</mat-option>
+            @for (item of items; track item.id) {
+              <mat-option [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    }
+  </div>
+</div>

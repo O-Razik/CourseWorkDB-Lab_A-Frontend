@@ -1,0 +1,90 @@
+<mat-accordion>
+  @if (inventoryInOrder) {
+    <mat-expansion-panel [(expanded)]="panelOpenState">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="item-main">
+            <span class="item-name">
+              {{inventoryInOrder.inventory.inventoryName || 'Невідомий інвентар'}}
+            </span>
+            <div class="item-details">
+              <span class="item-quantity">{{inventoryInOrder.quantity || 0}} шт.</span>
+              <span class="item-price">{{inventoryInOrder.price || 0}} грн</span>
+            </div>
+          </div>
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ inventoryInOrder.inventoryDeliveries! ? inventoryInOrder.inventoryDeliveries.length : 0}} доставок
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="inventory-content">
+        @if (inventoryInOrder.inventoryDeliveries! && inventoryInOrder.inventoryDeliveries.length > 0) {
+          @for (delivery of inventoryInOrder.inventoryDeliveries; track delivery.inventoryDeliveryId) {
+            <div class="delivery-item">
+              <div class="delivery-info">
+                <span class="delivery-date">
+                  {{ delivery.deliveryDate | date:'dd.MM.yyyy' }}
+                </span>
+                <span class="delivery-location">
+                  {{ delivery.laboratoryFullAddress || 'Адреса не вказана' }}
+                </span>
+              </div>
+              <div class="delivery-status-group">
+                <span class="delivery-quantity">{{ delivery.quantity }} шт.</span>
+                <span class="delivery-status">
+                  {{ delivery.status.statusName }}
+                </span>
+              </div>
+            </div>
+          }
+        } @else {
+          <div class="no-items">
+            <span>Немає доставок для цього інвентарю</span>
+          </div>
+        }
+
+        <!-- Add delivery form (shown only when can add more deliveries) -->
+        @if (canAddMoreDeliveries() && showAddDeliveryForm) {
+          <div class="add-delivery-form">
+            <form [formGroup]="deliveryForm" class="delivery-form">
+              <mat-form-field>
+                <mat-label>Лабораторія</mat-label>
+                <mat-select formControlName="laboratoryId" required>
+                  <mat-option *ngFor="let lab of laboratories" [value]="lab.laboratoryId">
+                    {{lab.city.cityName + ", " + lab.address}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Кількість</mat-label>
+                <input matInput type="number" formControlName="quantity" required>
+                <mat-hint>Залишилось: {{remainingQuantity()}} шт.</mat-hint>
+              </mat-form-field>
+
+              <div class="form-actions">
+                <button mat-button (click)="cancelAddDelivery()">Скасувати</button>
+                <button mat-raised-button color="primary"
+                        (click)="submitDelivery()"
+                        [disabled]="!deliveryForm.valid">
+                  Додати
+                </button>
+              </div>
+            </form>
+          </div>
+        }
+
+        <!-- Add delivery button (shown when can add but form isn't visible) -->
+        @if (canAddMoreDeliveries() && !showAddDeliveryForm) {
+          <div class="add-delivery-button">
+            <button mat-raised-button color="primary" (click)="startAddDelivery()">
+              <mat-icon>add</mat-icon>
+              Додати доставку
+            </button>
+          </div>
+        }
+      </div>
+    </mat-expansion-panel>
+  }
+</mat-accordion>

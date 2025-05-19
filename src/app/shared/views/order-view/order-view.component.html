@@ -1,0 +1,98 @@
+<div class="panel">
+  <div class="panel-header">
+    <h3 class="order-number">№ {{ order.number }}</h3>
+    @if (order.status) {
+      <div class="order-status">
+        <h4 class="status-name">{{ order.status.statusName }}</h4>
+      </div>
+    }
+  </div>
+
+  <div class="info-table">
+    <h4 class="title">Інформація</h4>
+
+    <table mat-table [dataSource]="[order]">
+      <!-- Date Column -->
+      <ng-container matColumnDef="collectionDate">
+        <th mat-header-cell *matHeaderCellDef>Дата збору біоматеріалу</th>
+        <td mat-cell *matCellDef="let element">
+          @if (element.biomaterialCollectionDate) {
+            {{ element.biomaterialCollectionDate | date:'HH:mm, dd.MM.yyyy' }}
+          } @else {
+            <span class="no-data">Не вказано</span>
+          }
+        </td>
+      </ng-container>
+
+      <!-- Employee Column -->
+      <ng-container matColumnDef="employee">
+        <th mat-header-cell *matHeaderCellDef>Працівник</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="employee-info">
+            @if (element.employee) {
+              <span>{{ element.employee.firstName }} {{ element.employee.lastName }}</span>
+            } @else {
+              <span class="no-data">Не вказано</span>
+            }
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Client Column -->
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef>Клієнт</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="client-info">
+            @if (element?.client) {
+              <span>{{ element?.client?.firstName }} {{ element.client.lastName }}</span>
+            } @else {
+              <span class="no-data">Не вказано</span>
+            }
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="order-analyses">
+      <h4 class="title">Аналізи</h4>
+      <div class="analysis-list">
+        @for (orderAnalysis of order.orderAnalyses; track orderAnalysis.orderAnalysisId) {
+          <div class="item">
+            <span class="analysis-name">{{ orderAnalysis.analysis.name }}</span>
+            <span class="analysis-price">{{ orderAnalysis.analysis.price }}</span>
+          </div>
+        } @empty {
+          <div class="no-data-container">
+            <span class="no-data">Не вказано</span>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="biomaterial-collection">
+      <h4 class="title">Біоматеріали</h4>
+      <div class="biomaterial-list">
+        @for (biomaterialCollection of order.biomaterialCollections; track biomaterialCollection.biomaterialCollectionId) {
+          <div class="item">
+            <span class="biomaterial-name">{{ biomaterialCollection.biomaterial.biomaterialName }}</span>
+          </div>
+        } @empty {
+          <div class="no-data-container">
+            <span class="no-data">Не вказано</span>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="order-price">
+      <h4 class="title">Загальна вартість</h4>
+      @if (order.fullprice) {
+        <h2 class="price-value">{{ order.fullprice }} грн</h2>
+      } @else {
+        <h3 class="no-data">Не вказано</h3>
+      }
+  </div>
+</div>
+</div>
+

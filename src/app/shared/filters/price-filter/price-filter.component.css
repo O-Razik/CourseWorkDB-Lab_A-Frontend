@@ -1,0 +1,29 @@
+.selection-name {
+  margin: 0;
+  color: #1c55c5;
+  padding: 0 0 5px 0;
+}
+
+.price-filter {
+  padding: 0 0 0 10px;
+  margin: 0 0 0 10px;
+  width: 80%;
+  border-radius: 50px;
+}
+
+.price-slider {
+  width: 300px;
+  padding-left: 10px;
+  color: #1c55c5;
+  border-radius: 50%;
+}
+
+.price-display {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+

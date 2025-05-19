@@ -1,0 +1,49 @@
+.filter-container {
+  padding-right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-name {
+  margin: 0;
+  color: #1c55c5;
+  padding: 0 0 5px 0;
+}
+
+.filters{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  border: #333333 1px solid;
+  border-radius: 10px;
+  padding-top: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-mdc-select-panel {
+  background: white !important;
+  color: #333 !important;
+}
+
+/* Loading state */
+.loading p {
+  color: #666;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filter-container {
+    padding: 12px;
+  }
+
+  .filter-group {
+    margin-bottom: 12px;
+  }
+}

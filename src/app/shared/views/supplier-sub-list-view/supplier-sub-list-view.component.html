@@ -1,0 +1,9 @@
+<app-generic-sub-list-view [items]="suppliers" [trackByFn]="trackBySupplierId">
+  <ng-template #itemListTemplate let-suppliers>
+    @for (supplier of suppliers; track trackBySupplierId($index, supplier)) {
+      <app-supplier-view [supplier]="supplier" (click)="selectSupplier(supplier)" ></app-supplier-view>
+    } @empty {
+      <p class="empty-list-message">No suppliers found</p>
+    }
+  </ng-template>
+</app-generic-sub-list-view>

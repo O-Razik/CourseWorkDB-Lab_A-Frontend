@@ -1,0 +1,47 @@
+<div class="panel">
+  <div class="panel-header">
+    <div>
+      <h3 class="biomaterial-name">{{ biomaterialCollection.biomaterial.biomaterialName }}</h3>
+    </div>
+  </div>
+
+  <div class="info-table">
+    <div class="details-grid">
+      <div class="detail-item">
+        <span class="detail-label">Дата збору:</span>
+        <span class="detail-value">
+          {{ biomaterialCollection.collectionDate | date:'dd.MM.yyyy' }}
+        </span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Термін придатності:</span>
+        <span class="detail-value">
+          {{ biomaterialCollection.expirationDate | date:'dd.MM.yyyy' }}
+        </span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Використаний інвентар:</span>
+        <span class="detail-value">
+          {{ biomaterialCollection.inventoryInLaboratory.inventory.inventoryName }}
+        </span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Об'єм:</span>
+        <span class="detail-value">
+          {{ biomaterialCollection.volume || 0 }} мл
+        </span>
+      </div>
+    </div>
+    <div class="additional-info">
+      <div class="info-item">
+        <span class="info-label">Статус:</span>
+        <span class="info-value" [ngClass]="{
+          'expired': isExpired(biomaterialCollection.expirationDate),
+          'valid': !isExpired(biomaterialCollection.expirationDate)
+        }">
+          {{ isExpired(biomaterialCollection.expirationDate) ? 'Протерміновано' : 'Придатний' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

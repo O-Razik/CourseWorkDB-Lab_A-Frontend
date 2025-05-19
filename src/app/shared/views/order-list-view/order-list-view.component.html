@@ -1,0 +1,86 @@
+<app-generic-list-view
+  [items]="orders"
+  [pageName]="pageName"
+  [searchPlaceholder]="searchPlaceholder"
+  [searchTerm]="searchTerm"
+  (searchTermChange)="onSearch($event)"
+  [filtersTitle]="filtersTitle"
+  [emptyListMessage]="emptyListMessage"
+  [trackByFn]="trackByOrderId"
+  [useLocalSearch]="false">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate let-orders let-trackByFn="trackByFn">
+    <div class="order-container">
+      @if (ifBeginLoading) {
+        <div class="loading-spinner">
+          <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+        </div>
+      } @else {
+        @if (orders.length === 0) {
+          <div class="empty-list-message-container">
+            <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+          </div>
+        } @else {
+          <mat-grid-list [cols]="cols" rowHeight="540px" gutterSize="10px">
+            @for (order of orders; track trackByOrderId($index, order)) {
+              <mat-grid-tile>
+                <app-order-view [order]="order"></app-order-view>
+              </mat-grid-tile>
+            }
+          </mat-grid-list>
+          @if (hasMore) {
+            <div class="load-more-container">
+              <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="isLoading">
+                @if (isLoading) {
+                  <div class="loading-spinner">
+                    <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+                  </div>
+                } @else {
+                  Завантажити ще
+                }
+              </button>
+            </div>
+          }
+        }
+      }
+    </div>
+  </ng-template>
+
+  <!-- Custom Filters Template -->
+  <ng-template #filtersTemplate>
+    <app-type-filter
+      sectionName="Статуси:"
+      [items]="statusItems"
+      [selectedItems]="selectedStatuses"
+      (itemToggled)="toggleStatuses($event)">
+    </app-type-filter>
+
+    <app-price-filter
+      sectionName="Ціна:"
+      [minPrice]="minPrice"
+      [maxPrice]="maxPrice"
+      [priceRange]="priceRange"
+      [step]="step"
+      (priceRangeChange)="priceRange = $event; applyFilters()">
+    </app-price-filter>
+
+    <app-select-filter
+      [sectionName]="'Працівник:'"
+      [placeholder]="'Оберіть працівника'"
+      [items]="employeeItems"
+      (filterChanged)="toggleEmployee($event)">
+    </app-select-filter>
+
+    <app-datetime-filter
+      sectionName="Дата збору біометалів:"
+      [dateRange]="dateRange"
+      (dateRangeChange)="dateRange = $event; applyFilters()">
+    </app-datetime-filter>
+  </ng-template>
+
+  <!-- Create Button -->
+  <ng-template #createTemplate>
+    <app-client-order-create-view></app-client-order-create-view>
+  </ng-template>
+</app-generic-list-view>

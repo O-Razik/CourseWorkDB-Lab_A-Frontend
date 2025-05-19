@@ -1,0 +1,24 @@
+<div class="page">
+  <div class="item-list">
+    <!-- List Container -->
+    <div class="list">
+      <div class="list-body">
+        <!-- Customizable Item List -->
+        <ng-container *ngTemplateOutlet="itemListTemplate || defaultItemListTemplate;
+               context: {$implicit: items, trackByFn: trackByFn}">
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Default Templates -->
+<ng-template #defaultItemListTemplate let-items>
+  @for (item of items; track trackByFn($index, item)) {
+    <div class="default-item">
+      {{ item | json }}
+    </div>
+  } @empty {
+    <p class="empty-list-message">{{ emptyListMessage }}</p>
+  }
+</ng-template>

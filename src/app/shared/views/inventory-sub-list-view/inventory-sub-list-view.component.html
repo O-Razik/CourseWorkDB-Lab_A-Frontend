@@ -1,0 +1,11 @@
+<app-generic-sub-list-view [items]="inventories" [trackByFn]="trackByInventoryId">
+  <ng-template #itemListTemplate let-inventories>
+    <mat-grid-list [cols]="cols" rowHeight="120px" gutterSize="8px">
+      @for (inventory of inventories; track trackByInventoryId($index, inventory)) {
+        <mat-grid-tile>
+          <app-inventory-view [inventory]="inventory" (click)="selectInventory(inventory)"></app-inventory-view>
+        </mat-grid-tile>
+      }
+    </mat-grid-list>
+  </ng-template>
+</app-generic-sub-list-view>

@@ -1,0 +1,17 @@
+<!-- generic-page.component.html -->
+<app-header
+  [pageName]="pageName"
+  [role]="role"
+  (menuClicked)="toggleSidenav()">
+</app-header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<app-sidenav
+  [isOpen]="isSidenavOpen"
+  [role]="role"
+  [items]="sidenavItems"
+  (navigate)="toggleSidenav()">
+</app-sidenav>

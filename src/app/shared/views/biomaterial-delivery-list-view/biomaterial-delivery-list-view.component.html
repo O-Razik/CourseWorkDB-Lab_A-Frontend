@@ -1,0 +1,65 @@
+<app-generic-list-view
+  [items]="deliveries"
+  [pageName]="pageName"
+  [searchOn]="false"
+  [filtersTitle]="filtersTitle"
+  [emptyListMessage]="emptyListMessage"
+  [trackByFn]="trackByDeliveryId">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate let-deliveries let-trackByFn="trackByFn">
+    <div class="delivery-container">
+      @if (ifBeginLoading) {
+        <div class="loading-spinner">
+          <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+        </div>
+      } @else {
+        @if (deliveries.length === 0) {
+          <div class="empty-list-message-container">
+            <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+          </div>
+        } @else {
+          @for (delivery of deliveries; track trackByDeliveryId($index, delivery)) {
+            <app-biomaterial-delivery-view [delivery]="delivery"></app-biomaterial-delivery-view>
+          }
+          @if (hasMore) {
+            <div class="load-more-container">
+              <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="isLoading">
+                @if (isLoading) {
+                  <div class="loading-spinner">
+                    <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+                  </div>
+                } @else {
+                  Завантажити ще
+                }
+              </button>
+            </div>
+          }
+        }
+      }
+    </div>
+  </ng-template>
+
+  <!-- Custom Filters Template -->
+  <ng-template #filtersTemplate>
+    <app-type-filter
+      sectionName="Статуси:"
+      [items]="statusItems"
+      [selectedItems]="selectedStatuses"
+      (itemToggled)="toggleStatuses($event)">
+    </app-type-filter>
+
+    <app-select-filter
+      [sectionName]="'Центр досліджень:'"
+      [placeholder]="'Оберіть центр'"
+      [items]="analysisCenterItems"
+      (filterChanged)="toggleAnalysisCenter($event)">
+    </app-select-filter>
+
+    <app-datetime-filter
+      sectionName="Дата доставки:"
+      [dateRange]="dateRange"
+      (dateRangeChange)="dateRange = $event; applyFilters()">
+    </app-datetime-filter>
+  </ng-template>
+</app-generic-list-view>

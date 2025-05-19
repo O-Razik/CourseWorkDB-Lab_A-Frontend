@@ -1,0 +1,63 @@
+<app-generic-list-view
+  [items]="employees"
+  [pageName]="pageName"
+  [searchPlaceholder]="searchPlaceholder"
+  [searchTerm]="searchTerm"
+  (searchTermChange)="onSearch($event)"
+  [filtersTitle]="filtersTitle"
+  [emptyListMessage]="emptyListMessage"
+  [trackByFn]="trackByEmployeeId"
+  [useLocalSearch]="true">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate>
+    @if (ifBeginLoading) {
+      <div class="loading-spinner">
+        <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+      </div>
+    } @else {
+      @for (employee of employees; track trackByEmployeeId($index, employee)) {
+        <app-employee-view [employee]="employee"></app-employee-view>
+      } @empty {
+        <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+      }
+      @if (hasMore) {
+        <div class="load-more-container">
+          <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="isLoading">
+            @if (isLoading) {
+              <div class="loading-spinner">
+                <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+              </div>
+            } @else {
+              Завантажити ще
+            }
+          </button>
+        </div>
+      }
+    }
+  </ng-template>
+
+  <!-- Custom Filters Template -->
+  <ng-template #filtersTemplate>
+    <app-type-filter
+      sectionName="Посади:"
+      [items]="positionItems"
+      [selectedItems]="selectedPositions"
+      (itemToggled)="togglePositions($event)">
+    </app-type-filter>
+
+    <app-select-filter
+      sectionName="Міста:"
+      [placeholder]="'Виберіть місто'"
+      [items]="cityItems"
+      (filterChanged)="toggleCities($event)">
+    </app-select-filter>
+
+    <app-select-filter
+      sectionName="Лабораторії:"
+      [placeholder]="'Виберіть лабораторію'"
+      [items]="laboratoryItems"
+      (filterChanged)="toggleLaboratories($event)">
+    </app-select-filter>
+  </ng-template>
+</app-generic-list-view>

@@ -1,0 +1,15 @@
+.supplier-item {
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.supplier-item:hover {
+  transform: translateX(4px);
+}
+
+.empty-list-message {
+  padding: 16px;
+  text-align: center;
+  color: #666;
+}

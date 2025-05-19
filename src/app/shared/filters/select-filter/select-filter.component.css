@@ -1,0 +1,50 @@
+.filter-container {
+  padding-right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 80%;
+}
+
+.section-name {
+  margin: 0;
+  color: #1c55c5;
+  padding: 0 0 5px 0;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  border: #333333 1px solid;
+  border-radius: 10px;
+  padding-top: 10px;
+  width: 100%;
+  margin-left: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background: white !important;
+  color: #333 !important;
+}
+
+.loading {
+  color: #666;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+@media (max-width: 768px) {
+  .filter-container {
+    padding: 12px;
+  }
+
+  .filter-group {
+    margin-bottom: 12px;
+  }
+}

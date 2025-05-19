@@ -1,0 +1,102 @@
+.panel {
+  margin: 8px;
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 360px;
+}
+
+.panel-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #4e7ad0;
+  color: white;
+  border-radius: 8px 8px 0 0;
+  padding: 10px;
+}
+
+.biomaterial-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.info-table {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #4e7ad0;
+  font-weight: 500;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: white;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 2px;
+}
+
+.detail-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.additional-info {
+  border-top: 1px solid #eee;
+  padding: 8px 8px 0 8px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.info-label {
+  color: #666;
+}
+
+.info-value {
+  font-weight: 500;
+
+  &.expired {
+    color: #e53935;
+  }
+
+  &.valid {
+    color: #43a047;
+  }
+}

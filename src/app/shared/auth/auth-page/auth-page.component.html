@@ -1,0 +1,32 @@
+<div class="page">
+  <div class="panel">
+    <div class="panel-header">
+      <h3>Авторизація</h3>
+    </div>
+
+    <mat-tab-group>
+      <mat-tab label="Вхід">
+        <form class="auth-form" (ngSubmit)="onLogin()">
+          <label>Email</label>
+          <input matInput type="email" [(ngModel)]="loginEmail" name="loginEmail" required />
+
+          <label>Пароль</label>
+          <input matInput type="password" [(ngModel)]="loginPassword" name="loginPassword" required />
+
+          <button mat-raised-button color="primary" type="submit">Увійти</button>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="Реєстрація">
+        <form class="auth-form" (ngSubmit)="onSignup()">
+          <label>Email</label>
+          <input matInput type="email" [(ngModel)]="signupEmail" name="signupEmail" required />
+
+          <label>Пароль</label>
+          <input matInput type="password" [(ngModel)]="signupPassword" name="signupPassword" required />
+          <button mat-raised-button color="primary" type="submit">Зареєструватися</button>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

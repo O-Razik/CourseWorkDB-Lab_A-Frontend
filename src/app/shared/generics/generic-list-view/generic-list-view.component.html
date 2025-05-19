@@ -1,0 +1,81 @@
+<div class="page">
+  <div class="item-list">
+
+    <!-- Search Bar (always visible) -->
+    @if (searchOn){
+      <div class="search-bar">
+        <input
+          type="text"
+          [placeholder]="searchPlaceholder"
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch()"
+        />
+        <button class="search-button" (click)="onSearch()">
+          <img [src]="searchIcon" alt="Search">
+        </button>
+      </div>
+    }
+
+
+    <!-- List Container -->
+    <div class="list">
+      <div class="list-body">
+        <!-- Customizable Item List -->
+        <ng-container *ngTemplateOutlet="itemListTemplate || defaultItemListTemplate;
+               context: {$implicit: filteredItems, searchTerm: searchTerm, trackByFn: trackByFn}">
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  @if (filterShown) {
+    <div class="tools">
+      <!-- Filters Panel -->
+      <div class="filter-list">
+        <h3>{{ filtersTitle }}</h3>
+        <div class="filters">
+          <!-- Customizable Filters -->
+          <ng-container *ngTemplateOutlet="filtersTemplate || defaultFiltersTemplate;
+                    context: {$implicit: activeFilters}">
+          </ng-container>
+        </div>
+      </div>
+      <!-- Create Button -->
+      <button class="create-button" (click)="openCreatePanel()">
+        <mat-icon>add</mat-icon>
+        {{ createButtonText }}
+      </button>
+    </div>
+  }
+</div>
+<div class="create-panel-overlay" [class.visible]="showCreatePanel" (click)="closeCreatePanel()">
+  <div class="create-panel" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="closeCreatePanel()">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <div class="panel-content">
+      <!-- Content will be inserted here -->
+      <ng-container *ngTemplateOutlet="createTemplate || defaultCreateTemplate"></ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- Default Templates -->
+<ng-template #defaultItemListTemplate let-items>
+  @for (item of items; track trackByFn($index, item)) {
+    <div class="default-item">
+      {{ item | json }}
+    </div>
+  } @empty {
+    <p class="empty-list-message">{{ emptyListMessage }}</p>
+  }
+</ng-template>
+
+<ng-template #defaultFiltersTemplate>
+  <p>No filters configured</p>
+</ng-template>
+
+<ng-template #defaultCreateTemplate>
+  <p>No create template configured</p>
+</ng-template>

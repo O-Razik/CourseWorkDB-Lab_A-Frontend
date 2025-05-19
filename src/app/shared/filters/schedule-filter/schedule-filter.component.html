@@ -1,0 +1,65 @@
+<div class="filter-container">
+  <h4 class="section-name">{{sectionName}}</h4>
+
+  <div class="filters">
+    @if (isLoading) {
+      <p class="loading">Завантаження...</p>
+    } @else {
+      <div class="filter-group">
+        <mat-form-field>
+          <mat-label>День</mat-label>
+          <mat-select [(ngModel)]="selectedDayId" (selectionChange)="applyFilter()">
+            @for (day of days; track day.dayId) {
+              <mat-option class="item-option" [value]="day.dayId">
+                {{day.dayName}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="filter-group">
+        <mat-form-field>
+          <mat-label>Початок роботи</mat-label>
+          <mat-select [(ngModel)]="selectedStartTime" (selectionChange)="applyFilter()">
+            <mat-option value="">Будь-який</mat-option>
+            @for (time of getStartTimeOptionsByDayId(selectedDayId); track time) {
+              <mat-option [value]="time">
+                {{getToHM(time)}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="filter-group">
+        <mat-form-field>
+          <mat-label>Кінець роботи</mat-label>
+          <mat-select [(ngModel)]="selectedEndTime" (selectionChange)="applyFilter()"
+                      panelClass="select-option">
+            <mat-option value="">Будь-який</mat-option>
+            @for (time of getEndTimeOptionsByDayId(selectedDayId); track time) {
+              <mat-option [value]="time">
+                {{getToHM(time)}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="filter-group">
+        <mat-form-field>
+          <mat-label>Кінець прийому</mat-label>
+          <mat-select [(ngModel)]="selectedCollectionEndTime" (selectionChange)="applyFilter()">
+            <mat-option value="">Будь-який</mat-option>
+            @for (time of getCollectionEndTimeOptionsByDayId(selectedDayId); track time) {
+              <mat-option [value]="time">
+                {{getToHM(time)}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    }
+  </div>
+</div>

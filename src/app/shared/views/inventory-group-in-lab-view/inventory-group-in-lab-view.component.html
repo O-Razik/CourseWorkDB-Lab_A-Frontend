@@ -1,0 +1,23 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span class="inventory-name">{{inventoryGroup.inventory.inventoryName}}</span>
+        <span class="total-quantity">{{totalQuantity}}</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-grid-list [cols]="gridCols" rowHeight="60px" gutterSize="8px" class="grid-list">
+      @for (item of inventoryGroup.items; track item.inventoryInLaboratoryId) {
+        <mat-grid-tile>
+          <div class="inventory-item">
+            <app-inventory-in-laboratory-view
+              [inventoryItem]="item"
+              [isSelected]="selectedInventoryId === item.inventoryInLaboratoryId"
+              (selected)="selectInventory(item)"/>
+          </div>
+        </mat-grid-tile>
+      }
+    </mat-grid-list>
+  </mat-expansion-panel>
+</mat-accordion>
