@@ -43,4 +43,22 @@
   margin-left: 4px;
   padding: 15px;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  min-height: 50px;
+  max-height: 240px;
+}
+
+/* Checkout specific styles */
+.tab-group.checkout {
+  margin-top: auto;
+  background-color: #f1f8e9;
+  border-radius: 0 8px 8px 0;
+}
+
+.tab-group.checkout .tab-option.active {
+  border-left: 4px solid #4caf50;
+}
+
+.tab-group.checkout .tab-value {
+  color: #2e7d32;
+  font-weight: 500;
 }

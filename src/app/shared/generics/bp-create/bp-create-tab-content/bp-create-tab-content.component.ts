@@ -10,4 +10,5 @@ import { Component, Input } from '@angular/core';
 export class BpCreateTabContentComponent {
   @Input() contentId: string = '';
   @Input() isActive: boolean = false;
+  @Input() title: string = '';
 }

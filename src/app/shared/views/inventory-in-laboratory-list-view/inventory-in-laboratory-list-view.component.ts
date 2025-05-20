@@ -66,6 +66,7 @@ export class InventoryInLaboratoryListViewComponent implements OnInit {
   selectedInventories: number[] = [];
   @Input() filterShown!: boolean;
   isAdmin: boolean = false;
+  @Input() isSubList: boolean = false;
 
   @Input() selectedInventoryId: number | null = null;
   @Output() inventorySelected = new EventEmitter<InventoryInLaboratory>();
@@ -101,7 +102,7 @@ export class InventoryInLaboratoryListViewComponent implements OnInit {
   }
 
   loadLaboratories() {
-    if(this.isAdmin) {
+    if(this.isAdmin && !this.isSubList) {
       this.laboratoryService.getLaboratories().subscribe({
         next: (laboratories) => {
           this.laboratories = laboratories;

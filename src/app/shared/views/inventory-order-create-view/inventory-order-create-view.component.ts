@@ -12,6 +12,19 @@ import { SupplierSubListViewComponent } from '../supplier-sub-list-view/supplier
 import { InventorySubListViewComponent } from '../inventory-sub-list-view/inventory-sub-list-view.component';
 import { InventoryOrderViewComponent } from '../inventory-order-view/inventory-order-view.component';
 import {InventoryOrder} from '../../../data/models/inventory-order';
+import {
+    GenericBpCreateViewComponent
+} from "../../generics/bp-create/generic-bp-create-view/generic-bp-create-view.component";
+import {BpCreateTabComponent} from '../../generics/bp-create/bp-create-tab/bp-create-tab.component';
+import {
+  BpCreateTabContentComponent
+} from '../../generics/bp-create/bp-create-tab-content/bp-create-tab-content.component';
+import {
+  BpCreateOrderSummaryComponent
+} from '../../generics/bp-create/bp-create-order-summary/bp-create-order-summary.component';
+import {
+  BpCreateSummarySectionComponent
+} from '../../generics/bp-create/bp-create-summary-section/bp-create-summary-section.component';
 
 interface SelectedInventoryItem {
   inventory: Inventory;
@@ -20,7 +33,7 @@ interface SelectedInventoryItem {
 
 @Component({
   selector: 'app-inventory-order-create-view',
-  imports: [MatIcon, NgIf, NgFor, SupplierSubListViewComponent, InventorySubListViewComponent, InventoryOrderViewComponent],
+  imports: [MatIcon, NgIf, NgFor, SupplierSubListViewComponent, InventorySubListViewComponent, InventoryOrderViewComponent, GenericBpCreateViewComponent, BpCreateTabComponent, BpCreateTabContentComponent, BpCreateOrderSummaryComponent, BpCreateSummarySectionComponent],
   templateUrl: './inventory-order-create-view.component.html',
   styleUrl: './inventory-order-create-view.component.css',
   standalone: true,

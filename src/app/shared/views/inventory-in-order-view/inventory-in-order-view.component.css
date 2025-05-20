@@ -36,6 +36,8 @@ mat-panel-description{
   color: #333;
   font-weight: 500;
   flex: 1;
+  min-width: 100px;
+  max-width: 300px;
 }
 
 .item-details {

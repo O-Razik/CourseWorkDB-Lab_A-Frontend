@@ -26,7 +26,7 @@
                 <div class="order-header">
                   <h3>Замовлення #{{ group.orderNumber }}</h3>
                 </div>
-                <mat-grid-list [cols]="cols" rowHeight="225px" gutterSize="4px">
+                <mat-grid-list [cols]="cols" rowHeight="200px" gutterSize="4px">
                   @for (collection of group.collections; track trackByBiomaterialCollectionId($index, collection)) {
                     <mat-grid-tile>
                       <app-biomaterial-collection-view [biomaterialCollection]="collection"></app-biomaterial-collection-view>

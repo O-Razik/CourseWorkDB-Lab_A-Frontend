@@ -14,8 +14,4 @@ import {DatePipe, NgClass} from '@angular/common';
 })
 export class BiomaterialCollectionViewComponent {
   @Input() biomaterialCollection!: BiomaterialCollection;
-
-  isExpired(expirationDate: string): boolean {
-    return new Date(expirationDate) < new Date();
-  }
 }

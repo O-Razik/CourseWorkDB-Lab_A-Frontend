@@ -1,0 +1,20 @@
+@if (isActive){
+  <div class="main-content">
+    <h2>{{title}}</h2>
+    <div class="order-summary">
+      <ng-content></ng-content>
+
+      <div class="total-section">
+        <h3>Загальна вартість</h3>
+        <div class="total-price">{{ totalPrice }} грн</div>
+      </div>
+
+      <button class="create-order-btn"
+              [class.disabled]="!canCreateOrder"
+              [disabled]="!canCreateOrder"
+              (click)="createOrderClicked()">
+        Створити замовлення
+      </button>
+    </div>
+  </div>
+}

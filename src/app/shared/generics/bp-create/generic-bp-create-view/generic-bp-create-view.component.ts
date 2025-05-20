@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import {BpCreateTabComponent} from '../bp-create-tab/bp-create-tab.component';
 
 @Component({
   selector: 'app-generic-bp-create-view',
-  imports: [MatIcon],
+  imports: [MatIcon, BpCreateTabComponent],
   templateUrl: './generic-bp-create-view.component.html',
   styleUrl: './generic-bp-create-view.component.css',
   standalone: true,
@@ -12,14 +13,15 @@ export class GenericBpCreateViewComponent {
   @Input() title: string = 'Створення замовлення';
   @Input() totalPrice: number = 0;
   @Input() canCreateOrder: boolean = false;
+  @Input() showConfirmation = false;
+  @Input() activeTab: string = '';
 
   @Output() orderCreated = new EventEmitter<void>();
+  @Output() confirmationClosed = new EventEmitter<void>();
+  @Output() tabChanged = new EventEmitter<string>();
 
-  activeTabId: string = '';
-  showConfirmation = false;
-
-  setActiveTab(tabId: string) {
-    this.activeTabId = tabId;
+  setTab(tabId: string) {
+    this.tabChanged.emit(tabId);
   }
 
   createOrder() {
@@ -30,6 +32,6 @@ export class GenericBpCreateViewComponent {
   }
 
   closeConfirmation() {
-    this.showConfirmation = false;
+    this.confirmationClosed.emit();
   }
 }

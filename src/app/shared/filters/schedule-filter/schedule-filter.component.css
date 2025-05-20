@@ -11,7 +11,7 @@
   padding: 0 0 5px 0;
 }
 
-.filters{
+.schedule-filters{
   display: flex;
   flex-direction: column;
   gap: 10px;

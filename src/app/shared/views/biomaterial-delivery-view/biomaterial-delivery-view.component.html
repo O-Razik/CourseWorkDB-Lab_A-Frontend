@@ -1,34 +1,25 @@
 <div class="panel">
   <div class="panel-header">
-    <h3 class="order-number">Доставка у {{ delivery.analysisCenter.address }}, {{ delivery.analysisCenter.city.cityName }}</h3>
-    @if (delivery.status) {
-      <div class="order-status">
-        <h4 class="status-name">{{ delivery.status.statusName }}</h4>
-      </div>
-    }
+    <h3 class="order-number">Доставка у {{ delivery.analysisCenter.address }}</h3>
+    <h3 class="order-number">{{ delivery.analysisCenter.city.cityName }}</h3>
   </div>
 
   <div class="info-table">
-    <div>
+    <div class="groups-section">
       <div class="group">
         <label>Дата доставки:</label>
         <p>{{ delivery.deliveryDate | date:'HH:mm, dd.MM.yyyy' }}</p>
       </div>
-    </div>
 
-    <div class="order-items">
-      <div class="inventory-list-container">
-        @if (delivery.biomaterialCollection) {
-          <app-biomaterial-collection-view
-            [biomaterialCollection]="delivery.biomaterialCollection"
-            class="biomaterial-item-view">
-          </app-biomaterial-collection-view>
-        } @else {
-          <div class="no-data-container">
-            <span class="no-data">Немає даних про біоматеріал</span>
-          </div>
-        }
+      <div class="group">
+        <label>Статус:</label>
+        <p>{{ delivery.status.statusName }}</p>
       </div>
     </div>
+
+    <app-biomaterial-collection-view
+      [biomaterialCollection]="delivery.biomaterialCollection"
+      class="biomaterial-item-view">
+    </app-biomaterial-collection-view>
   </div>
 </div>

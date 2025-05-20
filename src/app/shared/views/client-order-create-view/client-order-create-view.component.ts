@@ -9,13 +9,22 @@ import {MatIcon} from '@angular/material/icon';
 import {InventoryInLaboratory} from '../../../data/models/inventory-in-laboratory';
 import {Biomaterial} from '../../../data/models/biomaterial';
 import {ClientOrder} from '../../../data/models/client-order';
-import {BiomaterialCollection} from '../../../data/models/biomaterial-collection';
-import {Employee} from '../../../data/models/employee';
-import {OrderAnalysis} from '../../../data/models/order-analysis';
-import {Status} from '../../../data/models/status';
 import {ClientOrderService} from '../../../data/services/client-order.service';
 import {AuthService} from '../../../data/services/auth.service';
 import {OrderViewComponent} from '../order-view/order-view.component';
+import {
+  GenericBpCreateViewComponent
+} from '../../generics/bp-create/generic-bp-create-view/generic-bp-create-view.component';
+import {BpCreateTabComponent} from '../../generics/bp-create/bp-create-tab/bp-create-tab.component';
+import {
+  BpCreateTabContentComponent
+} from '../../generics/bp-create/bp-create-tab-content/bp-create-tab-content.component';
+import {
+  BpCreateSummarySectionComponent
+} from '../../generics/bp-create/bp-create-summary-section/bp-create-summary-section.component';
+import {
+  BpCreateOrderSummaryComponent
+} from '../../generics/bp-create/bp-create-order-summary/bp-create-order-summary.component';
 
 @Component({
   selector: 'app-client-order-create-view',
@@ -28,7 +37,12 @@ import {OrderViewComponent} from '../order-view/order-view.component';
     AnalysisListViewComponent,
     NgForOf,
     MatIcon,
-    OrderViewComponent
+    OrderViewComponent,
+    GenericBpCreateViewComponent,
+    BpCreateTabComponent,
+    BpCreateTabContentComponent,
+    BpCreateSummarySectionComponent,
+    BpCreateOrderSummaryComponent
   ],
   standalone: true
 })
@@ -142,8 +156,7 @@ export class ClientOrderCreateViewComponent implements OnInit {
     const inventory = this.biomaterialInventoryMap[biomaterialId];
     if (!inventory) return '';
 
-    return `${inventory.inventory.inventoryName} (${inventory.quantity} доступно,
-            термін: ${inventory.expirationDate ? (new Date(inventory.expirationDate)).toLocaleDateString() : 'не вказано'})`;
+    return `${inventory.inventory.inventoryName}`;
   }
 
   removeInventoryForBiomaterial(biomaterialId: number): void {
@@ -295,24 +308,19 @@ export class ClientOrderCreateViewComponent implements OnInit {
     });
   }
 
-// Add this to your component
   showError(message: string) {
     // Implement your error display logic here
     // Could use a snackbar, toast, or modal
     alert(message); // Simple implementation - replace with your preferred UI
   }
 
-// Add this property to your component
-  showConfirmation = false;
   confirmedOrder: ClientOrder | null = null;
 
   showOrderConfirmation(order: ClientOrder) {
     this.confirmedOrder = order;
-    this.showConfirmation = true;
   }
 
   closeConfirmation() {
-    this.showConfirmation = false;
     this.confirmedOrder = null;
   }
 }

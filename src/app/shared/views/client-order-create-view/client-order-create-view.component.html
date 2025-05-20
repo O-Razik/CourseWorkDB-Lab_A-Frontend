@@ -1,217 +1,196 @@
-<div class="order-creation-container">
-  <!-- Left Side Panel -->
-  <div class="side-panel">
-    <div class="tab-header">
-      <h3>Створення замовлення</h3>
-    </div>
+<app-generic-bp-create-view
+  title="Створення замовлення"
+  [totalPrice]="totalPrice"
+  [canCreateOrder]="canCreateOrder()"
+  [showConfirmation]="!!confirmedOrder"
+  (orderCreated)="createOrder()"
+  (confirmationClosed)="closeConfirmation()"
+  [activeTab]="activeTab"
+  (tabChanged)="activeTab = $event">
 
-    <div class="tab-group">
-      <!-- Client Tab -->
-      <div class="tab-option"
-           [class.active]="activeTab === 'client'"
-           (click)="setTab('client')">
-        <div class="tab-title">Клієнт</div>
-        <div class="tab-value" *ngIf="selectedClient">
-          {{ selectedClient.firstName }} {{ selectedClient.lastName }}
-        </div>
-        <div class="tab-value" *ngIf="!selectedClient">
-          Виберіть клієнта
-        </div>
-      </div>
-    </div>
+  <!-- Tabs -->
+  <div tabs>
 
-    <div class="tab-group">
-      <!-- Analyses Tab -->
-      <div class="tab-option"
-           [class.active]="activeTab === 'analyses'"
-           (click)="setTab('analyses')">
-        <div class="tab-title">Аналізи</div>
-        <div class="tab-value">{{ selectedAnalyses.length }} обрано</div>
-      </div>
+    <!-- Client Tab -->
+    <app-bp-create-tab
+      tabId="client"
+      title="Клієнт"
+      [value]="selectedClient ? (selectedClient.firstName + ' ' + selectedClient.lastName) : 'Виберіть клієнта'"
+      [isActive]="activeTab === 'client'"
+      (activated)="setTab('client')">
+    </app-bp-create-tab>
 
-      <!-- Selected Analyses Tab Content -->
-      <div class="tab-content" *ngIf="activeTab === 'analyses'">
-        <div class="selected-items-tab">
-          <h4>Вибрані аналізи</h4>
-          <div class="selected-list" *ngIf="selectedAnalyses.length > 0; else emptyAnalyses">
-            <div class="selected-item" *ngFor="let analysis of selectedAnalyses">
-              <div class="item-info">
-                <span class="item-name">{{ analysis.name }} </span>
-                <span class="item-price">{{ analysis.price }} грн</span>
+    <!-- Analyses Tab -->
+    <app-bp-create-tab
+      tabId="analyses"
+      title="Аналізи"
+      [value]="selectedAnalyses.length + ' обрано'"
+      [hasContent]="true"
+      [isActive]="activeTab === 'analyses'"
+      (activated)="setTab('analyses')">
+      @if (activeTab === 'analyses'){
+        <div class="tab-content">
+          <div class="selected-items-tab">
+            <h4>Вибрані аналізи</h4>
+            @if (selectedAnalyses.length > 0){
+              <div class="selected-list">
+                <div class="selected-item" *ngFor="let analysis of selectedAnalyses">
+                  <div class="item-info">
+                    <span class="item-name">{{ analysis.name }} </span>
+                    <span class="item-price">{{ analysis.price }} грн</span>
+                  </div>
+                  <button class="remove-btn" (click)="removeAnalysis(analysis.analysisId); $event.stopPropagation()">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </div>
               </div>
-              <button class="remove-btn" (click)="removeAnalysis(analysis.analysisId); $event.stopPropagation()">
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </div>
+            }
+            @else {
+              <div class="empty-state">
+                <i class="fas fa-flask"></i>
+                <p>Аналізи ще не вибрані</p>
+              </div>
+            }
           </div>
-          <ng-template #emptyAnalyses>
-            <div class="empty-state">
-              <i class="fas fa-flask"></i>
-              <p>Аналізи ще не вибрані</p>
-            </div>
-          </ng-template>
         </div>
-      </div>
-    </div>
+      }
+    </app-bp-create-tab>
 
-    <div class="tab-group">
-      <!-- Inventory Tab -->
-      <div class="tab-option"
-           [class.active]="activeTab === 'inventory'"
-           (click)="setTab('inventory')">
-        <div class="tab-title">Обладнання</div>
-        <div class="tab-value">{{ getSelectedInventoryCount() }} обрано</div>
-      </div>
-
-      <!-- Combined Selected Inventory Tab Content -->
-      <div class="tab-content" *ngIf="activeTab === 'inventory'">
-        <div class="selected-items-tab">
-          <h4>Необхідні біоматеріали</h4>
-          <div class="biomaterial-requirements">
-            <div *ngFor="let biomaterial of requiredBiomaterials"
-                 class="biomaterial-requirement"
-                 [class.active]="selectedBiomaterial?.biomaterialId === biomaterial.biomaterialId"
-                 (click)="selectBiomaterial(biomaterial)">
-              <div class="biomaterial-info">
-                <span class="biomaterial-name">{{ biomaterial.biomaterialName }}</span>
-                <span class="inventory-status" [class.complete]="hasInventoryForBiomaterial(biomaterial.biomaterialId)">
+    <!-- Inventory Tab -->
+    <app-bp-create-tab
+      tabId="inventory"
+      title="Обладнання"
+      [value]="getSelectedInventoryCount() + ' обрано'"
+      [hasContent]="true"
+      [isActive]="activeTab === 'inventory'"
+      (activated)="setTab('inventory')">
+      @if (activeTab === 'inventory'){
+        <div class="tab-content">
+          <div class="selected-items-tab">
+            <h4>Необхідні біоматеріали</h4>
+            <div class="biomaterial-requirements">
+              <div *ngFor="let biomaterial of requiredBiomaterials"
+                   class="biomaterial-requirement"
+                   [class.active]="selectedBiomaterial?.biomaterialId === biomaterial.biomaterialId"
+                   (click)="selectBiomaterial(biomaterial)">
+                <div class="biomaterial-info">
+                  <span class="biomaterial-name">{{ biomaterial.biomaterialName }}</span>
+                  <span class="inventory-status" [class.complete]="hasInventoryForBiomaterial(biomaterial.biomaterialId)">
               {{ hasInventoryForBiomaterial(biomaterial.biomaterialId) ? 'Обрано' : 'Не обрано' }}
             </span>
-              </div>
+                </div>
 
-              <div *ngIf="hasInventoryForBiomaterial(biomaterial.biomaterialId)"
-                   class="current-inventory">
-                <span class="selected-info">{{ getSelectedInventoryInfo(biomaterial.biomaterialId) }}</span>
-                <button class="change-btn"
-                        (click)="removeInventoryForBiomaterial(biomaterial.biomaterialId); $event.stopPropagation()">
-                  Змінити
-                </button>
-              </div>
-
-              <div *ngIf="!hasInventoryForBiomaterial(biomaterial.biomaterialId) && selectedBiomaterial?.biomaterialId === biomaterial.biomaterialId"
-                   class="select-prompt">
-                Оберіть обладнання справа
+                @if (hasInventoryForBiomaterial(biomaterial.biomaterialId)){
+                  <div class="inventory-info">
+                    <span class="selected-info">{{ getSelectedInventoryInfo(biomaterial.biomaterialId) }}</span>
+                    <button class="change-btn"
+                            (click)="removeInventoryForBiomaterial(biomaterial.biomaterialId); $event.stopPropagation()">
+                      Змінити
+                    </button>
+                  </div>
+                }
+                @else {
+                  <div class="select-prompt">
+                    Оберіть обладнання справа
+                  </div>
+                }
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Checkout Tab -->
-    <div class="tab-group checkout">
-      <div class="tab-option"
-           [class.active]="activeTab === 'checkout'"
-           (click)="setTab('checkout')">
-        <div class="tab-title">До сплати</div>
-        <div class="tab-value">{{ totalPrice }} грн</div>
-      </div>
-    </div>
+      }
+    </app-bp-create-tab>
   </div>
 
-  <!-- View Panel -->
-  <div class="view-panel">
+  <!-- Content -->
+  <div content>
     <!-- Client Selection -->
-    <div class="main-content" *ngIf="activeTab === 'client'">
-      <h2>Вибір клієнта</h2>
+    <app-bp-create-tab-content
+      contentId="client"
+      [isActive]="activeTab === 'client'"
+      title="Вибір клієнта">
       <app-client-list-view
         [filterShown]="false"
         [showOrders]="false"
         (clientSelected)="onClientSelected($event)">
       </app-client-list-view>
-    </div>
+    </app-bp-create-tab-content>
 
     <!-- Analysis Selection -->
-    <div class="main-content" *ngIf="activeTab === 'analyses'">
-      <h2>Доступні аналізи</h2>
+    <app-bp-create-tab-content
+      contentId="analyses"
+      [isActive]="activeTab === 'analyses'"
+      title="Доступні аналізи">
       <app-analysis-list-view
         (analysisSelected)="addAnalysisToOrder($event)"
         [filterShown]="false">
       </app-analysis-list-view>
-    </div>
+    </app-bp-create-tab-content>
 
     <!-- Inventory Selection -->
-    <div class="main-content" *ngIf="activeTab === 'inventory'">
-      <h2>Доступне обладнання</h2>
+    <app-bp-create-tab-content
+      contentId="inventory"
+      [isActive]="activeTab === 'inventory'"
+      title="Доступне обладнання">
+      <h3 style="margin: 5px">
+        @if (selectedBiomaterial){ Для {{ selectedBiomaterial.biomaterialName }} }
+        @else { Оберіть біоматеріал зліва }
+      </h3>
       <div class="inventory-list">
-        <h3 *ngIf="selectedBiomaterial">Для {{ selectedBiomaterial.biomaterialName }}</h3>
-        <h3 *ngIf="!selectedBiomaterial">Оберіть біоматеріал зліва</h3>
-
         <app-inventory-in-laboratory-list-view
           [filterShown]="false"
+          [isSubList]="true"
           [selectedInventoryId]="getSelectedInventoryIdForBiomaterial(selectedBiomaterial?.biomaterialId)"
           (inventorySelected)="onInventorySelectedForBiomaterial(selectedBiomaterial?.biomaterialId, $event)">
         </app-inventory-in-laboratory-list-view>
       </div>
-    </div>
+    </app-bp-create-tab-content>
 
-    <!-- Checkout -->
-    <!-- Checkout -->
-    <div class="main-content checkout" *ngIf="activeTab === 'checkout'">
-      <h2>Підтвердження замовлення</h2>
 
-      <div class="order-summary">
-        <div class="summary-section">
-          <h3>Клієнт</h3>
-          <p *ngIf="selectedClient; else noClient">
-            {{ selectedClient.firstName }} {{ selectedClient.lastName }}
-          </p>
-          <ng-template #noClient>
-            <p class="empty">Не обрано</p>
-          </ng-template>
-        </div>
 
-        <div class="summary-section">
-          <h3>Аналізи</h3>
-          <div *ngIf="selectedAnalyses.length > 0; else noAnalyses">
-            <div class="summary-item" *ngFor="let a of selectedAnalyses">
-              <span>{{ a.name }}</span>
-              <span>{{ a.price }} грн</span>
-            </div>
+    <!-- Checkout Content -->
+    <app-bp-create-order-summary
+      contentId="checkout"
+      [isActive]="activeTab === 'checkout'"
+      title="Підтвердження замовлення"
+      [totalPrice]="totalPrice"
+      [canCreateOrder]="canCreateOrder()"
+      (createOrder)="createOrder()">
+      <app-bp-create-summary-section title="Клієнт">
+        @if (selectedClient){
+          <p>{{ selectedClient.firstName }} {{ selectedClient.lastName }}</p>
+        } @else {
+          <p class="empty">Не обрано</p>
+        }
+      </app-bp-create-summary-section>
+
+      <app-bp-create-summary-section title="Аналізи">
+        @if (selectedAnalyses.length > 0){
+          <div class="summary-item" *ngFor="let a of selectedAnalyses">
+            <span>{{ a.name }}</span>
+            <span>{{ a.price }} грн</span>
           </div>
-          <ng-template #noAnalyses>
-            <p class="empty">Не обрано</p>
-          </ng-template>
-        </div>
+        }
+        @else {
+          <p class="empty">Не обрано</p>
+        }
+      </app-bp-create-summary-section>
 
-        <div class="summary-section">
-          <h3>Обладнання</h3>
-          <div *ngIf="getSelectedInventoryDetails().length > 0; else noInventory">
-            <div class="summary-item" *ngFor="let inv of getSelectedInventoryDetails()">
-              <span>{{ inv.inventory.inventoryName }} (для {{ inv.biomaterialName || 'не вказано' }})</span>
-            </div>
+      <app-bp-create-summary-section title="Обладнання">
+        @if (getSelectedInventoryDetails().length > 0){
+          <div class="summary-item" *ngFor="let inv of getSelectedInventoryDetails()">
+            <span>{{ inv.inventory.inventoryName }} (для {{ inv.biomaterialName || 'не вказано' }})</span>
+            <span>{{ inv.inventory.price }} грн</span>
           </div>
-          <ng-template #noInventory>
-            <p class="empty">Не обрано</p>
-          </ng-template>
-        </div>
-
-        <div class="total-section">
-          <h3>Загальна вартість</h3>
-          <div class="total-price">{{ totalPrice }} грн</div>
-        </div>
-
-        <button class="create-order-btn"
-                [class.disabled]="!canCreateOrder()"
-                [disabled]="!canCreateOrder()"
-                (click)="createOrder()">
-          Створити замовлення
-        </button>
-      </div>
-    </div>
-  </div>
+        } @else {
+          <p class="empty">Не обрано</p>
+        }
+      </app-bp-create-summary-section>
+    </app-bp-create-order-summary>
 </div>
 
-<!-- Order Confirmation Dialog -->
-<div class="confirmation-overlay" *ngIf="showConfirmation">
-  <div class="confirmation-dialog">
-    <button class="close-button" (click)="closeConfirmation()">
-      <mat-icon>close</mat-icon>
-    </button>
-    <h2>Замовлення успішно створено</h2>
+  <!-- Confirmation Content -->
+  <div confirmation-content>
     <app-order-view [order]="confirmedOrder!" *ngIf="confirmedOrder"></app-order-view>
-    <div class="dialog-actions">
-      <button class="confirm-button" (click)="closeConfirmation()">OK</button>
-    </div>
   </div>
-</div>
+</app-generic-bp-create-view>

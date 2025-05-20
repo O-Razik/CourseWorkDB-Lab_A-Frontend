@@ -1,0 +1,22 @@
+.summary-section {
+  margin-bottom: 25px;
+}
+
+.summary-section h3 {
+  color: #3498db;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.empty {
+  color: #999;
+  font-style: italic;
+}

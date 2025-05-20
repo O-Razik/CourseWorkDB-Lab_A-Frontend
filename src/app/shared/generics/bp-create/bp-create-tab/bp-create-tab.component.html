@@ -1,4 +1,4 @@
-<div class="tab-group" [class.active-group]="isActive">
+<div class="tab-group" [class.active-group]="isActive" [class.checkout]="isCheckout">
   <div class="tab-option"
        [class.active]="isActive"
        (click)="activate()">
@@ -6,7 +6,7 @@
     <div class="tab-value">{{ value }}</div>
   </div>
 
-  @if (isActive && hasContent){
+@if (hasContent && isActive) {
     <div class="tab-content">
       <ng-content></ng-content>
     </div>

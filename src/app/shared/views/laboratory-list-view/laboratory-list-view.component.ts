@@ -30,6 +30,7 @@ export class LaboratoryListViewComponent implements OnInit {
   filtersTitle: string = 'Фільтри';
   emptyListMessage: string = 'Лабораторій не знайдено';
   searchTerm: string = '';
+  firstLoad = true;
 
   // Data
   laboratories: Laboratory[] = [];
@@ -70,8 +71,13 @@ export class LaboratoryListViewComponent implements OnInit {
   loadLaboratories(): void {
     this.laboratoryService.getLaboratories().subscribe(labs => {
       this.laboratories = labs;
-      this.filteredLaboratories = labs;
-      this.applyFilters();
+      this.filteredLaboratories = [...this.laboratories];
+      if (!this.firstLoad) {
+        this.applyFilters();
+      }
+      else {
+        this.firstLoad = false;
+      }
     });
   }
 

@@ -1,36 +1,30 @@
-<!-- Updated Template -->
-<div class="order-creation-container">
-  <!-- Left Side Panel -->
-  <div class="side-panel">
-    <div class="tab-header">
-      <h3>Створення замовлення інвентарю</h3>
-    </div>
+<app-generic-bp-create-view
+  title="Створення замовлення інвентарю"
+  [totalPrice]="totalPrice"
+  [canCreateOrder]="canCreateOrder()"
+  [showConfirmation]="!!confirmedOrder"
+  (orderCreated)="createOrder()"
+  (confirmationClosed)="closeConfirmation()"
+  [activeTab]="activeTab"
+  (tabChanged)="activeTab = $event">
 
-    <div class="tab-group">
-      <!-- Supplier Tab -->
-      <div class="tab-option"
-           [class.active]="activeTab === 'supplier'"
-           (click)="setTab('supplier')">
-        <div class="tab-title">Постачальник</div>
-        <div class="tab-value" *ngIf="selectedSupplier">
-          {{ selectedSupplier.name }}
-        </div>
-        <div class="tab-value" *ngIf="!selectedSupplier">
-          Виберіть постачальника
-        </div>
-      </div>
-    </div>
+  <div tabs>
 
-    <div class="tab-group">
-      <!-- Inventory Tab -->
-      <div class="tab-option"
-           [class.active]="activeTab === 'inventory'"
-           (click)="setTab('inventory')">
-        <div class="tab-title">Інвентар</div>
-        <div class="tab-value">{{ totalItems }} обрано</div>
-      </div>
+    <app-bp-create-tab
+      tabId="supplier"
+      title="Постачальник"
+      [value]="selectedSupplier ? (selectedSupplier.name) : 'Виберіть постачальника'"
+      [isActive]="activeTab === 'supplier'"
+      (activated)="setTab('supplier')">
+    </app-bp-create-tab>
 
-      <!-- Selected Inventory Tab Content -->
+    <app-bp-create-tab
+      tabId="inventory"
+      title="Інвентар"
+      [value]="totalItems + ' обрано'"
+      [hasContent]="true"
+      [isActive]="activeTab === 'inventory'"
+      (activated)="setTab('inventory')">
       <div class="tab-content" *ngIf="activeTab === 'inventory'">
         <div class="selected-items-tab">
           <div class="selected-items-header">
@@ -69,102 +63,68 @@
           </ng-template>
         </div>
       </div>
-    </div>
-
-    <!-- Checkout Tab -->
-    <div class="tab-group checkout">
-      <div class="tab-option"
-           [class.active]="activeTab === 'checkout'"
-           (click)="setTab('checkout')">
-        <div class="tab-title">До сплати</div>
-        <div class="tab-value">{{ totalPrice }} грн</div>
-      </div>
-    </div>
+    </app-bp-create-tab>
   </div>
 
-  <!-- View Panel -->
-  <div class="view-panel">
+  <div content>
+
     <!-- Supplier Selection -->
-    <div class="main-content" *ngIf="activeTab === 'supplier'">
-      <h2>Вибір постачальника</h2>
+    <app-bp-create-tab-content
+      contentId="supplier"
+      [isActive]="activeTab === 'supplier'"
+      title="Вибір постачальника">
       <app-supplier-sub-list-view
         [suppliers]="suppliers"
         (supplierSelected)="onSupplierSelected($event)">
       </app-supplier-sub-list-view>
-    </div>
+    </app-bp-create-tab-content>
 
     <!-- Inventory Selection -->
-    <div class="main-content" *ngIf="activeTab === 'inventory'">
-      <h2>Доступний інвентар</h2>
+    <app-bp-create-tab-content
+      contentId="inventory"
+      [isActive]="activeTab === 'inventory'"
+      title="Доступний інвентар">
       <app-inventory-sub-list-view
         [inventories]="inventoryItems"
         (inventorySelected)="addInventoryItem($event)">
       </app-inventory-sub-list-view>
-    </div>
+    </app-bp-create-tab-content>
 
     <!-- Checkout -->
-    <div class="main-content checkout" *ngIf="activeTab === 'checkout'">
-      <h2>Підтвердження замовлення</h2>
+    <app-bp-create-order-summary
+      contentId="checkout"
+      [isActive]="activeTab === 'checkout'"
+      title="Підтвердження замовлення"
+      [totalPrice]="totalPrice"
+      [canCreateOrder]="canCreateOrder()"
+      (createOrder)="createOrder()">
 
-      <div class="order-summary">
-        <div class="summary-section">
-          <h3>Постачальник</h3>
-          <p *ngIf="selectedSupplier; else noSupplier">
-            <mat-icon>local_shipping</mat-icon>
-            {{ selectedSupplier.name }}
-          </p>
-          <ng-template #noSupplier>
-            <p class="empty">Не обрано</p>
-          </ng-template>
-        </div>
+      <app-bp-create-summary-section title="Постачальник">
+        @if (selectedSupplier){
+          <p>{{ selectedSupplier.name }}</p>
+        } @else {
+          <p class="empty">Не обрано</p>
+        }
+      </app-bp-create-summary-section>
 
-        <div class="summary-section">
-          <h3>Інвентар</h3>
-          <div *ngIf="selectedInventoryItems.length > 0; else noInventory">
-            <div class="summary-item" *ngFor="let item of selectedInventoryItems">
+      <app-bp-create-summary-section title="Інвентар">
+        @if (selectedInventoryItems.length > 0){
+          <div class="summary-item" *ngFor="let item of selectedInventoryItems">
               <span>
                 <mat-icon>medical_services</mat-icon>
                 {{ item.inventory.inventoryName }} ({{ item.quantity }})
               </span>
-              <span>{{ (item.inventory.price) * item.quantity }} грн</span>
-            </div>
+            <span>{{ (item.inventory.price) * item.quantity }} грн</span>
           </div>
-          <ng-template #noInventory>
-            <p class="empty">Не обрано</p>
-          </ng-template>
-        </div>
-
-        <div class="total-section">
-          <h3>Загальна вартість</h3>
-          <div class="total-price">
-            {{ totalPrice }} грн
-          </div>
-        </div>
-
-        <button class="create-order-btn"
-                [class.disabled]="!canCreateOrder()"
-                [disabled]="!canCreateOrder()"
-                (click)="createOrder()">
-          Створити замовлення
-        </button>
-      </div>
-    </div>
+        }
+        @else {
+          <p class="empty">Не обрано</p>
+        }
+      </app-bp-create-summary-section>
+    </app-bp-create-order-summary>
   </div>
-</div>
 
-<!-- Order Confirmation Dialog -->
-<div class="confirmation-overlay" *ngIf="showConfirmation">
-  <div class="confirmation-dialog">
-    <button class="close-button" (click)="closeConfirmation()">
-      <mat-icon>close</mat-icon>
-    </button>
-    <h2>
-      <mat-icon>check_circle</mat-icon>
-      Замовлення успішно створено
-    </h2>
+  <div confirmation-content>
     <app-inventory-order-view [order]="confirmedOrder!" *ngIf="confirmedOrder"></app-inventory-order-view>
-    <div class="dialog-actions">
-      <button class="confirm-button" (click)="closeConfirmation()">OK</button>
-    </div>
   </div>
-</div>
+</app-generic-bp-create-view>

@@ -32,16 +32,5 @@
         </span>
       </div>
     </div>
-    <div class="additional-info">
-      <div class="info-item">
-        <span class="info-label">Статус:</span>
-        <span class="info-value" [ngClass]="{
-          'expired': isExpired(biomaterialCollection.expirationDate),
-          'valid': !isExpired(biomaterialCollection.expirationDate)
-        }">
-          {{ isExpired(biomaterialCollection.expirationDate) ? 'Протерміновано' : 'Придатний' }}
-        </span>
-      </div>
-    </div>
   </div>
 </div>

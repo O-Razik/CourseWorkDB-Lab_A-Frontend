@@ -13,17 +13,22 @@ import { MatButton } from '@angular/material/button';
 import { SelectFilterComponent } from '../../filters/select-filter/select-filter.component';
 import { TypeFilterComponent } from '../../filters/type-filter/type-filter.component';
 import { DatetimeFilterComponent } from '../../filters/datetime-filter/datetime-filter.component';
+import {BiomaterialCollectionViewComponent} from "../biomaterial-collection-view/biomaterial-collection-view.component";
+import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 
 @Component({
   selector: 'app-biomaterial-delivery-list-view',
-  imports: [
-    GenericListViewComponent,
-    BiomaterialDeliveryViewComponent,
-    MatButton,
-    SelectFilterComponent,
-    TypeFilterComponent,
-    DatetimeFilterComponent
-  ],
+    imports: [
+        GenericListViewComponent,
+        BiomaterialDeliveryViewComponent,
+        MatButton,
+        SelectFilterComponent,
+        TypeFilterComponent,
+        DatetimeFilterComponent,
+        BiomaterialCollectionViewComponent,
+        MatGridList,
+        MatGridTile
+    ],
   templateUrl: './biomaterial-delivery-list-view.component.html',
   styleUrl: './biomaterial-delivery-list-view.component.css',
   standalone: true
@@ -55,6 +60,20 @@ export class BiomaterialDeliveryListViewComponent implements OnInit {
   // Filter state
   dateRange: [Date | null, Date | null] = [null, null];
   selectedStatuses: number[] = [];
+  cols: number = 2;
+
+  updateGridCols() {
+    if (window.innerWidth < 1800) {
+      this.cols = 1;
+    } else if (window.innerWidth > 2800) {
+      this.cols = 4;
+    } else if (window.innerWidth > 2100) {
+      this.cols = 3;
+    } else {
+      this.cols = 2;
+    }
+  }
+
 
   get statusItems(): FilterItem[] {
     return this.statuses.map(s => ({
@@ -78,6 +97,7 @@ export class BiomaterialDeliveryListViewComponent implements OnInit {
 
   ngOnInit() {
     this.loadStatuses();
+    window.addEventListener('resize', this.updateGridCols.bind(this));
   }
 
   loadDeliveries() {

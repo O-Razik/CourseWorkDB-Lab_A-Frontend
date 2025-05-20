@@ -19,9 +19,13 @@
             <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
           </div>
         } @else {
-          @for (delivery of deliveries; track trackByDeliveryId($index, delivery)) {
-            <app-biomaterial-delivery-view [delivery]="delivery"></app-biomaterial-delivery-view>
-          }
+          <mat-grid-list [cols]="cols" rowHeight="430px" gutterSize="4px">
+            @for (delivery of deliveries; track trackByDeliveryId($index, delivery)) {
+              <mat-grid-tile>
+                <app-biomaterial-delivery-view [delivery]="delivery"></app-biomaterial-delivery-view>
+              </mat-grid-tile>
+            }
+          </mat-grid-list>
           @if (hasMore) {
             <div class="load-more-container">
               <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="isLoading">
