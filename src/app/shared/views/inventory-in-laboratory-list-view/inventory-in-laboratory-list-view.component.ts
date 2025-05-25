@@ -64,7 +64,7 @@ export class InventoryInLaboratoryListViewComponent implements OnInit {
   searchTerm: string = '';
   dateRange: [Date | null, Date | null] = [null, null];
   selectedInventories: number[] = [];
-  @Input() filterShown!: boolean;
+  @Input() filterShown: boolean = true;
   isAdmin: boolean = false;
   @Input() isSubList: boolean = false;
 
@@ -144,7 +144,7 @@ export class InventoryInLaboratoryListViewComponent implements OnInit {
     this.selectedInventories = this.inventories.map(i => i.inventoryId);
 
     for (let i = 0; i < this.laboratories.length; i++) {
-      this.inventoryInLaboratoryService.getInventoryByLaboratory(this.laboratories[i].laboratoryId, false).subscribe({
+      this.inventoryInLaboratoryService.getInventoryByLaboratory(this.laboratories[i].laboratoryId, this.isAdmin && this.isSubList).subscribe({
         next: (inventoryInLaboratories) => {
           this.pushToInventoryDirectory(this.laboratories[i], this.inventories, inventoryInLaboratories);
           this.ifBeginLoading = false;

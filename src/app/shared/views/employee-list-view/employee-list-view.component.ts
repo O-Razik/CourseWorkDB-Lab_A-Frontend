@@ -13,6 +13,8 @@ import {TypeFilterComponent} from '../../filters/type-filter/type-filter.compone
 import {CityService} from '../../../data/services/city.service';
 import {City} from '../../../data/models/city';
 import {FilterItem} from '../../../data/helpers/filter-item';
+import {AuthService} from '../../../data/services/auth.service';
+import {UserRole} from '../../../data/models/user-role';
 
 @Component({
   selector: 'app-employee-list-view',
@@ -90,6 +92,7 @@ export class EmployeeListViewComponent implements OnInit {
     private employeeService: EmployeeService,
     private laboratoryService: LaboratoryService,
     private cityService: CityService,
+    private authService: AuthService,
   ) {
     // Initialize the component
   }
@@ -213,5 +216,9 @@ export class EmployeeListViewComponent implements OnInit {
   toggleLaboratories($event: number | string | null) {
     this.filter.laboratoryId = $event === null ? undefined : Number($event);
     this.applyFilters();
+  }
+
+  canCreate() {
+    return this.authService.getCurrentUserRole() === UserRole.ADMIN;
   }
 }

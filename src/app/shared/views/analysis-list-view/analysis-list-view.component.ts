@@ -1,23 +1,24 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { MatSliderModule } from '@angular/material/slider';
-import { FormsModule } from '@angular/forms';
+import {MatSliderModule} from '@angular/material/slider';
+import {FormsModule} from '@angular/forms';
 
-import { GenericListViewComponent } from '../../generics/generic-list-view/generic-list-view.component';
+import {GenericListViewComponent} from '../../generics/generic-list-view/generic-list-view.component';
 
-import { AnalysisViewComponent} from '../analysis-view/analysis-view.component';
+import {AnalysisViewComponent} from '../analysis-view/analysis-view.component';
 
-import { Analysis } from '../../../data/models/analysis';
-import { Category } from '../../../data/models/category';
-import { Biomaterial } from '../../../data/models/biomaterial';
+import {Analysis} from '../../../data/models/analysis';
+import {Category} from '../../../data/models/category';
+import {Biomaterial} from '../../../data/models/biomaterial';
 
-import { AnalysisService } from '../../../data/services/analysis.service';
-import { BiomaterialService } from '../../../data/services/biomaterial.service';
-import { AnalysisCategoryService } from '../../../data/services/analysis-category.service';
+import {AnalysisService} from '../../../data/services/analysis.service';
+import {BiomaterialService} from '../../../data/services/biomaterial.service';
+import {AnalysisCategoryService} from '../../../data/services/analysis-category.service';
 
-import { TypeFilterComponent} from '../../filters/type-filter/type-filter.component';
-import { PriceFilterComponent } from '../../filters/price-filter/price-filter.component';
+import {TypeFilterComponent} from '../../filters/type-filter/type-filter.component';
+import {PriceFilterComponent} from '../../filters/price-filter/price-filter.component';
 import {FilterItem} from '../../../data/helpers/filter-item';
-
+import {AuthService} from '../../../data/services/auth.service';
+import {UserRole} from '../../../data/models/user-role';
 
 
 @Component({
@@ -84,8 +85,13 @@ export class AnalysisListViewComponent implements OnInit  {
   constructor(
     private analysisService: AnalysisService,
     private biomaterialService: BiomaterialService,
-    private categoryService: AnalysisCategoryService
+    private categoryService: AnalysisCategoryService,
+    private authService: AuthService,
   ) {}
+
+  canCreate(): boolean {
+    return this.authService.getCurrentUserRole() === UserRole.ADMIN;
+  }
 
   // Lifecycle hook
   ngOnInit(): void {

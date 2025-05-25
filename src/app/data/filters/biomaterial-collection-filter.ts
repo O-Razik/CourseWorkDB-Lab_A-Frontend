@@ -9,5 +9,6 @@ export interface BiomaterialCollectionFilter {
   inventoryId?: number;
   biomaterialId?: number;
   search?: string;
+  notDelivered: boolean;
 }
 

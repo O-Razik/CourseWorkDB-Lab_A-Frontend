@@ -50,7 +50,7 @@ export class CashierPageComponent {
     {
       title: 'Лабораторні запаси',
       icon: 'inventory',
-      path: '/cashier/lab-inventory'
+      path: '/cashier/laboratory-inventory'
     },
     {
       title: 'Клієнти',

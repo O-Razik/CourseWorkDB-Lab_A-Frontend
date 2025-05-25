@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, TemplateRef, ContentChild, SimpleChanges } from '@angular/core';
-import { HeaderComponent } from '../../ui/header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {JsonPipe, NgIf, NgTemplateOutlet} from '@angular/common';
+import {JsonPipe, NgTemplateOutlet} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 
 @Component({
@@ -43,6 +42,7 @@ export class GenericListViewComponent<T> {
 
   // Create Item
   @Input() createButtonText: string = 'Створити';
+  @Input() canCreate: boolean = false;
   @ContentChild('createTemplate') createTemplate?: TemplateRef<any>;
   showCreatePanel: boolean = false;
 

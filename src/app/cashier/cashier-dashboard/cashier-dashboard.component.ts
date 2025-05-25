@@ -54,6 +54,7 @@ export class CashierDashboardComponent {
       rows: 1,
       content: 'Перегляд лабораторних запасів',
       icon: 'inventory',
+      route: '/cashier/laboratory-inventory'
     },
     {
       title: 'Клієнти',

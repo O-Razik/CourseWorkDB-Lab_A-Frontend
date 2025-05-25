@@ -5,6 +5,7 @@
   [searchTerm]="searchTerm"
   (searchTermChange)="onSearch($event)"
   [filtersTitle]="filtersTitle"
+  [canCreate]="canCreate()"
   [emptyListMessage]="emptyListMessage"
   [trackByFn]="trackByLaboratoryId"
   [useLocalSearch]="true">

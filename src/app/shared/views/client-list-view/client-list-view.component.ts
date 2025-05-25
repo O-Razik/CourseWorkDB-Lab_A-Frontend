@@ -1,13 +1,15 @@
 // client-list-view.component.ts
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { Client } from '../../../data/models/client';
-import { ClientFilter } from '../../../data/filters/client-filter';
-import { GenericListViewComponent } from '../../generics/generic-list-view/generic-list-view.component';
-import { ClientViewComponent } from '../client-view/client-view.component';
-import { ClientService } from '../../../data/services/client.service';
-import { MatButton } from '@angular/material/button';
-import { SelectFilterComponent } from '../../filters/select-filter/select-filter.component';
-import { Sex } from '../../../data/models/sex';
+import {Client} from '../../../data/models/client';
+import {ClientFilter} from '../../../data/filters/client-filter';
+import {GenericListViewComponent} from '../../generics/generic-list-view/generic-list-view.component';
+import {ClientViewComponent} from '../client-view/client-view.component';
+import {ClientService} from '../../../data/services/client.service';
+import {MatButton} from '@angular/material/button';
+import {SelectFilterComponent} from '../../filters/select-filter/select-filter.component';
+import {Sex} from '../../../data/models/sex';
+import {AuthService} from '../../../data/services/auth.service';
+import {UserRole} from '../../../data/models/user-role';
 
 @Component({
   selector: 'app-client-list-view',
@@ -61,7 +63,8 @@ export class ClientListViewComponent implements OnInit {
   }
 
   constructor(
-    private clientService: ClientService
+    private clientService: ClientService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -129,5 +132,9 @@ export class ClientListViewComponent implements OnInit {
 
   onClientSelected(client: Client) {
     this.clientSelected.emit(client);
+  }
+
+  canCreate() {
+    return this.authService.getCurrentUserRole() === UserRole.ADMIN;
   }
 }

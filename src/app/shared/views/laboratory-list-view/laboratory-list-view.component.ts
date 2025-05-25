@@ -9,6 +9,8 @@ import {TypeFilterComponent} from '../../filters/type-filter/type-filter.compone
 import {ScheduleFilterComponent} from '../../filters/schedule-filter/schedule-filter.component';
 import {Schedule} from '../../../data/models/schedule';
 import {ScheduleService} from '../../../data/services/schedule.service';
+import {AuthService} from '../../../data/services/auth.service';
+import {UserRole} from '../../../data/models/user-role';
 
 @Component({
   selector: 'app-laboratory-list-view',
@@ -57,6 +59,7 @@ export class LaboratoryListViewComponent implements OnInit {
     private laboratoryService: LaboratoryService,
     private cityService: CityService,
     private scheduleService: ScheduleService,
+    private authService: AuthService,
   ) {
   }
 
@@ -167,5 +170,9 @@ export class LaboratoryListViewComponent implements OnInit {
   // TrackBy function
   trackByLaboratoryId($index: number, laboratory: Laboratory) {
     return laboratory.laboratoryId;
+  }
+
+  canCreate() {
+    return this.authService.getCurrentUserRole() === UserRole.ADMIN;
   }
 }

@@ -1,0 +1,109 @@
+<app-generic-bp-create-view
+  title="Створити доставку біоматеріалу"
+  [canCreateOrder]="canCreateDelivery()"
+  [showConfirmation]="!!confirmedDelivery"
+  (orderCreated)="createDelivery()"
+  (confirmationClosed)="closeConfirmation()"
+  [activeTab]="activeTab"
+  (tabChanged)="activeTab = $event"
+  checkout_title="Оформити доставку"
+  [checkout_subtitle]="canCreateDelivery() ? 'доступно' : 'не доступно'">
+
+  <!-- Tabs -->
+  <div tabs>
+
+    <!-- Biomaterial Collection Tab -->
+    <app-bp-create-tab
+      tabId="biomaterial-collection"
+      title="Збір біоматеріалу"
+      [value]="selectedBiomaterialCollection ?
+        (
+          'Замовлення №' + selectedBiomaterialCollection!.clientOrderNumber +
+          ', біоматеріал: ' +
+          selectedBiomaterialCollection!.biomaterial.biomaterialName
+        ) :
+        'Виберіть збір біоматеріалу'"
+      [isActive]="activeTab === 'biomaterial-collection'"
+      (activated)="setTab('biomaterial-collection')">
+    </app-bp-create-tab>
+
+    <!-- Analysis Center Tab -->
+    <app-bp-create-tab
+      tabId="analysis-center"
+      title="Лабораторія"
+      [value]="selectedAnalysisCenter ?
+        selectedAnalysisCenter.city.cityName +
+        ', ' +
+        selectedAnalysisCenter.address
+        : 'Виберіть лабораторію'"
+      [isActive]="activeTab === 'analysis-center'"
+      (activated)="setTab('analysis-center')">
+    </app-bp-create-tab>
+  </div>
+
+  <!-- View Panel -->
+  <div content>
+    <app-bp-create-tab-content
+      contentId="biomaterial-collection"
+      [isActive]="activeTab === 'biomaterial-collection'"
+      title="Вибір збору біоматеріалу">
+      <app-biomaterial-collection-list-view
+        [showFilters]="false"
+        [notDelivered]="true"
+        (selected)="onBiomaterialCollectionSelected($event)">
+      </app-biomaterial-collection-list-view>
+    </app-bp-create-tab-content>
+
+    <app-bp-create-tab-content
+      contentId="analysis-center"
+      [isActive]="activeTab === 'analysis-center'"
+      title="Вибір центру">
+      <app-analysis-center-sub-list-view
+        (selected)="onAnalysisCenterSelected($event)">
+      </app-analysis-center-sub-list-view>
+    </app-bp-create-tab-content>
+
+
+    <app-bp-create-tab-content
+      contentId="checkout"
+      [isActive]="activeTab === 'checkout'"
+      title="Оформлення доставки">
+      <div class="order-summary">
+        <h3>Нова доставка</h3>
+
+        <div class="summary-section">
+          <app-bp-create-summary-section title="Збір">
+            @if (selectedBiomaterialCollection){
+              <p>Замовлення № {{selectedBiomaterialCollection!.clientOrderNumber}}, біоматеріал: {{selectedBiomaterialCollection!.biomaterial.biomaterialName}}</p>
+            } @else {
+              <p class="empty">Не обрано</p>
+            }
+          </app-bp-create-summary-section>
+
+          <app-bp-create-summary-section title="Центр">
+            @if (selectedAnalysisCenter){
+              <p>{{selectedAnalysisCenter.city.cityName}}, {{selectedAnalysisCenter.address}}</p>
+            } @else {
+              <p class="empty">Не обрано</p>
+            }
+          </app-bp-create-summary-section>
+        </div>
+
+        <button
+          class="create-delivery-btn"
+          (click)="createDelivery()"
+          [disabled]="!canCreateDelivery()">
+          Оформити доставку
+        </button>
+      </div>
+    </app-bp-create-tab-content>
+  </div>
+
+  <!-- Confirmation Content -->
+  <div confirmation-content>
+    <app-biomaterial-delivery-view
+      [delivery]="confirmedDelivery"
+      *ngIf="confirmedDelivery">
+    </app-biomaterial-delivery-view>
+  </div>
+</app-generic-bp-create-view>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { BiomaterialCollection } from '../../../data/models/biomaterial-collection';
 import { BiomaterialCollectionService } from '../../../data/services/biomaterial-collection.service';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
@@ -15,6 +15,7 @@ import { BiomaterialCollectionFilter } from '../../../data/filters/biomaterial-c
 import { FilterItem } from '../../../data/helpers/filter-item';
 import { GenericListViewComponent } from '../../generics/generic-list-view/generic-list-view.component';
 import { BiomaterialCollectionViewComponent } from '../biomaterial-collection-view/biomaterial-collection-view.component';
+import {AuthService} from '../../../data/services/auth.service';
 
 @Component({
   selector: 'app-biomaterial-collection-list-view',
@@ -49,6 +50,11 @@ export class BiomaterialCollectionListViewComponent implements OnInit {
   ifBeginLoading = true;
   hasMore = true;
 
+  @Input() showFilters: boolean = true;
+  @Input() notDelivered: boolean = false;
+  @Output() selected = new EventEmitter<BiomaterialCollection>();
+
+
   // Filter
   searchTerm: string = '';
   filter: BiomaterialCollectionFilter = {
@@ -61,7 +67,8 @@ export class BiomaterialCollectionListViewComponent implements OnInit {
     laboratoryId: undefined,
     biomaterialId: undefined,
     inventoryId: undefined,
-    search: ''
+    search: '',
+    notDelivered: false
   };
 
   // Date ranges for both filters
@@ -72,10 +79,17 @@ export class BiomaterialCollectionListViewComponent implements OnInit {
     private biomaterialCollectionService: BiomaterialCollectionService,
     private laboratoryService: LaboratoryService,
     private biomaterialService: BiomaterialService,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
+    this.filter.notDelivered = this.notDelivered;
+
+    if(!this.showFilters && this.notDelivered) {
+      this.filter.laboratoryId = this.authService.getCurrentEmployee()?.laboratoryId!;
+    }
+
     this.updateGridCols();
     window.addEventListener('resize', this.updateGridCols.bind(this));
     this.loadLaboratories();
@@ -242,5 +256,9 @@ export class BiomaterialCollectionListViewComponent implements OnInit {
   toggleInventory(inventoryId: number | string | null) {
     this.filter.inventoryId = inventoryId === null ? undefined : Number(inventoryId);
     this.applyFilters();
+  }
+
+  onBiomaterialCollectionSelected($event: BiomaterialCollection) {
+    this.selected.emit($event);
   }
 }

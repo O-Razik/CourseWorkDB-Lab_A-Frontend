@@ -15,6 +15,8 @@ export class GenericBpCreateViewComponent {
   @Input() canCreateOrder: boolean = false;
   @Input() showConfirmation = false;
   @Input() activeTab: string = '';
+  @Input() checkout_title: string = "До сплати";
+  @Input() checkout_subtitle: string = this.totalPrice + " грн";
 
   @Output() orderCreated = new EventEmitter<void>();
   @Output() confirmationClosed = new EventEmitter<void>();

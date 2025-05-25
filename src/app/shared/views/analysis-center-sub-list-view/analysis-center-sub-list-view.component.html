@@ -1,0 +1,25 @@
+<app-generic-sub-list-view
+  [items]="centers"
+  [trackByFn]="trackByCenterId">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate>
+    @if (ifBeginLoading) {
+      <div class="loading-spinner">
+        <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+      </div>
+    } @else {
+      @for (client of centers; track trackByCenterId($index, client)) {
+        <app-analysis-center-view
+          [center]="client"
+          (selected)="onAnalysisCenterSelected($event)">
+        </app-analysis-center-view>
+
+      } @empty {
+        <div class="empty-list-message-container">
+          <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+        </div>
+      }
+    }
+  </ng-template>
+</app-generic-sub-list-view>

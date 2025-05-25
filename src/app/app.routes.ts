@@ -22,12 +22,28 @@ import {IManagerPageComponent} from './i-manager/i-manager-page/i-manager-page.c
 import {IManagerDashboardComponent} from './i-manager/i-manager-dashboard/i-manager-dashboard.component';
 import {BmOperatorPageComponent} from './bm-operator/bm-operator-page/bm-operator-page.component';
 import {BmOperatorDashboardComponent} from './bm-operator/bm-operator-dashboard/bm-operator-dashboard.component';
+import {
+  LaboratoryScheduleCreateViewComponent
+} from './shared/generics/object-create/laboratory-schedule-create-view/laboratory-schedule-create-view.component';
+import {
+  AnalysisBiomaterialCreateViewComponent
+} from './shared/generics/object-create/analysis-biomaterial-create-view/analysis-biomaterial-create-view.component';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     redirectTo: 'auth'
+  },
+  {
+    path: '1',
+    pathMatch: 'full',
+    component: LaboratoryScheduleCreateViewComponent,
+  },
+  {
+    path: '2',
+    pathMatch: 'full',
+    component: AnalysisBiomaterialCreateViewComponent,
   },
   {
     path: 'auth',

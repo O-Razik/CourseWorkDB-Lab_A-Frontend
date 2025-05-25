@@ -40,11 +40,14 @@
           </ng-container>
         </div>
       </div>
-      <!-- Create Button -->
-      <button class="create-button" (click)="openCreatePanel()">
-        <mat-icon>add</mat-icon>
-        {{ createButtonText }}
-      </button>
+
+      @if (canCreate){
+        <!-- Create Button -->
+        <button class="create-button" (click)="openCreatePanel()">
+          <mat-icon>add</mat-icon>
+          {{ createButtonText }}
+        </button>
+      }
     </div>
   }
 </div>

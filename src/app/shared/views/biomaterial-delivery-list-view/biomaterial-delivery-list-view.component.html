@@ -3,6 +3,7 @@
   [pageName]="pageName"
   [searchOn]="false"
   [filtersTitle]="filtersTitle"
+  [canCreate]="true"
   [emptyListMessage]="emptyListMessage"
   [trackByFn]="trackByDeliveryId">
 
@@ -65,5 +66,10 @@
       [dateRange]="dateRange"
       (dateRangeChange)="dateRange = $event; applyFilters()">
     </app-datetime-filter>
+  </ng-template>
+
+  <ng-template #createTemplate>
+    <app-biomaterial-delivery-create-view>
+    </app-biomaterial-delivery-create-view>
   </ng-template>
 </app-generic-list-view>

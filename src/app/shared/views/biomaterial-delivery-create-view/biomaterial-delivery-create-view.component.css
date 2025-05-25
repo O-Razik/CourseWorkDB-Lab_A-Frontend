@@ -1,11 +1,3 @@
-.main-content h2 {
-  margin-top: 0;
-  color: #333;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-
 .order-summary {
   background-color: #fff;
   padding: 30px;
@@ -14,20 +6,11 @@
   margin-top: 25px;
 }
 
-.total-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
+.summary-section {
+  margin: 25px;
 }
 
-.total-price {
-  font-size: 24px;
-  text-align: right;
-  color: #2e7d32;
-  font-weight: bold;
-}
-
-.create-order-btn {
+.create-delivery-btn {
   width: 100%;
   padding: 15px;
   background-color: #4caf50;
@@ -41,11 +24,11 @@
   transition: background-color 0.2s;
 }
 
-.create-order-btn:hover:not(:disabled) {
+.create-delivery-btn:hover:not(:disabled) {
   background-color: #3d8b40;
 }
 
-.create-order-btn.disabled {
+.create-delivery-btn.disabled {
   background-color: #bdbdbd;
   cursor: not-allowed;
 }

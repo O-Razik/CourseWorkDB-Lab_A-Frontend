@@ -1,0 +1,48 @@
+<div class="schedule-container">
+  <table class="horizontal-schedule">
+    <thead>
+    <tr>
+      <th class="time-header">Графік роботи</th>
+      @for (day of days; track day.dayId) {
+        <th class="header-cell">
+          <div class="day-header">
+            <input type="checkbox"
+                   [(ngModel)]="enabledDays[day.dayId]"
+                   (change)="toggleDay(day.dayId)"
+                   class="day-checkbox">
+            <h3>{{ day.dayName | titlecase }}</h3>
+          </div>
+          <select [(ngModel)]="selectedSchedules[day.dayId]"
+                  (change)="onScheduleChange(day.dayId)"
+                  [disabled]="!enabledDays[day.dayId]"
+                  class="schedule-select">
+            <option [ngValue]="null">-- Select --</option>
+            <option [ngValue]="0">Create New</option>
+            @for (schedule of getSchedulesForDay(day.dayId); track schedule.scheduleId) {
+              <option [ngValue]="schedule.scheduleId">
+                {{ formatTimeForInput(schedule.startTime) }} - {{ formatTimeForInput(schedule.endTime) }} ({{ formatTimeForInput(schedule.collectionEndTime) }})
+              </option>
+            }
+          </select>
+        </th>
+      }
+    </tr>
+    </thead>
+    <tbody>
+      @for (row of timeRows; track row.property) {
+        <tr>
+          <td class="time-cell">{{ row.label }}</td>
+          @for (day of days; track day.dayId) {
+            <td class="day-cell">
+              <input type="time"
+                     [(ngModel)]="scheduleTimes[day.dayId][row.property]"
+                     (change)="updateTime(day.dayId, row.property, $any($event.target).value)"
+                     [disabled]="!enabledDays[day.dayId] || selectedSchedules[day.dayId] !== 0"
+                     class="time-input">
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

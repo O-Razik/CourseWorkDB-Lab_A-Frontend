@@ -13,22 +13,24 @@ import { MatButton } from '@angular/material/button';
 import { SelectFilterComponent } from '../../filters/select-filter/select-filter.component';
 import { TypeFilterComponent } from '../../filters/type-filter/type-filter.component';
 import { DatetimeFilterComponent } from '../../filters/datetime-filter/datetime-filter.component';
-import {BiomaterialCollectionViewComponent} from "../biomaterial-collection-view/biomaterial-collection-view.component";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
+import {
+  BiomaterialDeliveryCreateViewComponent
+} from '../biomaterial-delivery-create-view/biomaterial-delivery-create-view.component';
 
 @Component({
   selector: 'app-biomaterial-delivery-list-view',
-    imports: [
-        GenericListViewComponent,
-        BiomaterialDeliveryViewComponent,
-        MatButton,
-        SelectFilterComponent,
-        TypeFilterComponent,
-        DatetimeFilterComponent,
-        BiomaterialCollectionViewComponent,
-        MatGridList,
-        MatGridTile
-    ],
+  imports: [
+    GenericListViewComponent,
+    BiomaterialDeliveryViewComponent,
+    MatButton,
+    SelectFilterComponent,
+    TypeFilterComponent,
+    DatetimeFilterComponent,
+    MatGridList,
+    MatGridTile,
+    BiomaterialDeliveryCreateViewComponent
+  ],
   templateUrl: './biomaterial-delivery-list-view.component.html',
   styleUrl: './biomaterial-delivery-list-view.component.css',
   standalone: true
@@ -167,12 +169,6 @@ export class BiomaterialDeliveryListViewComponent implements OnInit {
       this.filter.pageNumber++;
       this.loadDeliveries();
     }
-  }
-
-  onSearch(searchTerm: string) {
-    this.filter.pageNumber = 1;
-    this.deliveries = [];
-    this.applyFilters();
   }
 
   trackByDeliveryId(index: number, item: BiomaterialDelivery) {

@@ -53,6 +53,10 @@ export class BiomaterialCollectionService {
       params = params.set('search', filter.search);
     }
 
+    if (filter.notDelivered) {
+      params = params.set('notDelivered', filter.notDelivered.toString());
+    }
+
     return this.http.get<BiomaterialCollection[]>(`${this.apiUrl}/all`, { params });
   }
 

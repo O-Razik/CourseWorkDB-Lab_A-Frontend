@@ -12,8 +12,8 @@
       <!-- Checkout Tab -->
       <app-bp-create-tab
         tabId="checkout"
-        title="До сплати"
-        value="{{ totalPrice }} грн"
+        [title]="checkout_title"
+        [value]="checkout_subtitle"
         [isCheckout]="true"
         [isActive]="activeTab === 'checkout'"
         (activated)="setTab('checkout')">

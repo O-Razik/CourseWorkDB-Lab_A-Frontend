@@ -1,0 +1,58 @@
+.panel {
+  margin: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 750px;
+}
+
+.panel-big-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-header {
+  margin-bottom: 5px;
+  padding-left: 3px;
+}
+
+.panel-header h4 {
+  color: #333;
+  padding-top: 7px;
+}
+
+.panel-subheader {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.group {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  border: #80a9da 2px solid;
+  border-radius: 10px;
+}
+
+.panel-subheader label {
+  background-color: #80a9da;
+  color: white;
+  padding: 5px 5px 5px 10px;
+  border-radius: 5px 0 0 5px;
+  font-size: 14px;
+  min-width: 40px;
+  max-width: 120px;
+}
+
+.panel-subheader p {
+  padding: 6px 5px 4px 5px;
+  font-size: 14px;
+}

@@ -2,6 +2,7 @@
   [items]="biomaterialCollections"
   [pageName]="pageName"
   [searchOn]="false"
+  [filterShown]="showFilters"
   [filtersTitle]="filtersTitle"
   [emptyListMessage]="emptyListMessage"
   [trackByFn]="trackByBiomaterialCollectionId"
@@ -29,7 +30,10 @@
                 <mat-grid-list [cols]="cols" rowHeight="200px" gutterSize="4px">
                   @for (collection of group.collections; track trackByBiomaterialCollectionId($index, collection)) {
                     <mat-grid-tile>
-                      <app-biomaterial-collection-view [biomaterialCollection]="collection"></app-biomaterial-collection-view>
+                      <app-biomaterial-collection-view
+                        [biomaterialCollection]="collection"
+                        (selected)="onBiomaterialCollectionSelected($event)">
+                      </app-biomaterial-collection-view>
                     </mat-grid-tile>
                   }
                 </mat-grid-list>

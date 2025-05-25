@@ -1,12 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {BiomaterialCollection} from '../../../data/models/biomaterial-collection';
-import {DatePipe, NgClass} from '@angular/common';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-biomaterial-collection-view',
   imports: [
-    DatePipe,
-    NgClass
+    DatePipe
   ],
   templateUrl: './biomaterial-collection-view.component.html',
   styleUrl: './biomaterial-collection-view.component.css',
@@ -14,4 +13,9 @@ import {DatePipe, NgClass} from '@angular/common';
 })
 export class BiomaterialCollectionViewComponent {
   @Input() biomaterialCollection!: BiomaterialCollection;
+  @Output() selected = new EventEmitter<BiomaterialCollection>();
+
+  OnBiomaterialCollectionClick() {
+    this.selected.emit(this.biomaterialCollection);
+  }
 }

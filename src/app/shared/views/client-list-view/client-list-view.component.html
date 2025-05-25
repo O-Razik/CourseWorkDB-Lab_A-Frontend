@@ -1,4 +1,3 @@
-<!-- client-list-view.component.html -->
 <app-generic-list-view
   [items]="clients"
   [pageName]="pageName"
@@ -7,6 +6,7 @@
   (searchTermChange)="onSearch($event)"
   [filterShown]="filterShown"
   [filtersTitle]="filtersTitle"
+  [canCreate]="canCreate()"
   [emptyListMessage]="emptyListMessage"
   [trackByFn]="trackByClientId"
   [useLocalSearch]="true">
@@ -55,7 +55,5 @@
       (filterChanged)="toggleSexes($event)">
     </app-select-filter>
   </ng-template>
-
-  <!-- Create Button -->
 
 </app-generic-list-view>
