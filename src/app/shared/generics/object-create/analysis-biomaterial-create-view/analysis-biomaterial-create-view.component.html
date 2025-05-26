@@ -1,46 +1,31 @@
 <div class="biomaterial-container">
   <div class="header">
     <h3>Biomaterials</h3>
-    <button mat-mini-fab color="primary" (click)="addBiomaterial()" matTooltip="Add biomaterial">
-      <mat-icon>add</mat-icon>
+    <button class="add-btn" (click)="addBiomaterial()" title="Add biomaterial">
+      +
     </button>
   </div>
 
-  <form [formGroup]="biomaterialForm" (ngSubmit)="onSubmit()">
-    <div class="grid-scroll-container">
-      <mat-grid-list [cols]="gridCols" rowHeight="100px" gutterSize="8px">
-        <div formArrayName="biomaterials">
-          <mat-grid-tile *ngFor="let item of biomaterialArray.controls; let i = index"
-                         [formGroupName]="i" class="biomaterial-tile">
-            <div class="tile-content">
-              <mat-form-field appearance="outline" class="compact-field">
-                <mat-select formControlName="biomaterialId" (selectionChange)="onBiomaterialChange(i)"
-                            placeholder="Biomaterial">
-                  <mat-option [value]="null">-- Select --</mat-option>
-                  <mat-option *ngFor="let biomaterial of getBiomaterialOptions()"
-                              [value]="biomaterial.biomaterialId">
-                    {{ biomaterial.biomaterialName }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+  <form [formGroup]="biomaterialForm">
+    <div>
+      <div formArrayName="biomaterials" class="horizontal-list">
+        <div *ngFor="let item of biomaterialArray.controls; let i = index"
+             [formGroupName]="i" class="list-item">
+          <div class="item-content">
+            <select formControlName="biomaterialId" class="compact-select">
+              <option [value]="null">-- Вибір --</option>
+              <option *ngFor="let biomaterial of availableBiomaterials"
+                      [value]="biomaterial.biomaterialId">
+                {{ biomaterial.biomaterialName }}
+              </option>
+            </select>
 
-              <mat-form-field *ngIf="item.get('isNew')?.value" appearance="outline" class="compact-field">
-                <input matInput formControlName="newName" placeholder="New name">
-              </mat-form-field>
-
-              <button mat-icon-button color="warn" class="remove-btn" (click)="removeBiomaterial(i)">
-                <mat-icon>close</mat-icon>
-              </button>
-            </div>
-          </mat-grid-tile>
+            <button type="button" class="remove-btn" (click)="removeBiomaterial(i)">
+              ×
+            </button>
+          </div>
         </div>
-      </mat-grid-list>
-    </div>
-
-    <div class="footer">
-      <button mat-raised-button color="primary" type="submit" [disabled]="!biomaterialForm.valid">
-        Save
-      </button>
+      </div>
     </div>
   </form>
 </div>

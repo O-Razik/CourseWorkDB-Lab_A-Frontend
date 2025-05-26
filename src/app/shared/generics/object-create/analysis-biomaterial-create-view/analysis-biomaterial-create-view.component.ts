@@ -1,16 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Biomaterial } from '../../../../data/models/biomaterial';
 import { BiomaterialService } from '../../../../data/services/biomaterial.service';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatIcon} from '@angular/material/icon';
-import {MatTooltip} from '@angular/material/module.d-DKQBC69L';
+import { AnalysisBiomaterial } from '../../../../data/models/analysis-biomaterial';
 
 @Component({
   selector: 'app-analysis-biomaterial-create-view',
@@ -19,23 +13,15 @@ import {MatTooltip} from '@angular/material/module.d-DKQBC69L';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatGridListModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIcon,
-    MatTooltip
+    ReactiveFormsModule
   ]
 })
 export class AnalysisBiomaterialCreateViewComponent implements OnInit {
-  @Input() biomaterials: Biomaterial[] = [];
-  @Output() biomaterialsSubmit = new EventEmitter<{biomaterialId: number, isNew: boolean, newName?: string}[]>();
+  @Input() initialBiomaterials: AnalysisBiomaterial[] = [];
+  @Output() biomaterialsChange = new EventEmitter<AnalysisBiomaterial[]>();
 
   biomaterialForm: FormGroup;
-  newBiomaterialOption = { biomaterialId: 0, biomaterialName: 'Create New Biomaterial' };
-  gridCols = 5;
+  availableBiomaterials: Biomaterial[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -47,54 +33,83 @@ export class AnalysisBiomaterialCreateViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadBiomaterials();
+    this.loadAvailableBiomaterials();
+    this.initializeForm();
+
+    this.biomaterialForm.valueChanges.subscribe(() => {
+      if (this.biomaterialForm.valid) {
+        this.emitCurrentBiomaterials();
+      }
+    });
   }
 
-  loadBiomaterials(): void {
-    this.biomaterialService.getAllBiomaterials().subscribe((biomaterials: Biomaterial[]) => {
-      this.biomaterials = biomaterials;
+  loadAvailableBiomaterials(): void {
+    this.biomaterialService.getAllBiomaterials().subscribe({
+      next: (biomaterials) => {
+        this.availableBiomaterials = biomaterials;
+        this.initializeForm();
+      },
+      error: (err) => console.error('Failed to load biomaterials', err)
     });
+  }
+
+  initializeForm(): void {
+    // Clear existing form array
+    while (this.biomaterialArray.length) {
+      this.biomaterialArray.removeAt(0);
+    }
+
+    // Add initial biomaterials if they exist
+    if (this.initialBiomaterials && this.initialBiomaterials.length > 0) {
+      this.initialBiomaterials.forEach(biomaterial => {
+        this.addBiomaterial(biomaterial.biomaterialId);
+      });
+    }
   }
 
   get biomaterialArray(): FormArray {
     return this.biomaterialForm.get('biomaterials') as FormArray;
   }
 
-  addBiomaterial(): void {
+  addBiomaterial(biomaterialId: number | null = null): void {
     const biomaterialGroup = this.fb.group({
-      biomaterialId: [null, Validators.required],
-      isNew: [false],
-      newName: ['']
+      biomaterialId: [biomaterialId, Validators.required]
     });
-
     this.biomaterialArray.push(biomaterialGroup);
   }
 
   removeBiomaterial(index: number): void {
     this.biomaterialArray.removeAt(index);
   }
-  onBiomaterialChange(index: number): void {
-    const biomaterialGroup = this.biomaterialArray.at(index);
-    const biomaterialId = biomaterialGroup.get('biomaterialId')?.value;
 
-    if (biomaterialId === 0) {
-      biomaterialGroup.get('isNew')?.setValue(true);
-      biomaterialGroup.get('newName')?.setValidators([Validators.required]);
-    } else {
-      biomaterialGroup.get('isNew')?.setValue(false);
-      biomaterialGroup.get('newName')?.clearValidators();
-    }
-    biomaterialGroup.get('newName')?.updateValueAndValidity();
+  emitCurrentBiomaterials(): void {
+    const formValue = this.biomaterialForm.value.biomaterials;
+    const currentBiomaterials: AnalysisBiomaterial[] = formValue.map((item: any) => ({
+      // Preserve existing analysisBiomaterialId if editing
+      analysisBiomaterialId: this.getExistingBiomaterialId(item.biomaterialId),
+      biomaterialId: item.biomaterialId,
+      analysisId: 0, // Will be set by parent component
+      biomaterial: this.getBiomaterialDetails(item.biomaterialId)
+    }));
+    this.biomaterialsChange.emit(currentBiomaterials);
   }
 
-  onSubmit(): void {
-    if (this.biomaterialForm.valid) {
-      const formValue = this.biomaterialForm.value.biomaterials;
-      this.biomaterialsSubmit.emit(formValue);
-    }
+  private getExistingBiomaterialId(biomaterialId: number): number {
+    const existing = this.initialBiomaterials.find(b => b.biomaterialId === biomaterialId);
+    return existing ? existing.analysisBiomaterialId : 0;
   }
 
-  getBiomaterialOptions(): any[] {
-    return [this.newBiomaterialOption, ...this.biomaterials];
+  private getBiomaterialDetails(biomaterialId: number): Biomaterial | undefined {
+    return this.availableBiomaterials.find(b => b.biomaterialId === biomaterialId);
+  }
+
+  getCurrentBiomaterials(): AnalysisBiomaterial[] {
+    const formValue = this.biomaterialForm.value.biomaterials;
+    return formValue.map((item: any) => ({
+      analysisBiomaterialId: this.getExistingBiomaterialId(item.biomaterialId),
+      biomaterialId: item.biomaterialId,
+      analysisId: 0, // Will be set by parent component
+      biomaterial: this.getBiomaterialDetails(item.biomaterialId)
+    }));
   }
 }

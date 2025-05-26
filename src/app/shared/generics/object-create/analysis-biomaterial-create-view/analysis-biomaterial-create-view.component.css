@@ -3,9 +3,6 @@
   border-radius: 4px;
   background-color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 }
 
 .header {
@@ -13,7 +10,6 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
-  flex-shrink: 0;
 }
 
 .header h3 {
@@ -22,50 +18,85 @@
   font-weight: 500;
 }
 
-.grid-scroll-container {
+.add-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-btn:hover {
+  background-color: #303f9f;
+}
+
+.horizontal-list {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
   overflow-x: auto;
-  overflow-y: hidden;
-  flex-grow: 1;
-  margin: 0 -12px;
-  padding: 0 12px;
+  overflow-y: auto;
+  padding-top: 8px;
+  padding-bottom: 6px;
 }
 
-mat-grid-list {
-  width: max-content;
-  min-width: 100%;
-}
-
-.biomaterial-tile {
+.list-item {
+  flex: 0 0 auto;
   background-color: #fafafa;
   border-radius: 4px;
   border: 1px solid #e0e0e0;
-}
-
-.tile-content {
-  width: 100%;
-  height: 100%;
   padding: 8px;
   position: relative;
+}
+
+.item-content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  min-width: 150px;
 }
 
-.compact-field {
+.compact-select {
   width: 100%;
+  padding: 4px 6px;
+  font-size: 12px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background-color: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  background-size: 10px auto;
 }
 
-.compact-field .mat-form-field-wrapper {
-  padding-bottom: 0;
+.compact-select:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 1px #3f51b5;
 }
 
-.compact-field .mat-form-field-infix {
-  padding: 0.5em 0;
-  border-top: 0;
+.compact-input {
+  width: 93%;
+  padding: 4px 6px;
+  font-size: 12px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
 }
 
-.compact-field .mat-form-field-label-wrapper {
-  top: -1.2em;
+.compact-input:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 1px #3f51b5;
 }
 
 .remove-btn {
@@ -74,42 +105,62 @@ mat-grid-list {
   right: -8px;
   width: 20px;
   height: 20px;
-  line-height: 20px;
+  border-radius: 50%;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
-.remove-btn .mat-icon {
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
+.remove-btn:hover {
+  background-color: #d32f2f;
 }
 
 .footer {
   margin-top: 12px;
   text-align: right;
-  flex-shrink: 0;
 }
 
-/* Make selects more compact */
-.mat-select {
+.save-btn {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 6px 12px;
   font-size: 13px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: #303f9f;
+}
+
+.save-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 /* Scrollbar styling */
-.grid-scroll-container::-webkit-scrollbar {
+.horizontal-list::-webkit-scrollbar {
   height: 8px;
 }
 
-.grid-scroll-container::-webkit-scrollbar-track {
+.horizontal-list::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-.grid-scroll-container::-webkit-scrollbar-thumb {
+.horizontal-list::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-.grid-scroll-container::-webkit-scrollbar-thumb:hover {
+.horizontal-list::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
