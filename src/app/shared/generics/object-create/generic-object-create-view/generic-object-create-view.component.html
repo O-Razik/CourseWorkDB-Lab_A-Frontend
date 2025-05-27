@@ -1,0 +1,31 @@
+<div class="generic-object-container">
+  <div class="header">
+    <h2>{{title}}</h2>
+  </div>
+
+  <form [formGroup]="objectForm" (ngSubmit)="onSubmit()" class="object-form">
+    <div class="form-content">
+      <!-- Dynamic form fields will be projected here -->
+      <ng-content></ng-content>
+    </div>
+
+    <div class="form-footer">
+      <button type="submit" [disabled]="!objectForm.valid || isLoading" class="submit-btn">
+        <span>
+        @if (!isLoading) {
+          {{submitText}}
+        } @else {
+          Processing...
+        }
+        </span>
+      </button>
+    </div>
+  </form>
+
+  <div class="result-container" *ngIf="createdObject">
+    <h3>Created {{objectName}}:</h3>
+    <div class="object-display">
+      <pre>{{createdObject | json}}</pre>
+    </div>
+  </div>
+</div>
