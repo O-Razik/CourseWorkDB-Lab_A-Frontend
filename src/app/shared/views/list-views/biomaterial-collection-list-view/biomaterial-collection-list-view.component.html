@@ -9,7 +9,7 @@
   [useLocalSearch]="false">
 
   <!-- Custom Item Template -->
-  <ng-template #itemListTemplate let-collections let-trackByFn="trackByFn">
+  <ng-template #itemListTemplate>
     <div class="collection-container">
       @if (ifBeginLoading) {
         <div class="loading-spinner">

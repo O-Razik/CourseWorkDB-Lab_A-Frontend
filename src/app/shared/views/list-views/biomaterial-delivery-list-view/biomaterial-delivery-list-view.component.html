@@ -1,29 +1,32 @@
 <app-generic-list-view
-  [items]="orders"
+  [items]="deliveries"
   [pageName]="pageName"
   [searchOn]="false"
   [filtersTitle]="filtersTitle"
   [canCreate]="true"
   [emptyListMessage]="emptyListMessage"
-  [trackByFn]="trackByOrderId"
-  [useLocalSearch]="false">
+  [trackByFn]="trackByDeliveryId">
 
   <!-- Custom Item Template -->
-  <ng-template #itemListTemplate let-orders let-trackByFn="trackByFn">
-    <div class="order-container">
+  <ng-template #itemListTemplate let-deliveries>
+    <div class="delivery-container">
       @if (ifBeginLoading) {
         <div class="loading-spinner">
           <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
         </div>
       } @else {
-        @if (orders.length === 0) {
+        @if (deliveries.length === 0) {
           <div class="empty-list-message-container">
             <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
           </div>
         } @else {
-          @for (order of orders; track trackByOrderId($index, order)) {
-            <app-inventory-order-view [order]="order"></app-inventory-order-view>
-          }
+          <mat-grid-list [cols]="cols" rowHeight="430px" gutterSize="4px">
+            @for (delivery of deliveries; track trackByDeliveryId($index, delivery)) {
+              <mat-grid-tile>
+                <app-biomaterial-delivery-view [delivery]="delivery"></app-biomaterial-delivery-view>
+              </mat-grid-tile>
+            }
+          </mat-grid-list>
           @if (hasMore) {
             <div class="load-more-container">
               <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="isLoading">
@@ -51,31 +54,22 @@
       (itemToggled)="toggleStatuses($event)">
     </app-type-filter>
 
-    <app-price-filter
-      sectionName="Ціна:"
-      [minPrice]="minPrice"
-      [maxPrice]="maxPrice"
-      [priceRange]="priceRange"
-      [step]="step"
-      (priceRangeChange)="priceRange = $event; applyFilters()">
-    </app-price-filter>
-
     <app-select-filter
-      [sectionName]="'Постачальник:'"
-      [placeholder]="'Оберіть постачальника'"
-      [items]="supplierItems"
-      (filterChanged)="toggleSupplier($event)">
+      [sectionName]="'Центр досліджень:'"
+      [placeholder]="'Оберіть центр'"
+      [items]="analysisCenterItems"
+      (filterChanged)="toggleAnalysisCenter($event)">
     </app-select-filter>
 
     <app-datetime-filter
-      sectionName="Дата замовлення:"
+      sectionName="Дата доставки:"
       [dateRange]="dateRange"
       (dateRangeChange)="dateRange = $event; applyFilters()">
     </app-datetime-filter>
   </ng-template>
 
-  <!-- Create Button -->
   <ng-template #createTemplate>
-    <app-inventory-order-create-view></app-inventory-order-create-view>
+    <app-biomaterial-delivery-create-view>
+    </app-biomaterial-delivery-create-view>
   </ng-template>
 </app-generic-list-view>
