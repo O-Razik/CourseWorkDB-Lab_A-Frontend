@@ -1,12 +1,12 @@
 <div class="biomaterial-container">
   <div class="header">
-    <h3>Biomaterials</h3>
-    <button class="add-btn" (click)="addBiomaterial()" title="Add biomaterial">
+    <h3>Біоматеріали</h3>
+    <button type="button" class="add-btn" (click)="addBiomaterial()" title="Add biomaterial">
       +
     </button>
   </div>
 
-  <form [formGroup]="biomaterialForm">
+  <form [formGroup]="biomaterialForm" class="biomaterial-form">
     <div>
       <div formArrayName="biomaterials" class="horizontal-list">
         <div *ngFor="let item of biomaterialArray.controls; let i = index"

@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GenericListViewComponent } from './generic-list-view.component';
 
 describe('GenericListViewComponent', () => {
-  let component: GenericListViewComponent;
-  let fixture: ComponentFixture<GenericListViewComponent>;
+  let component: GenericListViewComponent<any>;
+  let fixture: ComponentFixture<GenericListViewComponent<any>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -1,0 +1,65 @@
+<app-generic-object-create-view
+  title="Створення нового аналізу"
+  submitText="Створити аналіз"
+  objectName="Аналізи"
+  [formGroup]="analysisForm"
+  [createdObject]="createdAnalysis"
+  [isLoading]="isLoading"
+  [showConfirmation]="showConfirmation"
+  [canSubmit]="canSubmit()"
+  (formSubmit)="onSubmit()"
+  (confirmationClosed)="onConfirmationClosed()"
+>
+  <!-- Назва -->
+  <div class="form-group">
+    <label for="name">Назва</label>
+    <input id="name" type="text" class="form-control" formControlName="name" placeholder="Введіть назву аналізу" />
+    <div class="error" *ngIf="analysisForm.get('name')?.touched && analysisForm.get('name')?.invalid">
+      Назва є обов'язковою.
+    </div>
+  </div>
+
+  <!-- Категорія -->
+  <div class="form-group">
+    <label for="categoryId">Категорія</label>
+    <select id="categoryId" class="form-control" formControlName="categoryId">
+      <option [ngValue]="null" disabled>Оберіть категорію</option>
+      <option *ngFor="let category of categoryOptions" [value]="category.analysisCategoryId">
+        {{ category.category }}
+      </option>
+    </select>
+    <div class="error" *ngIf="analysisForm.get('categoryId')?.touched && analysisForm.get('categoryId')?.invalid">
+      Категорія є обов'язковою.
+    </div>
+  </div>
+
+  <!-- Біоматеріали -->
+  <app-analysis-biomaterial-create-view
+    #biomaterialComponent>
+  </app-analysis-biomaterial-create-view>
+
+  <!-- Ціна -->
+  <div class="form-group">
+    <label for="price">Ціна</label>
+    <input id="price" type="number" class="form-control" formControlName="price" placeholder="Введіть ціну" min="0" step="0.01" />
+    <div class="error" *ngIf="analysisForm.get('price')?.touched && analysisForm.get('price')?.invalid">
+      Введіть коректну ціну (більше або рівно 0).
+    </div>
+  </div>
+
+  <!-- Опис -->
+  <div class="form-group">
+    <label for="description">Опис</label>
+    <textarea id="description" class="form-control" formControlName="description" placeholder="Введіть опис аналізу" rows="3"></textarea>
+    <div class="error" *ngIf="analysisForm.get('description')?.touched && analysisForm.get('description')?.invalid">
+      Опис є обов'язковим.
+    </div>
+  </div>
+
+  <div confirmation-content>
+    <app-analysis-view
+      [analysis]="createdAnalysis"
+      *ngIf="createdAnalysis">
+    </app-analysis-view>
+  </div>
+</app-generic-object-create-view>

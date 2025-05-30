@@ -6,10 +6,11 @@
       @for (day of days; track day.dayId) {
         <th class="header-cell">
           <div class="day-header">
-            <input type="checkbox"
-                   [(ngModel)]="enabledDays[day.dayId]"
-                   (change)="toggleDay(day.dayId)"
-                   class="day-checkbox">
+            <input
+              type="checkbox"
+              [checked]="enabledDays[day.dayId]"
+              (change)="toggleDay(day.dayId)"
+              class="day-checkbox">
             <h3>{{ day.dayName | titlecase }}</h3>
           </div>
           <select [(ngModel)]="selectedSchedules[day.dayId]"

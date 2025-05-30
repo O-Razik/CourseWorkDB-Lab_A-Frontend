@@ -1,0 +1,56 @@
+<app-generic-list-view
+  [items]="filteredAnalyses"
+  [pageName]="pageName"
+  [searchPlaceholder]="searchPlaceholder"
+  [searchTerm]="searchTerm"
+  (searchTermChange)="onSearch($event)"
+  [filterShown]="filterShown"
+  [canCreate]="canCreate()"
+  [filtersTitle]="filtersTitle"
+  [emptyListMessage]="emptyListMessage"
+  [trackByFn]="trackByAnalysisId"
+  [useLocalSearch]="true">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate>
+    @for (analysis of filteredAnalyses; track trackByAnalysisId($index, analysis)) {
+      <app-analysis-view
+        [analysis]="analysis"
+        (priceClick)="onAnalysisSelect($event)">
+      </app-analysis-view>
+    } @empty {
+      <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+    }
+  </ng-template>
+
+  <!-- Custom Filters Template -->
+  <ng-template #filtersTemplate>
+    <app-type-filter
+      sectionName="Категорії:"
+      [items]="categoryItems"
+      [selectedItems]="selectedCategories"
+      (itemToggled)="toggleCategory($event)">
+    </app-type-filter>
+
+    <app-type-filter
+      sectionName="Біоматеріали:"
+      [items]="biomaterialItems"
+      [selectedItems]="selectedBiomaterials"
+      (itemToggled)="toggleBiomaterial($event)">
+    </app-type-filter>
+
+    <app-price-filter
+      sectionName="Ціна:"
+      [minPrice]="minPrice"
+      [maxPrice]="maxPrice"
+      [priceRange]="priceRange"
+      [step]="step"
+      (priceRangeChange)="priceRange = $event; applyFilters()">
+    </app-price-filter>
+  </ng-template>
+
+  <ng-template #createTemplate>
+    <app-analysis-create-view>
+    </app-analysis-create-view>
+  </ng-template>
+</app-generic-list-view>

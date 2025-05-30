@@ -1,115 +1,91 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Biomaterial } from '../../../../data/models/biomaterial';
-import { BiomaterialService } from '../../../../data/services/biomaterial.service';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AnalysisBiomaterial } from '../../../../data/models/analysis-biomaterial';
+import { BiomaterialService } from '../../../../data/services/biomaterial.service';
+import { Biomaterial } from '../../../../data/models/biomaterial';
 
 @Component({
   selector: 'app-analysis-biomaterial-create-view',
-  templateUrl: './analysis-biomaterial-create-view.component.html',
-  styleUrls: ['./analysis-biomaterial-create-view.component.css'],
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ]
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './analysis-biomaterial-create-view.component.html',
+  styleUrls: ['./analysis-biomaterial-create-view.component.css']
 })
 export class AnalysisBiomaterialCreateViewComponent implements OnInit {
-  @Input() initialBiomaterials: AnalysisBiomaterial[] = [];
-  @Output() biomaterialsChange = new EventEmitter<AnalysisBiomaterial[]>();
+  fb: FormBuilder = inject(FormBuilder)
 
-  biomaterialForm: FormGroup;
+  biomaterialForm = this.fb.group({
+    biomaterials: this.fb.array([])
+  });
+
   availableBiomaterials: Biomaterial[] = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private biomaterialService: BiomaterialService
-  ) {
-    this.biomaterialForm = this.fb.group({
-      biomaterials: this.fb.array([])
-    });
-  }
+  constructor(private biomaterialService: BiomaterialService) {}
 
   ngOnInit(): void {
-    this.loadAvailableBiomaterials();
+    this.loadBiomaterials();
     this.initializeForm();
+  }
 
-    this.biomaterialForm.valueChanges.subscribe(() => {
-      if (this.biomaterialForm.valid) {
-        this.emitCurrentBiomaterials();
+  // Loads biomaterials from the service
+  loadBiomaterials(): void {
+    this.biomaterialService.getAllBiomaterials().subscribe({
+      next: (biomaterials) => {
+        this.availableBiomaterials = biomaterials;
       }
     });
   }
 
-  loadAvailableBiomaterials(): void {
-    this.biomaterialService.getAllBiomaterials().subscribe({
-      next: (biomaterials) => {
-        this.availableBiomaterials = biomaterials;
-        this.initializeForm();
-      },
-      error: (err) => console.error('Failed to load biomaterials', err)
-    });
-  }
-
+  // Initialize the form array with one empty biomaterial entry by default
   initializeForm(): void {
-    // Clear existing form array
-    while (this.biomaterialArray.length) {
-      this.biomaterialArray.removeAt(0);
-    }
-
-    // Add initial biomaterials if they exist
-    if (this.initialBiomaterials && this.initialBiomaterials.length > 0) {
-      this.initialBiomaterials.forEach(biomaterial => {
-        this.addBiomaterial(biomaterial.biomaterialId);
-      });
-    }
+    this.biomaterialArray.clear();
+    this.addBiomaterial();  // start with one empty select
   }
 
+  // Getter for biomaterials form array
   get biomaterialArray(): FormArray {
     return this.biomaterialForm.get('biomaterials') as FormArray;
   }
 
-  addBiomaterial(biomaterialId: number | null = null): void {
+  // Add a new biomaterial form group
+  addBiomaterial(): void {
     const biomaterialGroup = this.fb.group({
-      biomaterialId: [biomaterialId, Validators.required]
+      biomaterialId: [null, Validators.required]
     });
     this.biomaterialArray.push(biomaterialGroup);
   }
 
+  // Remove biomaterial at index
   removeBiomaterial(index: number): void {
     this.biomaterialArray.removeAt(index);
   }
 
-  emitCurrentBiomaterials(): void {
-    const formValue = this.biomaterialForm.value.biomaterials;
-    const currentBiomaterials: AnalysisBiomaterial[] = formValue.map((item: any) => ({
-      // Preserve existing analysisBiomaterialId if editing
-      analysisBiomaterialId: this.getExistingBiomaterialId(item.biomaterialId),
-      biomaterialId: item.biomaterialId,
-      analysisId: 0, // Will be set by parent component
-      biomaterial: this.getBiomaterialDetails(item.biomaterialId)
-    }));
-    this.biomaterialsChange.emit(currentBiomaterials);
-  }
-
-  private getExistingBiomaterialId(biomaterialId: number): number {
-    const existing = this.initialBiomaterials.find(b => b.biomaterialId === biomaterialId);
-    return existing ? existing.analysisBiomaterialId : 0;
-  }
-
-  private getBiomaterialDetails(biomaterialId: number): Biomaterial | undefined {
-    return this.availableBiomaterials.find(b => b.biomaterialId === biomaterialId);
+  // Return true if at least one biomaterial is selected (non-null biomaterialId)
+  canSubmit(): boolean {
+    if (this.biomaterialArray.length === 0) {
+      return false;
+    }
+    // Check if at least one biomaterialId is not null or empty
+    return (this.biomaterialArray.controls.some(control => !!control.get('biomaterialId')?.value));
   }
 
   getCurrentBiomaterials(): AnalysisBiomaterial[] {
-    const formValue = this.biomaterialForm.value.biomaterials;
-    return formValue.map((item: any) => ({
-      analysisBiomaterialId: this.getExistingBiomaterialId(item.biomaterialId),
-      biomaterialId: item.biomaterialId,
-      analysisId: 0, // Will be set by parent component
-      biomaterial: this.getBiomaterialDetails(item.biomaterialId)
-    }));
+    return this.biomaterialArray.controls
+      .map(control => control.value)
+      .filter(bm => bm.biomaterialId !== null)
+      .map(bm => {
+        const biomaterialObj = this.availableBiomaterials.find(b => b.biomaterialId === bm.biomaterialId);
+        return {
+          analysisBiomaterialId: 0,  // id 0 for new entries
+          analysisId: 0,             // will be set on the backend
+          biomaterialId: bm.biomaterialId,
+          biomaterial:  {
+            biomaterialId: bm.biomaterialId,
+            biomaterialName: biomaterialObj?.biomaterialName ?? ''
+          }
+        };
+      });
   }
+
 }

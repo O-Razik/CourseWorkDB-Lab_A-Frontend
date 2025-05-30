@@ -1,0 +1,83 @@
+<app-generic-object-create-view
+  title="Створення нового працівника"
+  submitText="Створити працівника"
+  objectName="Працівника"
+  [formGroup]="employeeForm"
+  [createdObject]="createdEmployee"
+  [isLoading]="isLoading"
+  [showConfirmation]="showConfirmation"
+  (formSubmit)="onSubmit()"
+  (confirmationClosed)="onConfirmationClosed()"
+>
+  <!-- Ім'я -->
+  <div class="form-group">
+    <label for="firstName">Ім'я</label>
+    <input id="firstName" type="text" class="form-control" formControlName="firstName" placeholder="Введіть ім'я" />
+    <div class="error" *ngIf="employeeForm.get('firstName')?.touched && employeeForm.get('firstName')?.invalid">
+      Ім'я є обов'язковим.
+    </div>
+  </div>
+
+  <!-- Прізвище -->
+  <div class="form-group">
+    <label for="lastName">Прізвище</label>
+    <input id="lastName" type="text" class="form-control" formControlName="lastName" placeholder="Введіть прізвище" />
+    <div class="error" *ngIf="employeeForm.get('lastName')?.touched && employeeForm.get('lastName')?.invalid">
+      Прізвище є обов'язковим.
+    </div>
+  </div>
+
+  <!-- Посада -->
+  <div class="form-group">
+    <label for="positionId">Посада</label>
+    <select id="positionId" class="form-control" formControlName="positionId">
+      <option [ngValue]="null" disabled>Оберіть посаду</option>
+      <option *ngFor="let position of positionOptions" [value]="position.positionId">
+        {{ position.positionName }}
+      </option>
+    </select>
+    <div class="error" *ngIf="employeeForm.get('positionId')?.touched && employeeForm.get('positionId')?.invalid">
+      Посада є обов'язковою.
+    </div>
+  </div>
+
+  <!-- Лабораторія -->
+  <div class="form-group">
+    <label for="laboratoryId">Лабораторія</label>
+    <select id="laboratoryId" class="form-control" formControlName="laboratoryId">
+      <option [ngValue]="null" disabled>Оберіть лабораторію</option>
+      <option *ngFor="let lab of laboratoryOptions" [value]="lab.laboratoryId">
+        {{ lab.address }} ({{ lab.city.cityName }})
+      </option>
+    </select>
+    <div class="error" *ngIf="employeeForm.get('laboratoryId')?.touched && employeeForm.get('laboratoryId')?.invalid">
+      Лабораторія є обов'язковою.
+    </div>
+  </div>
+
+  <!-- Номер телефону -->
+  <div class="form-group">
+    <label for="phoneNumber">Номер телефону</label>
+    <input id="phoneNumber" type="tel" class="form-control" formControlName="phoneNumber" placeholder="1234567890" />
+    <div class="hint">Формат: 1234567890</div>
+    <div class="error" *ngIf="employeeForm.get('phoneNumber')?.touched && employeeForm.get('phoneNumber')?.invalid">
+      Введіть коректний номер телефону.
+    </div>
+  </div>
+
+  <!-- Електронна пошта -->
+  <div class="form-group">
+    <label for="email">Електронна пошта</label>
+    <input id="email" type="email" class="form-control" formControlName="email" placeholder="Введіть email" />
+    <div class="error" *ngIf="employeeForm.get('email')?.touched && employeeForm.get('email')?.invalid">
+      Введіть коректну електронну адресу.
+    </div>
+  </div>
+
+  <div confirmation-content>
+    <app-employee-view
+      [employee]="createdEmployee"
+      *ngIf="createdEmployee">
+    </app-employee-view>
+  </div>
+</app-generic-object-create-view>

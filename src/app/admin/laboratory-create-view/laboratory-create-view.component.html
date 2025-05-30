@@ -1,0 +1,57 @@
+<app-generic-object-create-view
+  title="Створення нової лабораторії"
+  submitText="Створити лабораторію"
+  objectName="Лабораторії"
+  [formGroup]="laboratoryForm"
+  [createdObject]="createdLaboratory"
+  [isLoading]="isLoading"
+  [showConfirmation]="showConfirmation"
+  [canSubmit]="canSubmit()"
+  (formSubmit)="onSubmit()"
+  (confirmationClosed)="onConfirmationClosed()"
+>
+  <!-- Адреса -->
+  <div class="form-group">
+    <label for="address">Адреса</label>
+    <input id="address" type="text" class="form-control" formControlName="address" placeholder="Введіть адресу" />
+    <div class="error" *ngIf="laboratoryForm.get('address')?.touched && laboratoryForm.get('address')?.invalid">
+      Адреса є обов'язковою.
+    </div>
+  </div>
+
+  <!-- Місто -->
+  <div class="form-group">
+    <label for="cityId">Місто</label>
+    <select id="cityId" class="form-control" formControlName="cityId">
+      <option [ngValue]="null" disabled>Оберіть місто</option>
+      <option *ngFor="let city of cityOptions" [value]="city.cityId">
+        {{ city.cityName }}
+      </option>
+    </select>
+    <div class="error" *ngIf="laboratoryForm.get('cityId')?.touched && laboratoryForm.get('cityId')?.invalid">
+      Місто є обов'язковим.
+    </div>
+  </div>
+
+  <!-- Номер телефону -->
+  <div class="form-group">
+    <label for="phoneNumber">Номер телефону</label>
+    <input id="phoneNumber" type="tel" class="form-control" formControlName="phoneNumber" placeholder="1234567890" />
+    <div class="hint">Формат: 1234567890</div>
+    <div class="error" *ngIf="laboratoryForm.get('phoneNumber')?.touched && laboratoryForm.get('phoneNumber')?.invalid">
+      Введіть коректний номер телефону.
+    </div>
+  </div>
+
+  <!-- Графік роботи -->
+  <app-laboratory-schedule-create-view
+    #scheduleComponent>
+  </app-laboratory-schedule-create-view>
+
+  <div confirmation-content>
+    <app-laboratory-view
+      [laboratory]="createdLaboratory"
+      *ngIf="createdLaboratory">
+    </app-laboratory-view>
+  </div>
+</app-generic-object-create-view>

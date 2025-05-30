@@ -1,55 +1,38 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {JsonPipe} from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-generic-object-create-view',
   imports: [
     ReactiveFormsModule,
-    JsonPipe,
+    MatIcon
   ],
   templateUrl: './generic-object-create-view.component.html',
   styleUrl: './generic-object-create-view.component.css',
   standalone: true,
 })
-export class GenericObjectCreateViewComponent implements OnChanges {
+export class GenericObjectCreateViewComponent {
   @Input() title: string = 'Create Object';
   @Input() submitText: string = 'Submit';
   @Input() objectName: string = 'object';
-  @Input() initialFormValue: any = {};
+  @Input() formGroup!: FormGroup;
   @Input() isLoading: boolean = false;
+  @Input() createdObject: any = null;
+  @Input() showConfirmation: boolean = false;
+  @Input() canSubmit: boolean = true;
 
   @Output() formSubmit = new EventEmitter<any>();
-  @Output() formChange = new EventEmitter<any>();
-
-  objectForm: FormGroup;
-  createdObject: any = null;
-
-  constructor(private fb: FormBuilder) {
-    this.objectForm = this.fb.group({});
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.initialFormValue) {
-      if (this.objectForm) {
-        this.objectForm.patchValue(this.initialFormValue);
-      }
-    }
-  }
+  @Output() confirmationClosed = new EventEmitter<void>();
 
   onSubmit() {
-    if (this.objectForm.valid) {
-      this.formSubmit.emit(this.objectForm.value);
+    if (this.formGroup.valid) {
+      this.formSubmit.emit(this.formGroup.value);
     }
   }
 
-  setCreatedObject(obj: any) {
-    this.createdObject = obj;
-    this.objectForm.reset();
-  }
-
-  resetForm() {
-    this.objectForm.reset();
-    this.createdObject = null;
+  closeConfirmation() {
+    this.showConfirmation = false;
+    this.confirmationClosed.emit();
   }
 }

@@ -1,0 +1,78 @@
+<app-generic-object-create-view
+  title="Створення нового клієнта"
+  submitText="Створити клієнта"
+  objectName="Клієнта"
+  [formGroup]="clientForm"
+  [createdObject]="createdClient"
+  [isLoading]="isLoading"
+  [showConfirmation]="showConfirmation"
+  (formSubmit)="onSubmit()"
+  (confirmationClosed)="onConfirmationClosed()"
+>
+
+<!-- Ім’я -->
+  <div class="form-group">
+    <label for="firstName">Ім’я</label>
+    <input id="firstName" type="text" class="form-control" formControlName="firstName" placeholder="Введіть ім’я" />
+    <div class="error" *ngIf="clientForm.get('firstName')?.touched && clientForm.get('firstName')?.invalid">
+      Ім’я є обов’язковим.
+    </div>
+  </div>
+
+  <!-- Прізвище -->
+  <div class="form-group">
+    <label for="lastName">Прізвище</label>
+    <input id="lastName" type="text" class="form-control" formControlName="lastName" placeholder="Введіть прізвище" />
+    <div class="error" *ngIf="clientForm.get('lastName')?.touched && clientForm.get('lastName')?.invalid">
+      Прізвище є обов’язковим.
+    </div>
+  </div>
+
+  <!-- Стать -->
+  <div class="form-group">
+    <label for="sexId">Стать</label>
+    <select id="sexId" class="form-control" formControlName="sexId">
+      <option [ngValue]="null" disabled>Оберіть стать</option>
+      <option *ngFor="let option of sexOptions" [value]="option.value">{{ option.label }}</option>
+    </select>
+    <div class="error" *ngIf="clientForm.get('sexId')?.touched && clientForm.get('sexId')?.invalid">
+      Стать є обов’язковою.
+    </div>
+  </div>
+
+  <!-- Дата народження -->
+  <div class="form-group">
+    <label for="birthdate">Дата народження</label>
+    <input id="birthdate" type="date" class="form-control" formControlName="birthdate" />
+    <div class="error" *ngIf="clientForm.get('birthdate')?.touched && clientForm.get('birthdate')?.invalid">
+      Дата народження є обов’язковою.
+    </div>
+  </div>
+
+  <!-- Номер телефону -->
+  <div class="form-group">
+    <label for="phoneNumber">Номер телефону</label>
+    <input id="phoneNumber" type="tel" class="form-control" formControlName="phoneNumber" placeholder="1234567890" />
+    <div class="hint">Формат: 1234567890</div>
+    <div class="error" *ngIf="clientForm.get('phoneNumber')?.touched && clientForm.get('phoneNumber')?.invalid">
+      Введіть коректний номер телефону.
+    </div>
+  </div>
+
+  <!-- Електронна пошта -->
+  <div class="form-group">
+    <label for="email">Електронна пошта</label>
+    <input id="email" type="email" class="form-control" formControlName="email" placeholder="Введіть email" />
+    <div class="error" *ngIf="clientForm.get('email')?.touched && clientForm.get('email')?.invalid">
+      Введіть коректну електронну адресу.
+    </div>
+  </div>
+
+  <div confirmation-content>
+    <app-client-view
+      [client]="createdClient"
+      [showOrders]="false"
+      *ngIf="createdClient">
+    </app-client-view>
+  </div>
+</app-generic-object-create-view>

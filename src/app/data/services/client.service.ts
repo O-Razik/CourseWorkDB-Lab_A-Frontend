@@ -32,27 +32,23 @@ export class ClientService {
     return this.http.get<Client[]>(`${this.baseUrl}/all`, { params });
   }
 
-  getClientById(id: number): Observable<Client> {
-    return this.http.get<Client>(`${this.baseUrl}/${id}`);
-  }
-
   addClient(client: Client): Observable<Client> {
-    return this.http.post<Client>(this.baseUrl, client);
+    const payload = {
+      ...client,
+      clientId: 0,
+      sex: {
+        sexId: client.sexId,
+        sexName: client.sex.sexName
+      }
+    };
+    return this.http.post<Client>(this.baseUrl, payload);
   }
 
   updateClient(client: Client): Observable<Client> {
     return this.http.put<Client>(`${this.baseUrl}`, client);
   }
 
-  deleteClient(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
-  }
-
   getSexes() : Observable<Sex[]> {
     return this.http.get<Sex[]>(`${this.baseUrl}/Sex/all`);
-  }
-
-  getSexById(id: number) : Observable<Sex> {
-    return this.http.get<Sex>(`${this.baseUrl}/Sex/${id}`);
   }
 }

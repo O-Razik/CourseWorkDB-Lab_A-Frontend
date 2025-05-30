@@ -1,0 +1,64 @@
+<app-generic-list-view
+  [items]="clients"
+  [pageName]="pageName"
+  [searchPlaceholder]="searchPlaceholder"
+  [searchTerm]="searchTerm"
+  (searchTermChange)="onSearch($event)"
+  [filterShown]="filterShown"
+  [filtersTitle]="filtersTitle"
+  [canCreate]="canCreate()"
+  [emptyListMessage]="emptyListMessage"
+  [trackByFn]="trackByClientId"
+  [useLocalSearch]="true">
+
+  <!-- Custom Item Template -->
+  <ng-template #itemListTemplate>
+    @if (ifBeginLoading) {
+      <div class="loading-spinner">
+        <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+      </div>
+    } @else {
+      @for (client of clients; track trackByClientId($index, client)) {
+        <app-client-view
+          [client]="client"
+          [showOrders]="showOrders"
+          (selected)="onClientSelected($event)">
+        </app-client-view>
+
+      } @empty {
+        <div class="empty-list-message-container">
+          <h1 class="empty-list-message">{{ emptyListMessage }}</h1>
+        </div>
+      }
+      @if (hasMore) {
+        <div class="load-more-container">
+          <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="isLoading">
+            @if (isLoading) {
+              <div class="loading-spinner">
+                <h2 class="loading-text">Завантаження<span class="loading-dots">...</span></h2>
+              </div>
+            } @else {
+              Завантажити ще
+            }
+          </button>
+        </div>
+      }
+    }
+  </ng-template>
+
+  <!-- Custom Filters Template -->
+  <ng-template #filtersTemplate>
+    <app-select-filter
+      sectionName="Стать:"
+      [placeholder]="'Виберіть стать'"
+      [items]="sexItems"
+      (filterChanged)="toggleSexes($event)">
+    </app-select-filter>
+  </ng-template>
+
+  <ng-template #createTemplate>
+    <app-client-create-view
+     [sexes]="sexes">
+    </app-client-create-view>
+  </ng-template>
+</app-generic-list-view>

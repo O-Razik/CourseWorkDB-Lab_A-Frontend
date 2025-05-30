@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, OnInit } from '@angular/core';
 import { Day } from '../../../../data/models/day';
 import { Schedule } from '../../../../data/models/schedule';
 import { ScheduleService } from '../../../../data/services/schedule.service';
@@ -16,8 +16,6 @@ type TimeProperty = 'startTime' | 'endTime' | 'collectionEndTime';
   imports: [CommonModule, FormsModule, TitleCasePipe]
 })
 export class LaboratoryScheduleCreateViewComponent implements OnInit {
-  @Output() scheduleSubmit = new EventEmitter<any>();
-
   days: Day[] = [];
   enabledDays: { [key: number]: boolean } = {};
   selectedSchedules: { [key: number]: number | null } = {};
@@ -85,39 +83,56 @@ export class LaboratoryScheduleCreateViewComponent implements OnInit {
   }
 
   onScheduleChange(dayId: number) {
-    if (this.selectedSchedules[dayId] === 0) { // New schedule
-      this.scheduleTimes[dayId] = { startTime: '', endTime: '', collectionEndTime: '' };
-    } else if (this.selectedSchedules[dayId]) { // Existing schedule
+    if (this.selectedSchedules[dayId] === 0) {
+      // User chose to create a new schedule – reset times
+      this.scheduleTimes[dayId] = {
+        startTime: '',
+        endTime: '',
+        collectionEndTime: ''
+      };
+    } else if (this.selectedSchedules[dayId]) {
+      // User selected an existing schedule – populate times
       const schedule = this.allSchedules.find(s => s.scheduleId === this.selectedSchedules[dayId]);
       if (schedule) {
         this.scheduleTimes[dayId] = {
-          startTime: this.formatTimeForInput(schedule.startTime),
-          endTime: this.formatTimeForInput(schedule.endTime),
-          collectionEndTime: this.formatTimeForInput(schedule.collectionEndTime)
+          startTime: this.formatTimeForInput(schedule.startTime ?? ''),
+          endTime: this.formatTimeForInput(schedule.endTime ?? ''),
+          collectionEndTime: this.formatTimeForInput(schedule.collectionEndTime ?? '')
         };
       }
+    } else {
+      // No valid selection – clear
+      this.scheduleTimes[dayId] = {
+        startTime: '',
+        endTime: '',
+        collectionEndTime: ''
+      };
     }
   }
-
 
   updateTime(dayId: number, property: TimeProperty, value: string) {
     this.scheduleTimes[dayId][property] = value;
   }
 
-  onSubmit() {
-    const result = this.days
-      .filter(day => this.enabledDays[day.dayId])
-      .map(day => ({
-        dayId: day.dayId,
-        scheduleId: this.selectedSchedules[day.dayId] === 0 ? null : this.selectedSchedules[day.dayId],
-        isNewSchedule: this.selectedSchedules[day.dayId] === 0,
-        ...this.scheduleTimes[day.dayId]
-      }));
+  @Output() getSchedules() : Schedule[]{
+    const schedules: Schedule[] = [];
+    for (const day of this.days) {
+      if (this.enabledDays[day.dayId]) {
+        const scheduleId = this.selectedSchedules[day.dayId];
+        const times = this.scheduleTimes[day.dayId];
 
-    this.scheduleSubmit.emit(result);
-  }
-
-  isAtLeastOneDayEnabled(): boolean {
-    return Object.values(this.enabledDays).some(enabled => enabled);
+        if (times.startTime.length != 0 || times.endTime.length != 0 || times.collectionEndTime.length != 0) {
+          schedules.push({
+            scheduleId: scheduleId || 0,
+            dayId: day.dayId,
+            startTime: times.startTime,
+            endTime: times.endTime,
+            collectionEndTime: times.collectionEndTime,
+            day: day
+          });
+        }
+      }
+    }
+    return schedules;
   }
 }
