@@ -9,7 +9,7 @@ import {
   MatRow, MatRowDef,
   MatTable
 } from '@angular/material/table';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-order-view',
@@ -24,7 +24,8 @@ import {DatePipe} from '@angular/common';
     MatRow,
     MatHeaderRow,
     MatHeaderRowDef,
-    MatRowDef
+    MatRowDef,
+    NgClass
   ],
   templateUrl: './order-view.component.html',
   styleUrl: './order-view.component.css',
@@ -36,4 +37,19 @@ export class OrderViewComponent {
 
   constructor(
   ) { }
+
+  getStatusClass(statusName: string | undefined): string {
+    if (!statusName) return 'status-default';
+
+    switch(statusName.toLowerCase()) {
+      case 'в процесі':
+        return 'status-in-process';
+      case 'завершений':
+        return 'status-completed';
+      case 'скасований':
+        return 'status-canceled';
+      default:
+        return 'status-default';
+    }
+  }
 }

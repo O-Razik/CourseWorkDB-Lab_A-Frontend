@@ -1,5 +1,5 @@
 <div class="panel">
-  <div class="panel-header">
+  <div class="panel-header" [ngClass]="getStatusClass(order.status?.statusName)">
     <h3 class="order-number">№ {{ order.number }}</h3>
     @if (order.status) {
       <div class="order-status">

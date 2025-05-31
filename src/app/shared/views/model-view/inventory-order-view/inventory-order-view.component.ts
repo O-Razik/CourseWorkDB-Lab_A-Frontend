@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { InventoryOrder } from '../../../../data/models/inventory-order';
 import { MatTableModule } from '@angular/material/table';
-import { DatePipe } from '@angular/common';
+import {DatePipe, NgClass} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import {InventoryInOrderViewComponent} from '../inventory-in-order-view/inventory-in-order-view.component';
 
@@ -12,7 +12,8 @@ import {InventoryInOrderViewComponent} from '../inventory-in-order-view/inventor
     MatTableModule,
     DatePipe,
     MatIconModule,
-    InventoryInOrderViewComponent
+    InventoryInOrderViewComponent,
+    NgClass
   ],
   templateUrl: './inventory-order-view.component.html',
   styleUrls: ['./inventory-order-view.component.css']
@@ -20,4 +21,19 @@ import {InventoryInOrderViewComponent} from '../inventory-in-order-view/inventor
 export class InventoryOrderViewComponent {
   displayedColumns: string[] = ['orderDate', 'supplier'];
   @Input() order!: InventoryOrder;
+
+  getStatusClass(statusName: string | undefined): string {
+    if (!statusName) return 'status-default';
+
+    switch(statusName.toLowerCase()) {
+      case 'в процесі':
+        return 'status-in-process';
+      case 'завершений':
+        return 'status-completed';
+      case 'скасований':
+        return 'status-canceled';
+      default:
+        return 'status-default';
+    }
+  }
 }
