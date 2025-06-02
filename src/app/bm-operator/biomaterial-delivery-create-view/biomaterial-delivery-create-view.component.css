@@ -28,7 +28,7 @@
   background-color: #3d8b40;
 }
 
-.create-delivery-btn.disabled {
+.create-delivery-btn:disabled {
   background-color: #bdbdbd;
   cursor: not-allowed;
 }

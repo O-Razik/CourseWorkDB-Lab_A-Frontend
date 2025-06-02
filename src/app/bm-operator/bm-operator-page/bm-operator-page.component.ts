@@ -34,7 +34,7 @@ export class BmOperatorPageComponent {
     },
     {
       path: '/bm-operator/biomaterial-collections',
-      title: 'Забір біоматеріалів',
+      title: 'Збір біоматеріалів',
       icon: 'content_paste'
     },
     {

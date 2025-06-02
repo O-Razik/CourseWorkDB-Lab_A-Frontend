@@ -30,12 +30,12 @@
     <!-- Analysis Center Tab -->
     <app-bp-create-tab
       tabId="analysis-center"
-      title="Лабораторія"
+      title="Центр аналізів"
       [value]="selectedAnalysisCenter ?
         selectedAnalysisCenter.city.cityName +
         ', ' +
         selectedAnalysisCenter.address
-        : 'Виберіть лабораторію'"
+        : 'Виберіть центр аналізів'"
       [isActive]="activeTab === 'analysis-center'"
       (activated)="setTab('analysis-center')">
     </app-bp-create-tab>
@@ -47,11 +47,13 @@
       contentId="biomaterial-collection"
       [isActive]="activeTab === 'biomaterial-collection'"
       title="Вибір збору біоматеріалу">
-      <app-biomaterial-collection-list-view
-        [showFilters]="false"
-        [notDelivered]="true"
-        (selected)="onBiomaterialCollectionSelected($event)">
-      </app-biomaterial-collection-list-view>
+      @if (activeTab === 'biomaterial-collection') {
+        <app-biomaterial-collection-list-view
+          [showFilters]="false"
+          [notDelivered]="true"
+          (selected)="onBiomaterialCollectionSelected($event)">
+        </app-biomaterial-collection-list-view>
+      }
     </app-bp-create-tab-content>
 
     <app-bp-create-tab-content

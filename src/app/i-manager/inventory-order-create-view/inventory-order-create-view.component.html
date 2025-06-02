@@ -6,7 +6,8 @@
   (orderCreated)="createOrder()"
   (confirmationClosed)="closeConfirmation()"
   [activeTab]="activeTab"
-  (tabChanged)="activeTab = $event">
+  (tabChanged)="activeTab = $event"
+  [checkout_subtitle]="totalPrice + ' грн'">
 
   <div tabs>
 

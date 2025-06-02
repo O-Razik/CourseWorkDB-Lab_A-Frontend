@@ -28,10 +28,10 @@ export class BmOperatorDashboardComponent {
         route: '/bm-operator/biomaterial-deliveries'
       },
       {
-        title: 'Забір біоматеріалів',
+        title: 'Збір біоматеріалів',
         cols: 1,
         rows: 1,
-        content: 'Управління забором біоматеріалів',
+        content: 'Управління збором біоматеріалів',
         icon: 'content_paste',
         route: '/bm-operator/biomaterial-collections'
       },
