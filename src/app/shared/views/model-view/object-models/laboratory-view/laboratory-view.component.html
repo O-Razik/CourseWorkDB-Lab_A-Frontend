@@ -1,0 +1,111 @@
+<!-- laboratory-view.component.html -->
+<div class="panel">
+  <!-- Non-edit view -->
+  @if (!isEditMode) {
+    <div class="panel-big-header">
+      <div class="panel-header">
+        <h4>{{ laboratory?.address }}</h4>
+      </div>
+      <div class="panel-subheader">
+        <div class="group">
+          <label>Місто:</label>
+          <p>{{ laboratory?.city?.cityName }}</p>
+        </div>
+        <div class="group">
+          <label>Телефон:</label>
+          <p>{{ laboratory?.phoneNumber }}</p>
+        </div>
+        @if (canEdit()) {
+          <button (click)="toggleEditMode($event)" class="edit-btn">
+            <mat-icon class="button-icon">edit</mat-icon>
+          </button>
+        }
+      </div>
+    </div>
+    <div class="panel-body">
+      @if (scheduleData.length) {
+        <div class="schedule-container">
+          <table class="horizontal-schedule">
+            <thead>
+            <tr>
+              <th class="time-header">Графік роботи</th>
+              @for (column of displayedColumns.slice(1); track column) {
+                <th class="header-cell">
+                  {{ getDayName(column) | titlecase }}
+                </th>
+              }
+            </tr>
+            </thead>
+            <tbody>
+              @for (row of scheduleData; track row.time) {
+                <tr>
+                  @for (column of displayedColumns; track column) {
+                    @if (column === 'time') {
+                      <td class="time-cell">{{ row.time }}</td>
+                    } @else {
+                      <td class="day-cell">
+                        {{ row[column]?.value }}
+                      </td>
+                    }
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p>Графік роботи відсутній</p>
+      }
+    </div>
+  }
+
+  <!-- Edit view -->
+  @if (isEditMode) {
+    <form [formGroup]="editForm" class="edit-form">
+      <div class="panel-header edit">
+        <div class="address-input">
+          <input formControlName="address" class="edit-input name" placeholder="Адреса" />
+        </div>
+        <button class="save-button" type="button" (click)="saveChanges()" [disabled]="editForm.invalid || !scheduleComponent?.canSubmit()">
+          <mat-icon class="button-icon">save</mat-icon>
+          <p>Зберегти</p>
+        </button>
+        <button (click)="toggleEditMode($event)" class="edit-btn">
+          <mat-icon class="button-icon">cancel</mat-icon>
+        </button>
+      </div>
+
+      <mat-grid-list cols="6" rowHeight="60px" gutterSize="8px" class="edit-grid">
+        <mat-grid-tile rowspan="1" colspan="3">
+          <div class="form-group">
+            <label>Місто:</label>
+            <select formControlName="cityId" class="edit-select">
+              <option [ngValue]="null" disabled>Оберіть місто</option>
+              @for (city of cityOptions; track city.cityId) {
+                <option [value]="city.cityId">
+                  {{ city.cityName }}
+                </option>
+              }
+            </select>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile rowspan="1" colspan="3">
+          <div class="form-group">
+            <label>Телефон:</label>
+            <input formControlName="phoneNumber" class="edit-input" placeholder="+380XXXXXXXXX" />
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile rowspan="3" colspan="6">
+          <div class="schedule-container">
+            <app-laboratory-schedule-create-view
+              #scheduleComponent
+              [initialSchedules]="getLabSchedules()">
+            </app-laboratory-schedule-create-view>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  }
+</div>
