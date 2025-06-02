@@ -7,7 +7,7 @@ import { Laboratory } from '../../data/models/laboratory';
 import { LaboratoryScheduleCreateViewComponent } from '../../shared/generics/object-create/laboratory-schedule-create-view/laboratory-schedule-create-view.component';
 import {CityService} from '../../data/services/city.service';
 import {City} from '../../data/models/city';
-import {LaboratoryViewComponent} from '../../shared/views/model-view/laboratory-view/laboratory-view.component';
+import {LaboratoryViewComponent} from '../../shared/views/model-view/object-models/laboratory-view/laboratory-view.component';
 import {LaboratorySchedule} from '../../data/models/laboratory-schedule';
 
 @Component({
@@ -65,7 +65,7 @@ export class LaboratoryCreateViewComponent implements OnInit {
   }
 
   canSubmit(): boolean {
-    return this.getSchedules().length === 0;
+    return this.laboratoryForm.valid && this.getSchedules().length > 0;
   }
 
   getSchedules(): LaboratorySchedule[] {

@@ -18,7 +18,7 @@
                   [disabled]="!enabledDays[day.dayId]"
                   class="schedule-select">
             <option [ngValue]="null">-- Select --</option>
-            <option [ngValue]="0">Create New</option>
+            <<option [ngValue]="0">Create New</option>
             @for (schedule of getSchedulesForDay(day.dayId); track schedule.scheduleId) {
               <option [ngValue]="schedule.scheduleId">
                 {{ formatTimeForInput(schedule.startTime) }} - {{ formatTimeForInput(schedule.endTime) }} ({{ formatTimeForInput(schedule.collectionEndTime) }})
