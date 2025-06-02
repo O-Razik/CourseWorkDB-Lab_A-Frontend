@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GenericListViewComponent} from '../../../generics/generic-list-view/generic-list-view.component';
-import {InventoryGroupInLabViewComponent} from '../../model-view/inventory-group-in-lab-view/inventory-group-in-lab-view.component';
+import {InventoryGroupInLabViewComponent} from '../../model-view/process-models/inventory-group-in-lab-view/inventory-group-in-lab-view.component';
 import {InventoryInLaboratory} from '../../../../data/models/inventory-in-laboratory';
 import {InventoryInLaboratoryService} from '../../../../data/services/inventory-in-laboratory.service';
 import {InventoryInLaboratoryFilter} from '../../../../data/filters/inventory-in-laboratory-filter';

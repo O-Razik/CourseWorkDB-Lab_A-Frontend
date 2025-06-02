@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GenericListViewComponent } from '../../../generics/generic-list-view/generic-list-view.component';
-import { InventoryOrderViewComponent } from '../../model-view/inventory-order-view/inventory-order-view.component';
+import { InventoryOrderViewComponent } from '../../model-view/process-models/inventory-order-view/inventory-order-view.component';
 import { InventoryOrder } from '../../../../data/models/inventory-order';
 import { InventoryOrderService } from '../../../../data/services/inventory-order.service';
 import { InventoryOrderFilter } from '../../../../data/filters/inventory-order-filter';

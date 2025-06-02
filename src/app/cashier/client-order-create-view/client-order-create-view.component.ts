@@ -11,7 +11,7 @@ import {Biomaterial} from '../../data/models/biomaterial';
 import {ClientOrder} from '../../data/models/client-order';
 import {ClientOrderService} from '../../data/services/client-order.service';
 import {AuthService} from '../../data/services/auth.service';
-import {OrderViewComponent} from '../../shared/views/model-view/order-view/order-view.component';
+import {OrderViewComponent} from '../../shared/views/model-view/process-models/order-view/order-view.component';
 import {
   GenericBpCreateViewComponent
 } from '../../shared/generics/bp-create/generic-bp-create-view/generic-bp-create-view.component';

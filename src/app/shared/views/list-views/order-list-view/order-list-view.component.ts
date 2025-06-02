@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GenericListViewComponent } from '../../../generics/generic-list-view/generic-list-view.component';
-import { OrderViewComponent } from '../../model-view/order-view/order-view.component';
+import { OrderViewComponent } from '../../model-view/process-models/order-view/order-view.component';
 import { ClientOrder } from '../../../../data/models/client-order';
 import { ClientOrderService } from '../../../../data/services/client-order.service';
 import { ClientOrderFilter } from '../../../../data/filters/client-order-filter';

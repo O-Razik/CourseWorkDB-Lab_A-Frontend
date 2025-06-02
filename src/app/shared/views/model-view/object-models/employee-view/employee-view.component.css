@@ -1,0 +1,240 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  margin: 8px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 94%;
+}
+
+.panel-header {
+  margin-bottom: 5px;
+  padding-left: 3px;
+  display: flex;
+}
+
+.panel-subheader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 5px 0 10px 0;
+  gap: 20px;
+  max-height: 60px;
+}
+
+.group {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  border: #80a9da 2px solid;
+  border-radius: 10px;
+  max-height: 60px;
+}
+
+.panel-subheader label {
+  background-color: #80a9da;
+  color: white;
+  padding: 5px 5px 5px 10px;
+  border-radius: 5px 0 0 5px;
+  font-size: 13px;
+  min-width: 55px;
+  max-width: 150px;
+  text-align: center;
+}
+
+.panel-subheader p.lab-address {
+  padding: 6px 5px 4px 5px;
+  font-size: 13px;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.panel-subheader p.role-name {
+  padding: 6px 5px 4px 5px;
+  font-size: 13px;
+  min-width: 100px;
+  max-width: 200px;
+}
+
+.panel-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 5px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+
+/* Add these styles to the existing CSS */
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  border: #80a9da 2px solid;
+  border-radius: 10px;
+  background-color: #80a9da;
+  width: 100%;
+  height: 100%;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: white;
+  padding: 10px 5px 5px 5px;
+  border-radius: 5px 0 0 5px;
+  font-size: 14px;
+  min-width: 70px;
+}
+
+.edit-input {
+  padding: 5px 10px;
+  border: 1px solid #aaa;
+  border-radius: 10px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.edit-input.name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.edit-select {
+  padding: 5px 10px;
+  border: 1px solid #aaa;
+  border-radius: 10px 10px 10px 10px;
+  font-size: 14px;
+  margin: 0 5px 5px 5px;
+  width: calc(100% - 10px);
+}
+
+.name-inputs {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}
+
+.panel-header.edit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.save-button {
+  background-color: #28a745;
+  color: white;
+  border: 1px solid #13832c;
+  padding: 6px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.save-button:disabled {
+  background-color: #c3e6cb;
+  color: #6c757d;
+  cursor: not-allowed;
+  border-color: #8fd19e;
+}
+
+.save-button .button-icon {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+}
+
+.save-button p {
+  margin: 0;
+  font-size: 12px;
+  padding-top: 2px;
+}
+
+.save-button:hover {
+  background-color: #218838;
+}
+
+.save-button:active {
+  background-color: #1e7e34;
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.edit-btn {
+  margin-left: auto;
+  background-color: #ffc107;
+  border: 1px solid #c69906;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+}
+
+.edit-btn:hover {
+  background-color: #e0a800;
+  border-color: #d39e00;
+  color: #fff;
+}
+
+.edit-btn:active {
+  background-color: #c69500;
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button-icon {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 20px;
+}
+
+.edit-grid {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .panel-header.edit {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .name-inputs {
+    width: 100%;
+  }
+
+  .edit-input.name {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+}

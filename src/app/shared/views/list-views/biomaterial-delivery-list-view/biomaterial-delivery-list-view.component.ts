@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GenericListViewComponent } from '../../../generics/generic-list-view/generic-list-view.component';
-import { BiomaterialDeliveryViewComponent } from '../../model-view/biomaterial-delivery-view/biomaterial-delivery-view.component';
+import { BiomaterialDeliveryViewComponent } from '../../model-view/process-models/biomaterial-delivery-view/biomaterial-delivery-view.component';
 import { BiomaterialDelivery } from '../../../../data/models/biomaterial-delivery';
 import { BiomaterialDeliveryService } from '../../../../data/services/biomaterial-delivery.service';
 import { BiomaterialDeliveryFilter } from '../../../../data/filters/biomaterial-delivery-filter';

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GenericSubListViewComponent} from '../../../generics/generic-sub-list-view/generic-sub-list-view.component';
-import {SupplierViewComponent} from '../../model-view/supplier-view/supplier-view.component';
+import {SupplierViewComponent} from '../../model-view/sub-models/supplier-view/supplier-view.component';
 import {Supplier} from '../../../../data/models/supplier';
 import {SupplierService} from '../../../../data/services/supplier.service';
 

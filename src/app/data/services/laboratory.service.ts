@@ -31,7 +31,7 @@ export class LaboratoryService {
   }
 
   updateLaboratory(laboratory: Laboratory): Observable<Laboratory> {
-    return this.http.put<Laboratory>(`${this.baseUrl}/${laboratory.laboratoryId}`, laboratory);
+    return this.http.put<Laboratory>(`${this.baseUrl}`, laboratory);
   }
 
   deleteLaboratory(id: number): Observable<void> {

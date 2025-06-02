@@ -4,7 +4,6 @@ import { EmployeeFilter } from '../filters/employee-filter';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { map } from 'rxjs/operators';
 import {Position} from '../models/position';
 
 @Injectable({
@@ -39,39 +38,15 @@ export class EmployeeService {
     return this.http.get<Employee[]>(`${this.baseUrl}/all`, { params });
   }
 
-  getEmployeeById(id: number): Observable<Employee> {
-    return this.http.get<Employee>(`${this.baseUrl}/${id}`);
-  }
-
   addEmployee(employee: Employee): Observable<Employee> {
     return this.http.post<Employee>(this.baseUrl, employee);
   }
 
   updateEmployee(employee: Employee): Observable<Employee> {
-    return this.http.put<Employee>(`${this.baseUrl}/${employee.employeeId}`, employee);
-  }
-
-  deleteEmployee(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.put<Employee>(`${this.baseUrl}`, employee);
   }
 
   getPositions(): Observable<Position[]> {
     return this.http.get<Position[]>(`${this.baseUrl}/Position/all`);
-  }
-
-  getPositionById(id: number): Observable<Position> {
-    return this.http.get<Position>(`${this.baseUrl}/Position/${id}`);
-  }
-
-  addPosition(position: Position): Observable<Position> {
-    return this.http.post<Position>(`${this.baseUrl}/Position`, position);
-  }
-
-  updatePosition(position: Position): Observable<Position> {
-    return this.http.put<Position>(`${this.baseUrl}/Position/${position.positionId}`, position);
-  }
-
-  deletePosition(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/Position/${id}`);
   }
 }

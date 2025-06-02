@@ -1,0 +1,25 @@
+<div class="panel">
+  <div class="panel-header" [ngClass]="getStatusClass(delivery.status.statusName)">
+    <h3 class="order-number">Доставка у {{ delivery.analysisCenter.address }}</h3>
+    <h3 class="order-number">{{ delivery.analysisCenter.city.cityName }}</h3>
+  </div>
+
+  <div class="info-table">
+    <div class="groups-section">
+      <div class="group">
+        <label>Дата доставки:</label>
+        <p>{{ delivery.deliveryDate | date:'HH:mm, dd.MM.yyyy' }}</p>
+      </div>
+
+      <div class="group">
+        <label>Статус:</label>
+        <p>{{ delivery.status.statusName }}</p>
+      </div>
+    </div>
+
+    <app-biomaterial-collection-view
+      [biomaterialCollection]="delivery.biomaterialCollection"
+      class="biomaterial-item-view">
+    </app-biomaterial-collection-view>
+  </div>
+</div>

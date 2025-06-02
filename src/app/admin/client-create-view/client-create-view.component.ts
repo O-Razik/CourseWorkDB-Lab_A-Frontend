@@ -5,7 +5,7 @@ import { GenericObjectCreateViewComponent } from '../../shared/generics/object-c
 import { Sex } from '../../data/models/sex';
 import { ClientService } from '../../data/services/client.service';
 import {Client} from '../../data/models/client';
-import {ClientViewComponent} from '../../shared/views/model-view/client-view/client-view.component';
+import {ClientViewComponent} from '../../shared/views/model-view/object-models/client-view/client-view.component';
 
 @Component({
   selector: 'app-client-create-view',

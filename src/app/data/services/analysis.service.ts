@@ -21,7 +21,7 @@ export class AnalysisService {
     return this.http.post<Analysis>(`${this.baseUrl}`, analysis);
   }
 
-  updateAnalysis(id: number, analysis: Analysis): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/analyses/${id}`, analysis);
+  updateAnalysis(analysis: Analysis): Observable<Analysis> {
+    return this.http.put<Analysis>(`${this.baseUrl}`, analysis);
   }
 }

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AnalysisCenterViewComponent} from '../../model-view/analysis-center-view/analysis-center-view.component';
+import {AnalysisCenterViewComponent} from '../../model-view/sub-models/analysis-center-view/analysis-center-view.component';
 import {AnalysisCenter} from '../../../../data/models/analysis-center';
 import {AnalysisCenterService} from '../../../../data/services/analysis-center.service';
 import {GenericSubListViewComponent} from '../../../generics/generic-sub-list-view/generic-sub-list-view.component';

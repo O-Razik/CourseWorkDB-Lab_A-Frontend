@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GenericListViewComponent } from '../../../generics/generic-list-view/generic-list-view.component';
-import { AnalysisResultViewComponent } from '../../model-view/analysis-result-view/analysis-result-view.component';
+import { AnalysisResultViewComponent } from '../../model-view/process-models/analysis-result-view/analysis-result-view.component';
 import { AnalysisResult } from '../../../../data/models/analysis-result';
 import { AnalysisResultService } from '../../../../data/services/analysis-result.service';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';

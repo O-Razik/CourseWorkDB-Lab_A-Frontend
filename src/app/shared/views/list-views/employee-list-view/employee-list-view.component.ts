@@ -3,7 +3,7 @@ import {Employee} from '../../../../data/models/employee';
 import {Laboratory} from '../../../../data/models/laboratory';
 import {EmployeeFilter} from '../../../../data/filters/employee-filter';
 import {GenericListViewComponent} from '../../../generics/generic-list-view/generic-list-view.component';
-import {EmployeeViewComponent} from '../../model-view/employee-view/employee-view.component';
+import {EmployeeViewComponent} from '../../model-view/object-models/employee-view/employee-view.component';
 import {Position} from '../../../../data/models/position';
 import {EmployeeService} from '../../../../data/services/employee.service';
 import {LaboratoryService} from '../../../../data/services/laboratory.service';

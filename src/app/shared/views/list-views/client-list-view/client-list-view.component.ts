@@ -3,7 +3,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Client} from '../../../../data/models/client';
 import {ClientFilter} from '../../../../data/filters/client-filter';
 import {GenericListViewComponent} from '../../../generics/generic-list-view/generic-list-view.component';
-import {ClientViewComponent} from '../../model-view/client-view/client-view.component';
+import {ClientViewComponent} from '../../model-view/object-models/client-view/client-view.component';
 import {ClientService} from '../../../../data/services/client.service';
 import {MatButton} from '@angular/material/button';
 import {SelectFilterComponent} from '../../../filters/select-filter/select-filter.component';

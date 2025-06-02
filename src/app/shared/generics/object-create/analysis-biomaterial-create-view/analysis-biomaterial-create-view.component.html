@@ -1,6 +1,10 @@
 <div class="biomaterial-container">
   <div class="header">
-    <h3>Біоматеріали</h3>
+    @if (isInCreate){
+      <h3>Біоматеріали</h3>
+    } @else {
+      <label>Біоматеріали:</label>
+    }
     <button type="button" class="add-btn" (click)="addBiomaterial()" title="Add biomaterial">
       +
     </button>

@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AnalysisBiomaterial } from '../../../../data/models/analysis-biomaterial';
@@ -14,6 +14,8 @@ import { Biomaterial } from '../../../../data/models/biomaterial';
 })
 export class AnalysisBiomaterialCreateViewComponent implements OnInit {
   fb: FormBuilder = inject(FormBuilder)
+  @Input() initialBiomaterials: AnalysisBiomaterial[] = [];
+  @Input() isInCreate: boolean = true;
 
   biomaterialForm = this.fb.group({
     biomaterials: this.fb.array([])
@@ -40,7 +42,21 @@ export class AnalysisBiomaterialCreateViewComponent implements OnInit {
   // Initialize the form array with one empty biomaterial entry by default
   initializeForm(): void {
     this.biomaterialArray.clear();
-    this.addBiomaterial();  // start with one empty select
+
+    if (this.initialBiomaterials && this.initialBiomaterials.length > 0) {
+      this.initialBiomaterials.forEach(bm => {
+        const biomaterialGroup = this.fb.group({
+          biomaterialId: [bm.biomaterialId, Validators.required]
+        });
+        this.biomaterialArray.push(biomaterialGroup);
+      });
+    } else {
+      this.addBiomaterial(); // start with one empty select if no initial biomaterials
+    }
+  }
+
+  getAnalysisId(): number {
+    return this.initialBiomaterials[0]?.analysisId || 0;
   }
 
   // Getter for biomaterials form array
@@ -77,8 +93,8 @@ export class AnalysisBiomaterialCreateViewComponent implements OnInit {
       .map(bm => {
         const biomaterialObj = this.availableBiomaterials.find(b => b.biomaterialId === bm.biomaterialId);
         return {
-          analysisBiomaterialId: 0,  // id 0 for new entries
-          analysisId: 0,             // will be set on the backend
+          analysisBiomaterialId: 0,
+          analysisId: this.getAnalysisId(),
           biomaterialId: bm.biomaterialId,
           biomaterial:  {
             biomaterialId: bm.biomaterialId,

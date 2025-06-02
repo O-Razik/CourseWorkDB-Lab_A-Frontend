@@ -3,7 +3,7 @@ import {
   GenericBpCreateViewComponent
 } from '../../shared/generics/bp-create/generic-bp-create-view/generic-bp-create-view.component';
 import {NgIf} from '@angular/common';
-import {BiomaterialDeliveryViewComponent} from '../../shared/views/model-view/biomaterial-delivery-view/biomaterial-delivery-view.component';
+import {BiomaterialDeliveryViewComponent} from '../../shared/views/model-view/process-models/biomaterial-delivery-view/biomaterial-delivery-view.component';
 import {BiomaterialCollection} from '../../data/models/biomaterial-collection';
 import {AnalysisCenter} from '../../data/models/analysis-center';
 import {BiomaterialDeliveryService} from '../../data/services/biomaterial-delivery.service';

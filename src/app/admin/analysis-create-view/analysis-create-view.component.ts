@@ -7,7 +7,7 @@ import { Analysis } from '../../data/models/analysis';
 import { AnalysisBiomaterialCreateViewComponent } from '../../shared/generics/object-create/analysis-biomaterial-create-view/analysis-biomaterial-create-view.component';
 import { AnalysisCategoryService } from '../../data/services/analysis-category.service';
 import { Category } from '../../data/models/category';
-import { AnalysisViewComponent } from '../../shared/views/model-view/analysis-view/analysis-view.component';
+import { AnalysisViewComponent } from '../../shared/views/model-view/object-models/analysis-view/analysis-view.component';
 import { AnalysisBiomaterial } from '../../data/models/analysis-biomaterial';
 
 @Component({

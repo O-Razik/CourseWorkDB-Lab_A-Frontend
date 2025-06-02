@@ -4,7 +4,7 @@ import {City} from '../../../../data/models/city';
 import {LaboratoryService} from '../../../../data/services/laboratory.service';
 import {CityService} from '../../../../data/services/city.service';
 import {GenericListViewComponent} from '../../../generics/generic-list-view/generic-list-view.component';
-import {LaboratoryViewComponent} from '../../model-view/laboratory-view/laboratory-view.component';
+import {LaboratoryViewComponent} from '../../model-view/object-models/laboratory-view/laboratory-view.component';
 import {TypeFilterComponent} from '../../../filters/type-filter/type-filter.component';
 import {ScheduleFilterComponent} from '../../../filters/schedule-filter/schedule-filter.component';
 import {Schedule} from '../../../../data/models/schedule';

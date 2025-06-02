@@ -7,7 +7,7 @@ import { Employee } from '../../data/models/employee';
 import {Position} from '../../data/models/position';
 import {Laboratory} from '../../data/models/laboratory';
 import {LaboratoryService} from '../../data/services/laboratory.service';
-import {EmployeeViewComponent} from '../../shared/views/model-view/employee-view/employee-view.component';
+import {EmployeeViewComponent} from '../../shared/views/model-view/object-models/employee-view/employee-view.component';
 
 @Component({
   selector: 'app-employee-create-view',

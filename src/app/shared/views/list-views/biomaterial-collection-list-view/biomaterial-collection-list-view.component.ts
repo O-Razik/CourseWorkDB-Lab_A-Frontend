@@ -14,7 +14,7 @@ import { SelectFilterComponent } from '../../../filters/select-filter/select-fil
 import { BiomaterialCollectionFilter } from '../../../../data/filters/biomaterial-collection-filter';
 import { FilterItem } from '../../../../data/helpers/filter-item';
 import { GenericListViewComponent } from '../../../generics/generic-list-view/generic-list-view.component';
-import { BiomaterialCollectionViewComponent } from '../../model-view/biomaterial-collection-view/biomaterial-collection-view.component';
+import { BiomaterialCollectionViewComponent } from '../../model-view/process-models/biomaterial-collection-view/biomaterial-collection-view.component';
 import {AuthService} from '../../../../data/services/auth.service';
 
 @Component({

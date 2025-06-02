@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {GenericListViewComponent} from '../../../generics/generic-list-view/generic-list-view.component';
 
-import {AnalysisViewComponent} from '../../model-view/analysis-view/analysis-view.component';
+import {AnalysisViewComponent} from '../../model-view/object-models/analysis-view/analysis-view.component';
 
 import {Analysis} from '../../../../data/models/analysis';
 import {Category} from '../../../../data/models/category';

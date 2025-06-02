@@ -1,0 +1,96 @@
+<!-- analysis-view.component.html -->
+<div class="panel">
+  <!-- Non-edit view -->
+  @if (!isEditMode){
+    <div class="panel-header">
+      <h2>{{ analysis.name }}</h2>
+      @if (canEdit()){
+        <button (click)="toggleEditMode()" class="edit-btn">
+          <mat-icon class="button-icon">edit</mat-icon>
+        </button>
+      }
+    </div>
+
+    <div class="panel-subheader">
+      <div class="group">
+        <label>Категорія:</label>
+        <p>{{ analysis.category.category }}</p>
+      </div>
+
+      <div class="group">
+        <label>Біоматеріали:</label>
+        @for (analysisBiomaterial of analysis.analysisBiomaterials; track analysisBiomaterial.biomaterial) {
+          <p class="group-item">{{ analysisBiomaterial.biomaterial.biomaterialName }}</p>
+        } @empty {
+          <p>There are no biomaterials.</p>
+        }
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="description">
+        <p>{{ analysis.description }}</p>
+      </div>
+
+      <button class="price" (click)="onPriceClick()">
+        <span class="price-value">{{ analysis.price }}</span>
+        <span class="price-currency"> грн</span>
+      </button>
+    </div>
+  } @else {
+    <form *ngIf="isEditMode" [formGroup]="editForm" class="edit-form">
+      <div class="panel-header edit">
+        <input formControlName="name" class="edit-input name" />
+        <button class="save-button" type="button" (click)="saveChanges()" [disabled]="editForm.invalid || !biomaterialComponent?.canSubmit()">
+          <mat-icon class="button-icon">save</mat-icon>
+          <p>Зберегти</p>
+        </button>
+
+        <button (click)="toggleEditMode()" class="edit-btn">
+          <mat-icon class="button-icon">cancel</mat-icon>
+        </button>
+      </div>
+
+      <mat-grid-list cols="6" rowHeight="65px" gutterSize="8px" class="edit-grid">
+        <mat-grid-tile rowspan="1" colspan="2">
+          <div class="form-group">
+            <label>Категорія:</label>
+            <select formControlName="categoryId" class="edit-select">
+              <option [ngValue]="null" disabled>Оберіть категорію</option>
+              @for (category of categoryOptions; track category.analysisCategoryId) {
+                <option [value]="category.analysisCategoryId">
+                  {{ category.category }}
+                </option>
+              }
+            </select>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile rowspan="2" colspan="4">
+          <div class="form-group">
+            <app-analysis-biomaterial-create-view
+              class="biomaterial-create-view"
+              #biomaterialComponent
+              [initialBiomaterials]="analysis.analysisBiomaterials"
+              [isInCreate]="false">
+            </app-analysis-biomaterial-create-view>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile rowspan="1" colspan="2">
+          <div class="form-group">
+            <label>Ціна:</label>
+            <input type="number" formControlName="price" class="edit-input price" />
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile rowspan="2" colspan="6">
+          <div class="form-group">
+            <label>Опис:</label>
+            <textarea formControlName="description" class="edit-input description"></textarea>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  }
+</div>

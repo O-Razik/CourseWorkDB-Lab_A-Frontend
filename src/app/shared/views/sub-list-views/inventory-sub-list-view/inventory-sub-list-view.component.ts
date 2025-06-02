@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GenericSubListViewComponent} from '../../../generics/generic-sub-list-view/generic-sub-list-view.component';
-import {InventoryViewComponent} from '../../model-view/inventory-view/inventory-view.component';
+import {InventoryViewComponent} from '../../model-view/sub-models/inventory-view/inventory-view.component';
 import {Inventory} from '../../../../data/models/inventory';
 import {InventoryService} from '../../../../data/services/inventory.service';
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
