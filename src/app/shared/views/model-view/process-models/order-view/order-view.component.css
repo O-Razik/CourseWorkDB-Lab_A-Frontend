@@ -10,6 +10,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 375px;
   height: 525px;
+  position: relative;
 }
 
 .panel-header {
@@ -172,5 +173,74 @@ table{
 
 .price-value {
   text-align: right;
+}
+
+/* Results Modal Styles */
+.results-modal-container {
+  position: relative;
+}
+
+.results-modal-backdrop {
+  position: absolute;
+  top: -175px;
+  z-index: 100;
+  padding-top: 20px;
+}
+
+.results-modal-content {
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ddd;
+  z-index: 101;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #4e7ad0;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.result-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin-left: 4px;
+  margin-bottom: 2px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 16px;
+  width: 16px;
+  border-radius: 30%;
+}
+
+.result-button:hover {
+  background-color: #17b7ef;
+}
+
+.result{
+  font-size: 14px;
+  width: 16px;
+  height: 14px;
 }
 

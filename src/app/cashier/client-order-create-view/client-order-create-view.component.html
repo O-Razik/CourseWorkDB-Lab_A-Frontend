@@ -69,6 +69,7 @@
         <div class="tab-content">
           <div class="selected-items-tab">
             <h4>Необхідні біоматеріали</h4>
+            <!-- Replace the biomaterial-requirements section with this -->
             <div class="biomaterial-requirements">
               <div *ngFor="let biomaterial of requiredBiomaterials"
                    class="biomaterial-requirement"
@@ -77,8 +78,23 @@
                 <div class="biomaterial-info">
                   <span class="biomaterial-name">{{ biomaterial.biomaterialName }}</span>
                   <span class="inventory-status" [class.complete]="hasInventoryForBiomaterial(biomaterial.biomaterialId)">
-              {{ hasInventoryForBiomaterial(biomaterial.biomaterialId) ? 'Обрано' : 'Не обрано' }}
-            </span>
+                    {{ hasInventoryForBiomaterial(biomaterial.biomaterialId) ? 'Обрано' : 'Не обрано' }}
+                  </span>
+                </div>
+
+                <!-- Show which analyses require this biomaterial -->
+                <div class="required-by">
+                  <span *ngFor="let req of getRequirementsForBiomaterial(biomaterial.biomaterialId)"
+                        [class.covered]="isAnalysisBiomaterialCovered(req.analysisId, req.biomaterialId)"
+                        [class.optional]="isAnalysisCoveredButOptional(req.analysisId, req.biomaterialId)">
+                    <mat-icon class="status-icon">
+                      {{ getBiomaterialStatusIcon(req.analysisId, req.biomaterialId) }}
+                    </mat-icon>
+                    {{ req.analysisName }}
+                    <span class="status-tooltip">
+                      {{ getBiomaterialStatusTooltip(req.analysisId, req.biomaterialId) }}
+                    </span>
+                  </span>
                 </div>
 
                 @if (hasInventoryForBiomaterial(biomaterial.biomaterialId)){

@@ -5,11 +5,13 @@
 mat-grid-list {
   width: 100%;
   margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
 }
 
 mat-grid-tile {
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .empty-list-message-container {

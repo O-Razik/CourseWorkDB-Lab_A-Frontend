@@ -60,9 +60,15 @@
       <h4 class="title">Аналізи</h4>
       <div class="analysis-list">
         @for (orderAnalysis of order.orderAnalyses; track orderAnalysis.orderAnalysisId) {
-          <div class="item">
+          <div class="item" [attr.data-analysis-id]="orderAnalysis.orderAnalysisId">
             <span class="analysis-name">{{ orderAnalysis.analysis.name }}</span>
             <span class="analysis-price">{{ orderAnalysis.analysis.price }}</span>
+            @if (orderAnalysis.analysisResults! && orderAnalysis.analysisResults.length > 0) {
+              <button class="result-button"
+                      (click)="showAnalysisResults(orderAnalysis.analysisResults!, orderAnalysis); $event.stopPropagation()">
+                <mat-icon class="result">assignment_turned_in</mat-icon>
+              </button>
+            }
           </div>
         } @empty {
           <div class="no-data-container">
@@ -92,7 +98,28 @@
       } @else {
         <h3 class="no-data">Не вказано</h3>
       }
+    </div>
   </div>
-</div>
+
+  @if (selectedAnalysisResults && selectedOrderAnalysis) {
+    <div class="results-modal-container">
+      <div class="results-modal-backdrop" (click)="closeResultsModal()">
+        <div class="results-modal-content"
+             (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>Результати аналізу: {{selectedOrderAnalysis!.analysis.name}}</h3>
+            <button mat-icon-button (click)="closeResultsModal()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <div class="results-list">
+            @for (result of selectedAnalysisResults; track result.analysisResultId) {
+              <app-analysis-result-view [analysisResult]="result"></app-analysis-result-view>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 </div>
 

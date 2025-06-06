@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import { Analysis } from '../../data/models/analysis';
-import { ClientListViewComponent } from '../../shared/views/list-views/client-list-view/client-list-view.component';
-import { NgForOf, NgIf } from '@angular/common';
-import { InventoryInLaboratoryListViewComponent } from '../../shared/views/list-views/inventory-in-laboratory-list-view/inventory-in-laboratory-list-view.component';
-import { AnalysisListViewComponent } from '../../shared/views/list-views/analysis-list-view/analysis-list-view.component';
-import { Client } from '../../data/models/client';
+import {Analysis} from '../../data/models/analysis';
+import {ClientListViewComponent} from '../../shared/views/list-views/client-list-view/client-list-view.component';
+import {NgForOf, NgIf} from '@angular/common';
+import {
+  InventoryInLaboratoryListViewComponent
+} from '../../shared/views/list-views/inventory-in-laboratory-list-view/inventory-in-laboratory-list-view.component';
+import {AnalysisListViewComponent} from '../../shared/views/list-views/analysis-list-view/analysis-list-view.component';
+import {Client} from '../../data/models/client';
 import {MatIcon} from '@angular/material/icon';
 import {InventoryInLaboratory} from '../../data/models/inventory-in-laboratory';
 import {Biomaterial} from '../../data/models/biomaterial';
@@ -25,6 +27,13 @@ import {
 import {
   BpCreateOrderSummaryComponent
 } from '../../shared/generics/bp-create/bp-create-order-summary/bp-create-order-summary.component';
+
+interface AnalysisBiomaterialRequirement {
+  analysisId: number;
+  analysisName: string;
+  biomaterialId: number;
+  biomaterial: Biomaterial;
+}
 
 @Component({
   selector: 'app-client-order-create-view',
@@ -55,6 +64,7 @@ export class ClientOrderCreateViewComponent implements OnInit {
   requiredBiomaterials: Biomaterial[] = [];
   selectedBiomaterial: Biomaterial | null = null;
   biomaterialInventoryMap: {[key: number]: InventoryInLaboratory} = {};
+  analysisBiomaterialRequirements: AnalysisBiomaterialRequirement[] = [];
 
   constructor(
     private clientOrderService: ClientOrderService,
@@ -76,14 +86,27 @@ export class ClientOrderCreateViewComponent implements OnInit {
   }
 
   updateRequiredBiomaterials() {
-    const biomaterialMap = new Map<number, Biomaterial>();
+    this.analysisBiomaterialRequirements = [];
 
+    // Collect all analysis-biomaterial pairs
     this.selectedAnalyses.forEach(analysis => {
       analysis.analysisBiomaterials.forEach(ab => {
-        if (!biomaterialMap.has(ab.biomaterial.biomaterialId)) {
-          biomaterialMap.set(ab.biomaterial.biomaterialId, ab.biomaterial);
-        }
+        this.analysisBiomaterialRequirements.push({
+          analysisId: analysis.analysisId,
+          analysisName: analysis.name,
+          biomaterialId: ab.biomaterial.biomaterialId,
+          biomaterial: ab.biomaterial
+        });
       });
+    });
+
+    // Get unique biomaterials
+    const biomaterialMap = new Map<number, Biomaterial>();
+    this.analysisBiomaterialRequirements.forEach(req => {
+      const biomaterial = req.biomaterial;
+      if (!biomaterialMap.has(biomaterial.biomaterialId)) {
+        biomaterialMap.set(biomaterial.biomaterialId, biomaterial);
+      }
     });
 
     this.requiredBiomaterials = Array.from(biomaterialMap.values());
@@ -192,12 +215,71 @@ export class ClientOrderCreateViewComponent implements OnInit {
     return this.selectedAnalyses.reduce((sum, a) => sum + (a.price ?? 0), 0);
   }
 
-  canCreateOrder(): boolean {
-    return (
-      this.selectedClient !== null &&
-      this.selectedAnalyses.length > 0 &&
-      this.requiredBiomaterials.length === Object.keys(this.biomaterialInventoryMap).length
+  getRequirementsForBiomaterial(biomaterialId: number): AnalysisBiomaterialRequirement[] {
+    return this.analysisBiomaterialRequirements.filter(req =>
+      req.biomaterialId === biomaterialId
     );
+  }
+
+  getAnalysisNamesForBiomaterial(biomaterialId: number): string[] {
+    return this.analysisBiomaterialRequirements
+      .filter(req => req.biomaterialId === biomaterialId)
+      .map(req => req.analysisName);
+  }
+
+  isAnalysisBiomaterialCovered(analysisId: number, biomaterialId: number): boolean {
+    // Check if this specific biomaterial is selected for any analysis that requires it
+    return !!this.biomaterialInventoryMap[biomaterialId];
+  }
+
+  isAnalysisFullyCovered(analysisId: number): boolean {
+    // Check if at least one biomaterial is selected for this analysis
+    const analysisRequirements = this.analysisBiomaterialRequirements.filter(
+      req => req.analysisId === analysisId
+    );
+
+    return analysisRequirements.some(req =>
+      this.biomaterialInventoryMap[req.biomaterialId]
+    );
+  }
+
+  isAnalysisCoveredButOptional(analysisId: number, biomaterialId: number): boolean {
+    // True if analysis is covered by some other biomaterial but not this one
+    return this.isAnalysisFullyCovered(analysisId) &&
+      !this.isAnalysisBiomaterialCovered(analysisId, biomaterialId);
+  }
+
+  getBiomaterialStatusIcon(analysisId: number, biomaterialId: number): string {
+    if (this.isAnalysisBiomaterialCovered(analysisId, biomaterialId)) {
+      return 'check_circle'; // Selected biomaterial
+    }
+    if (this.isAnalysisCoveredButOptional(analysisId, biomaterialId)) {
+      return 'warning'; // Optional biomaterial
+    }
+    return 'error'; // Required biomaterial (not selected)
+  }
+
+  getBiomaterialStatusTooltip(analysisId: number, biomaterialId: number): string {
+    if (this.isAnalysisBiomaterialCovered(analysisId, biomaterialId)) {
+      return 'Обрано для цього аналізу';
+    }
+    if (this.isAnalysisCoveredButOptional(analysisId, biomaterialId)) {
+      return 'Можна використати (аналіз вже має інший біоматеріал)';
+    }
+    return 'Необхідно обрати біоматеріал';
+  }
+
+  canCreateOrder(): boolean {
+    if (!this.selectedClient || this.selectedAnalyses.length === 0) {
+      return false;
+    }
+
+    // Check if each analysis has at least one biomaterial selected
+    return this.selectedAnalyses.every(analysis => {
+      return analysis.analysisBiomaterials.some(ab =>
+        this.biomaterialInventoryMap[ab.biomaterial.biomaterialId]
+      );
+    });
   }
 
   resetOrder() {
