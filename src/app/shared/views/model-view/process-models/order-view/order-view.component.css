@@ -152,6 +152,13 @@ table{
   width: 300px;
 }
 
+.biomaterial-volume {
+  font-size: 14px;
+  color: #333;
+  min-width: 100px;
+  text-align: right;
+}
+
 .analysis-price {
   font-size: 14px;
   font-weight: 500;

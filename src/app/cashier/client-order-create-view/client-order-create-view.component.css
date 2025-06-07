@@ -250,3 +250,36 @@
 .required-by span:hover .status-tooltip {
   opacity: 1;
 }
+
+.volume-input-container {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.volume-input-container label {
+  margin-right: 10px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.volume-input {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 80px;
+  font-size: 0.9em;
+}
+
+.volume-input:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed #eee;
+}

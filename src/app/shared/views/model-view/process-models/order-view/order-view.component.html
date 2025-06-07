@@ -63,7 +63,7 @@
           <div class="item" [attr.data-analysis-id]="orderAnalysis.orderAnalysisId">
             <span class="analysis-name">{{ orderAnalysis.analysis.name }}</span>
             <span class="analysis-price">{{ orderAnalysis.analysis.price }}</span>
-            @if (orderAnalysis.analysisResults! && orderAnalysis.analysisResults.length > 0) {
+            @if (orderAnalysis.analysisResults! && orderAnalysis.analysisResults!.length > 0) {
               <button class="result-button"
                       (click)="showAnalysisResults(orderAnalysis.analysisResults!, orderAnalysis); $event.stopPropagation()">
                 <mat-icon class="result">assignment_turned_in</mat-icon>
@@ -80,9 +80,10 @@
     <div class="biomaterial-collection">
       <h4 class="title">Біоматеріали</h4>
       <div class="biomaterial-list">
-        @for (biomaterialCollection of order.biomaterialCollections; track biomaterialCollection.biomaterialCollectionId) {
+        @for (bc of order.biomaterialCollections; track bc.biomaterialCollectionId) {
           <div class="item">
-            <span class="biomaterial-name">{{ biomaterialCollection.biomaterial.biomaterialName }}</span>
+            <p class="biomaterial-name">{{ bc.biomaterial.biomaterialName }}</p>
+            <p class="biomaterial-volume">{{bc.volume}} мл</p>
           </div>
         } @empty {
           <div class="no-data-container">

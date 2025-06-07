@@ -27,6 +27,7 @@ import {
 import {
   BpCreateOrderSummaryComponent
 } from '../../shared/generics/bp-create/bp-create-order-summary/bp-create-order-summary.component';
+import {FormsModule} from '@angular/forms';
 
 interface AnalysisBiomaterialRequirement {
   analysisId: number;
@@ -51,7 +52,8 @@ interface AnalysisBiomaterialRequirement {
     BpCreateTabComponent,
     BpCreateTabContentComponent,
     BpCreateSummarySectionComponent,
-    BpCreateOrderSummaryComponent
+    BpCreateOrderSummaryComponent,
+    FormsModule
   ],
   standalone: true
 })
@@ -65,6 +67,7 @@ export class ClientOrderCreateViewComponent implements OnInit {
   selectedBiomaterial: Biomaterial | null = null;
   biomaterialInventoryMap: {[key: number]: InventoryInLaboratory} = {};
   analysisBiomaterialRequirements: AnalysisBiomaterialRequirement[] = [];
+  biomaterialVolumeMap: {[key: number]: number} = {};
 
   constructor(
     private clientOrderService: ClientOrderService,
@@ -141,12 +144,21 @@ export class ClientOrderCreateViewComponent implements OnInit {
     return !!this.biomaterialInventoryMap[biomaterialId];
   }
 
-  getSelectedInventoryDetails(): any[] {
+  getSelectedInventoryDetails(): {
+    inventory: InventoryInLaboratory;
+    biomaterialName: string;
+    biomaterialId: number;
+  }[] {
+    if (Object.keys(this.biomaterialInventoryMap).length === 0) {
+      return [];
+    }
+
     return Object.entries(this.biomaterialInventoryMap).map(([biomaterialId, inventory]) => {
       const biomaterial = this.requiredBiomaterials.find(b => b.biomaterialId === +biomaterialId);
       return {
-        ...inventory,
-        biomaterialName: biomaterial?.biomaterialName || 'N/A'
+        inventory: inventory!,
+        biomaterialName: biomaterial?.biomaterialName || 'N/A',
+        biomaterialId: +biomaterialId
       };
     });
   }
@@ -352,7 +364,7 @@ export class ClientOrderCreateViewComponent implements OnInit {
         return {
           biomaterialCollectionId: 0,
           expirationDate: inventory.expirationDate,
-          volume: 200,
+          volume: this.biomaterialVolumeMap[+biomaterialId] || 200,
           collectionDate: new Date().toISOString().split('T')[0], // DateOnly format
           biomaterialId: +biomaterialId,
           clientOrderId: 0,
