@@ -36,6 +36,12 @@ interface AnalysisBiomaterialRequirement {
   biomaterial: Biomaterial;
 }
 
+interface SelectedBiomaterial {
+  analysisId: number;
+  biomaterialId: number;
+  biomaterial: Biomaterial;
+}
+
 @Component({
   selector: 'app-client-order-create-view',
   templateUrl: './client-order-create-view.component.html',
@@ -63,11 +69,13 @@ export class ClientOrderCreateViewComponent implements OnInit {
   selectedClient: Client | null = null;
   selectedInventories: number[] = [];
   selectedAnalyses: Analysis[] = [];
+  selectedBiomaterials: SelectedBiomaterial[] = [];
   requiredBiomaterials: Biomaterial[] = [];
   selectedBiomaterial: Biomaterial | null = null;
   biomaterialInventoryMap: {[key: number]: InventoryInLaboratory} = {};
   analysisBiomaterialRequirements: AnalysisBiomaterialRequirement[] = [];
   biomaterialVolumeMap: {[key: number]: number} = {};
+  confirmedOrder: ClientOrder | null = null;
 
   constructor(
     private clientOrderService: ClientOrderService,
@@ -75,40 +83,32 @@ export class ClientOrderCreateViewComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.updateRequiredBiomaterials();
   }
 
-  setTab(tab: string) {
+  setTab(tab: string): void {
     this.activeTab = tab;
   }
 
-  onClientSelected(client: Client) {
+  onClientSelected(client: Client): void {
     this.selectedClient = client;
     this.setTab('analyses');
   }
 
-  updateRequiredBiomaterials() {
-    this.analysisBiomaterialRequirements = [];
+  isBiomaterialSelected(analysisId: number, biomaterialId: number): boolean {
+    return this.selectedBiomaterials.some(
+      sb => sb.analysisId === analysisId && sb.biomaterialId === biomaterialId
+    );
+  }
 
-    // Collect all analysis-biomaterial pairs
-    this.selectedAnalyses.forEach(analysis => {
-      analysis.analysisBiomaterials.forEach(ab => {
-        this.analysisBiomaterialRequirements.push({
-          analysisId: analysis.analysisId,
-          analysisName: analysis.name,
-          biomaterialId: ab.biomaterial.biomaterialId,
-          biomaterial: ab.biomaterial
-        });
-      });
-    });
-
-    // Get unique biomaterials
+  updateRequiredBiomaterialsFromSelection(): void {
+    // Get unique biomaterials from selections
     const biomaterialMap = new Map<number, Biomaterial>();
-    this.analysisBiomaterialRequirements.forEach(req => {
-      const biomaterial = req.biomaterial;
-      if (!biomaterialMap.has(biomaterial.biomaterialId)) {
-        biomaterialMap.set(biomaterial.biomaterialId, biomaterial);
+
+    this.selectedBiomaterials.forEach(sb => {
+      if (!biomaterialMap.has(sb.biomaterialId)) {
+        biomaterialMap.set(sb.biomaterialId, sb.biomaterial);
       }
     });
 
@@ -116,26 +116,29 @@ export class ClientOrderCreateViewComponent implements OnInit {
     this.verifyInventoryAssignments();
   }
 
-  selectBiomaterial(biomaterial: Biomaterial) {
+  updateRequiredBiomaterials(): void {
+    // This method is called when analyses are added/removed
+    // We keep existing biomaterial selections if they're still valid
+
+    // Remove selections for analyses that no longer exist
+    const validAnalysisIds = this.selectedAnalyses.map(a => a.analysisId);
+    this.selectedBiomaterials = this.selectedBiomaterials.filter(sb =>
+      validAnalysisIds.includes(sb.analysisId)
+    );
+
+    this.updateRequiredBiomaterialsFromSelection();
+  }
+
+  selectBiomaterial(biomaterial: Biomaterial): void {
     this.selectedBiomaterial = biomaterial;
   }
 
-  assignInventoryToBiomaterial(biomaterialId: number, inventory: InventoryInLaboratory) {
+  assignInventoryToBiomaterial(biomaterialId: number, inventory: InventoryInLaboratory): void {
     this.biomaterialInventoryMap[biomaterialId] = inventory;
     this.updateSelectedInventories();
   }
 
-  removeInventory(inventoryId: number) {
-    for (const biomaterialId in this.biomaterialInventoryMap) {
-      if (this.biomaterialInventoryMap[biomaterialId].inventoryInLaboratoryId === inventoryId) {
-        delete this.biomaterialInventoryMap[biomaterialId];
-        break;
-      }
-    }
-    this.updateSelectedInventories();
-  }
-
-  updateSelectedInventories() {
+  updateSelectedInventories(): void {
     this.selectedInventories = Object.values(this.biomaterialInventoryMap)
       .map(inv => inv.inventoryInLaboratoryId);
   }
@@ -163,7 +166,7 @@ export class ClientOrderCreateViewComponent implements OnInit {
     });
   }
 
-  verifyInventoryAssignments() {
+  verifyInventoryAssignments(): void {
     const requiredIds = this.requiredBiomaterials.map(b => b.biomaterialId);
     for (const biomaterialId in this.biomaterialInventoryMap) {
       if (!requiredIds.includes(+biomaterialId)) {
@@ -180,11 +183,6 @@ export class ClientOrderCreateViewComponent implements OnInit {
 
   getSelectedInventoryCount(): number {
     return Object.keys(this.biomaterialInventoryMap).length;
-  }
-
-  getInventoryStatusText(biomaterialId: number): string {
-    const inventory = this.biomaterialInventoryMap[biomaterialId];
-    return inventory ? 'Обрано: ' + inventory.inventory.inventoryName : 'Не обрано';
   }
 
   getSelectedInventoryInfo(biomaterialId: number): string {
@@ -219,24 +217,18 @@ export class ClientOrderCreateViewComponent implements OnInit {
   }
 
   removeAnalysis(analysisId: number): void {
+    // Remove analysis from selected analyses
     this.selectedAnalyses = this.selectedAnalyses.filter(a => a.analysisId !== analysisId);
-    this.updateRequiredBiomaterials();
+
+    // Remove all biomaterial selections for this analysis
+    this.selectedBiomaterials = this.selectedBiomaterials.filter(sb => sb.analysisId !== analysisId);
+
+    // Update required biomaterials
+    this.updateRequiredBiomaterialsFromSelection();
   }
 
   get totalPrice(): number {
     return this.selectedAnalyses.reduce((sum, a) => sum + (a.price ?? 0), 0);
-  }
-
-  getRequirementsForBiomaterial(biomaterialId: number): AnalysisBiomaterialRequirement[] {
-    return this.analysisBiomaterialRequirements.filter(req =>
-      req.biomaterialId === biomaterialId
-    );
-  }
-
-  getAnalysisNamesForBiomaterial(biomaterialId: number): string[] {
-    return this.analysisBiomaterialRequirements
-      .filter(req => req.biomaterialId === biomaterialId)
-      .map(req => req.analysisName);
   }
 
   isAnalysisBiomaterialCovered(analysisId: number, biomaterialId: number): boolean {
@@ -261,24 +253,35 @@ export class ClientOrderCreateViewComponent implements OnInit {
       !this.isAnalysisBiomaterialCovered(analysisId, biomaterialId);
   }
 
-  getBiomaterialStatusIcon(analysisId: number, biomaterialId: number): string {
-    if (this.isAnalysisBiomaterialCovered(analysisId, biomaterialId)) {
-      return 'check_circle'; // Selected biomaterial
-    }
-    if (this.isAnalysisCoveredButOptional(analysisId, biomaterialId)) {
-      return 'warning'; // Optional biomaterial
-    }
-    return 'error'; // Required biomaterial (not selected)
-  }
+  toggleBiomaterialSelection(analysisId: number, analysisBiomaterial: any): void {
+    const biomaterialId = analysisBiomaterial.biomaterial.biomaterialId;
+    const biomaterial = analysisBiomaterial.biomaterial;
 
-  getBiomaterialStatusTooltip(analysisId: number, biomaterialId: number): string {
-    if (this.isAnalysisBiomaterialCovered(analysisId, biomaterialId)) {
-      return 'Обрано для цього аналізу';
+    const existingIndex = this.selectedBiomaterials.findIndex(
+      sb => sb.analysisId === analysisId && sb.biomaterialId === biomaterialId
+    );
+
+    if (existingIndex >= 0) {
+      // Remove if already selected
+      this.selectedBiomaterials.splice(existingIndex, 1);
+    } else {
+      // Add if not selected
+      this.selectedBiomaterials.push({
+        analysisId,
+        biomaterialId,
+        biomaterial
+      });
+
+      // Auto-select this biomaterial in the inventory tab
+      this.selectedBiomaterial = biomaterial;
+      // Auto-switch to inventory tab if not already there
+      if (this.activeTab !== 'inventory') {
+        this.setTab('inventory');
+      }
     }
-    if (this.isAnalysisCoveredButOptional(analysisId, biomaterialId)) {
-      return 'Можна використати (аналіз вже має інший біоматеріал)';
-    }
-    return 'Необхідно обрати біоматеріал';
+
+    // Update required biomaterials for inventory selection
+    this.updateRequiredBiomaterialsFromSelection();
   }
 
   canCreateOrder(): boolean {
@@ -287,24 +290,34 @@ export class ClientOrderCreateViewComponent implements OnInit {
     }
 
     // Check if each analysis has at least one biomaterial selected
-    return this.selectedAnalyses.every(analysis => {
-      return analysis.analysisBiomaterials.some(ab =>
-        this.biomaterialInventoryMap[ab.biomaterial.biomaterialId]
-      );
+    const hasAllBiomaterials = this.selectedAnalyses.every(analysis => {
+      return this.selectedBiomaterials.some(sb => sb.analysisId === analysis.analysisId);
     });
+
+    if (!hasAllBiomaterials) {
+      return false;
+    }
+
+    // Check if all selected biomaterials have inventory assigned
+    const allBiomaterialIds = [...new Set(this.selectedBiomaterials.map(sb => sb.biomaterialId))];
+    return allBiomaterialIds.every(biomaterialId =>
+      this.hasInventoryForBiomaterial(biomaterialId)
+    );
   }
 
-  resetOrder() {
+  resetOrder(): void {
     this.selectedClient = null;
     this.selectedAnalyses = [];
+    this.selectedBiomaterials = [];
     this.selectedInventories = [];
     this.requiredBiomaterials = [];
     this.selectedBiomaterial = null;
     this.biomaterialInventoryMap = {};
+    this.biomaterialVolumeMap = {};
     this.activeTab = 'client';
   }
 
-  createOrder() {
+  createOrder(): void {
     if (!this.canCreateOrder()) {
       return;
     }
@@ -402,19 +415,17 @@ export class ClientOrderCreateViewComponent implements OnInit {
     });
   }
 
-  showError(message: string) {
+  showError(message: string): void {
     // Implement your error display logic here
     // Could use a snackbar, toast, or modal
     alert(message); // Simple implementation - replace with your preferred UI
   }
 
-  confirmedOrder: ClientOrder | null = null;
-
-  showOrderConfirmation(order: ClientOrder) {
+  showOrderConfirmation(order: ClientOrder): void {
     this.confirmedOrder = order;
   }
 
-  closeConfirmation() {
+  closeConfirmation(): void {
     this.confirmedOrder = null;
   }
 }

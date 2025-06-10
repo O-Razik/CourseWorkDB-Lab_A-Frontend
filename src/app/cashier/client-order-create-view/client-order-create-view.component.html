@@ -36,9 +36,32 @@
             @if (selectedAnalyses.length > 0){
               <div class="selected-list">
                 <div class="selected-item" *ngFor="let analysis of selectedAnalyses">
-                  <div class="item-info">
-                    <span class="item-name">{{ analysis.name }} </span>
-                    <span class="item-price">{{ analysis.price }} грн</span>
+                  <div>
+                    <div class="item-info">
+                      <span class="item-name">{{ analysis.name }} </span>
+                      <span class="item-price">{{ analysis.price }} грн</span>
+                    </div>
+                    <div>
+                      <!-- Show available biomaterials with selection ability -->
+                      <div class="biomaterials-section">
+                        <div class="biomaterial-chips">
+                          @if (analysis.analysisBiomaterials && analysis.analysisBiomaterials.length > 0) {
+                            <div *ngFor="let analysisBiomaterial of analysis.analysisBiomaterials"
+                                 class="biomaterial-chip"
+                                 [class.selected]="isBiomaterialSelected(analysis.analysisId, analysisBiomaterial.biomaterial.biomaterialId)"
+                                 [class.has-inventory]="hasInventoryForBiomaterial(analysisBiomaterial.biomaterial.biomaterialId)"
+                                 (click)="toggleBiomaterialSelection(analysis.analysisId, analysisBiomaterial)">
+                              <p>{{ analysisBiomaterial.biomaterial.biomaterialName }}</p>
+                              @if (hasInventoryForBiomaterial(analysisBiomaterial.biomaterial.biomaterialId)) {
+                                <mat-icon class="chip-icon">check_circle</mat-icon>
+                              }
+                            </div>
+                          } @else {
+                            <span class="no-biomaterials">Без біоматеріалів</span>
+                          }
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <button class="remove-btn" (click)="removeAnalysis(analysis.analysisId); $event.stopPropagation()">
                     <mat-icon>cancel</mat-icon>
@@ -71,7 +94,8 @@
             <h4>Необхідні біоматеріали</h4>
             <!-- Replace the biomaterial-requirements section with this -->
             <div class="biomaterial-requirements">
-              <div *ngFor="let biomaterial of requiredBiomaterials"
+              @if (requiredBiomaterials.length > 0){
+                <div *ngFor="let biomaterial of requiredBiomaterials"
                    class="biomaterial-requirement"
                    [class.active]="selectedBiomaterial?.biomaterialId === biomaterial.biomaterialId"
                    (click)="selectBiomaterial(biomaterial)">
@@ -79,21 +103,6 @@
                   <span class="biomaterial-name">{{ biomaterial.biomaterialName }}</span>
                   <span class="inventory-status" [class.complete]="hasInventoryForBiomaterial(biomaterial.biomaterialId)">
                     {{ hasInventoryForBiomaterial(biomaterial.biomaterialId) ? 'Обрано' : 'Не обрано' }}
-                  </span>
-                </div>
-
-                <!-- Show which analyses require this biomaterial -->
-                <div class="required-by">
-                  <span *ngFor="let req of getRequirementsForBiomaterial(biomaterial.biomaterialId)"
-                        [class.covered]="isAnalysisBiomaterialCovered(req.analysisId, req.biomaterialId)"
-                        [class.optional]="isAnalysisCoveredButOptional(req.analysisId, req.biomaterialId)">
-                    <mat-icon class="status-icon">
-                      {{ getBiomaterialStatusIcon(req.analysisId, req.biomaterialId) }}
-                    </mat-icon>
-                    {{ req.analysisName }}
-                    <span class="status-tooltip">
-                      {{ getBiomaterialStatusTooltip(req.analysisId, req.biomaterialId) }}
-                    </span>
                   </span>
                 </div>
 
@@ -125,6 +134,11 @@
                   </div>
                 }
               </div>
+              } @else {
+                <div class="empty-state">
+                  <p>Біоматеріали ще не вибрані</p>
+                </div>
+              }
             </div>
           </div>
         </div>
