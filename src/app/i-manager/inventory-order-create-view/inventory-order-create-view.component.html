@@ -44,7 +44,13 @@
                   <button class="quantity-btn" (click)="decreaseQuantity(item); $event.stopPropagation()">
                     <mat-icon>remove</mat-icon>
                   </button>
-                  <span class="quantity">{{ item.quantity }}</span>
+                  <input type="number"
+                         class="quantity-input"
+                         [value]="item.quantity"
+                         (change)="updateQuantity(item, $event)"
+                         min="1"
+                         (click)="$event.stopPropagation()"
+                         (keydown)="$event.stopPropagation()">
                   <button class="quantity-btn" (click)="increaseQuantity(item); $event.stopPropagation()">
                     <mat-icon>add</mat-icon>
                   </button>
