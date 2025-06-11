@@ -1,5 +1,5 @@
 // Updated Component Class
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Supplier } from '../../data/models/supplier';
 import { Inventory } from '../../data/models/inventory';
 import { InventoryOrderService } from '../../data/services/inventory-order.service';
@@ -38,7 +38,7 @@ interface SelectedInventoryItem {
   styleUrl: './inventory-order-create-view.component.css',
   standalone: true,
 })
-export class InventoryOrderCreateViewComponent {
+export class InventoryOrderCreateViewComponent implements OnInit {
   activeTab = 'supplier';
   inventoryItems: Inventory[] = [];
   suppliers: Supplier[] = [];
@@ -105,6 +105,26 @@ export class InventoryOrderCreateViewComponent {
     this.selectedInventoryItems = [];
   }
 
+  updateQuantity(item: SelectedInventoryItem, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let newQuantity = parseInt(input.value, 10);
+
+    // Handle invalid/empty input
+    if (isNaN(newQuantity)) {
+      input.value = item.quantity.toString();
+      return;
+    }
+
+    // Handle values less than 1
+    if (newQuantity < 1) {
+      this.removeInventoryItem(item.inventory.inventoryId);
+      return;
+    }
+
+    // Update quantity
+    item.quantity = newQuantity;
+  }
+
   increaseQuantity(item: SelectedInventoryItem) {
     item.quantity += 1;
   }
@@ -156,7 +176,7 @@ export class InventoryOrderCreateViewComponent {
       fullprice: this.totalPrice,
       inventoryInOrders: this.selectedInventoryItems.map(item => ({
         quantity: item.quantity,
-        price: item.inventory.price ?? 0,
+        price: item.inventory.price != null ? item.inventory.price * item.quantity : 0,
         inventoryId: item.inventory.inventoryId,
         inventory: {
           inventoryId: item.inventory.inventoryId,
