@@ -59,6 +59,11 @@ export class AdminPageComponent {
       icon: 'assignment_turned_in'
     },
     {
+      path: '/admin/inventory',
+      title: 'Інвентар',
+      icon: 'vaccines',
+    },
+    {
       path: '/admin/laboratory-inventory',
       title: 'Лабораторні запаси',
       icon: 'science'

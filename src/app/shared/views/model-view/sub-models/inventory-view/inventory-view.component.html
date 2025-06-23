@@ -1,9 +1,54 @@
+<!-- inventory-view.component.html -->
 <div class="panel">
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
   <div class="panel-header">
-    <h3>{{inventory.inventoryName}}</h3>
+    @if (!isEditMode) {
+      <h3>{{ inventory.inventoryName }}</h3>
+    } @else {
+      <input [(ngModel)]="editedInventoryName"
+             class="name-input"
+             placeholder="Inventory name"
+             [disabled]="!isEditPerm">
+    }
   </div>
-  <button class="price" (click)="onClick()">
-    <span class="price-value">{{ inventory.price }}</span>
-    <span class="price-currency"> грн</span>
-  </button>
+
+  <div class="price-section">
+    @if (!isEditMode) {
+      <button class="price" (click)="onClick()">
+        <span class="price-value">{{ inventory.price }}</span>
+        <span class="price-currency"> грн</span>
+      </button>
+    } @else {
+      <input type="number"
+             [(ngModel)]="editedPrice"
+             class="price-input"
+             placeholder="Price">
+    }
+  </div>
+
+  @if (canEdit) {
+    <div class="action-buttons">
+      @if (!isEditMode) {
+        <button class="edit-button" (click)="toggleEdit()">Edit</button>
+      } @else {
+        <button class="save-button" (click)="onSave()" [disabled]="isLoading">
+          @if (isLoading) {
+            <span class="spinner"></span>
+          } @else {
+            @if (isEditPerm){
+              <mat-icon>save</mat-icon>
+            } @else {
+              <mat-icon>check</mat-icon>
+            }
+          }
+        </button>
+        <button class="cancel-button" (click)="onCancel()">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      }
+    </div>
+  }
 </div>

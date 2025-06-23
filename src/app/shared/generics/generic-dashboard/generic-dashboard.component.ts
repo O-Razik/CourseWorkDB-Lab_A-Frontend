@@ -25,6 +25,7 @@ export interface DashboardCard {
 export class GenericDashboardComponent {
   @Input() cards: DashboardCard[] = [];
   @Input() columns = 4;
+  @Input() rowHeight: string = '240';
 
   // Consistent color for all cards
   readonly cardColor = '#5788ec';

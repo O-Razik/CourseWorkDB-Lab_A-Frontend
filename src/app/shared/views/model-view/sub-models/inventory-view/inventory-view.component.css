@@ -1,6 +1,8 @@
-.panel{
+/* inventory-view.component.css */
+.panel {
+  position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 10px;
   margin: 8px;
   padding: 16px;
@@ -8,46 +10,167 @@
   border-radius: 10px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 130px;
 }
 
-.panel-header{
-  margin-bottom: 5px;
-  padding-left: 3px;
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
-button{
-  padding: 15px;
-  background-color: #80a9da;
-  border: 3px solid #80a9da;
-  border-radius: 10px;
-  color: white;
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+h3 {
+  max-width: 140px;
+  overflow-x: scroll;
+}
+
+button {
+  padding: 8px 16px;
+  border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: all 0.2s;
+  border: none;
 }
 
-button:hover{
-  background-color: #007bff;
-  border-color: #007bff;
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
-button:active{
-  background-color: #0056b3;
-  border-color: #0056b3;
-  transform: scale(0.95);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.1s, border-color 0.1s;
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-button:disabled{
-  background-color: #ccc;
-  border-color: #ccc;
+button.price{
+  width: 100%;
+}
+
+.edit-button {
+  background-color: #6c757d;
+  color: white;
+  width: 100%;
+}
+
+.save-button, .cancel-button {
+  width: 100%;
+  color: white;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-button {
+  background-color: #28a745;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+}
+
+button:disabled {
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Rest of your existing styles... */
+
+/* Input styles */
+.name-input, .price-input {
+  padding: 12px;
+  border: 2px solid #80a9da;
+  border-radius: 10px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.name-input {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.price-input {
+  text-align: center;
+  font-weight: bold;
+}
+
+.name-input:focus, .price-input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Edit actions */
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.action-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.price-section {
+  display: flex;
+  justify-content: center;
+}
+
+.price-edit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 @media (max-width: 600px) {
-  button{
+  .edit-actions {
+    flex-direction: column;
+  }
+
+  .action-btn {
     width: 100%;
-    margin-top: 10px;
+  }
+
+  .price-input {
+    width: 100%;
   }
 }

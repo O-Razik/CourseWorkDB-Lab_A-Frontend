@@ -11,6 +11,8 @@
 .dashboard-grid {
   max-width: 1200px;
   width: 100%;
+  overflow-y: auto;
+  padding: 20px;
 }
 
 .dashboard-card {

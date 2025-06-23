@@ -38,6 +38,11 @@ export class IManagerPageComponent {
       icon: 'science'
     },
     {
+      path: '/i-manager/inventory',
+      title: 'Інвентар',
+      icon: 'vaccines'
+    },
+    {
       path: '/i-manager/laboratories',
       title: 'Лабораторії',
       icon: 'store'

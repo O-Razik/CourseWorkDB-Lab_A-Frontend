@@ -28,6 +28,7 @@ import {
 import {
   AnalysisBiomaterialCreateViewComponent
 } from './shared/generics/object-create/analysis-biomaterial-create-view/analysis-biomaterial-create-view.component';
+import {InventoryListViewComponent} from './shared/views/list-views/inventory-list-view/inventory-list-view.component';
 
 export const routes: Routes = [
   {
@@ -64,6 +65,7 @@ export const routes: Routes = [
       { path: 'clients', component: ClientListViewComponent, data: { title: 'Клієнти' } },
       { path: 'analysis-results', component: AnalysisResultListViewComponent, data: { title: 'Результати аналізів' } },
       { path: 'laboratory-inventory', component: InventoryInLaboratoryListViewComponent, data: { title: 'Інвентар лабораторій' } },
+      { path: 'inventory', component: InventoryListViewComponent, data: { title: 'Інвентар' } },
       { path: 'inventory-orders', component: InventoryOrderListViewComponent, data: { title: 'Замовлення інвентарю' } },
       { path: 'biomaterial-collections', component: BiomaterialCollectionListViewComponent, data: { title: 'Збори біоматеріалів' } },
       { path: 'biomaterial-deliveries', component: BiomaterialDeliveryListViewComponent, data: { title: 'Доставки біоматеріалів' } },
@@ -96,7 +98,8 @@ export const routes: Routes = [
       { path: 'dashboard', component: IManagerDashboardComponent, data: { title: 'Панель інвентарного менеджера' } },
       { path: 'inventory-orders', component: InventoryOrderListViewComponent, data: { title: 'Замовлення інвентарю' } },
       { path: 'laboratory-inventory', component: InventoryInLaboratoryListViewComponent, data: { title: 'Інвентар лабораторій' } },
-      { path: 'laboratories', component: LaboratoryListViewComponent, data: { title: 'Лабораторії' } }
+      { path: 'laboratories', component: LaboratoryListViewComponent, data: { title: 'Лабораторії' } },
+      { path: 'inventory', component: InventoryListViewComponent, data: { title: 'Інвентар' } },
     ]
   },
   {
