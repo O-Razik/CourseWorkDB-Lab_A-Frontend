@@ -9,7 +9,7 @@ import { AuthService } from '../../data/services/auth.service';
 import { MatIcon } from '@angular/material/icon';
 import { NgIf, NgFor } from '@angular/common';
 import { SupplierSubListViewComponent } from '../../shared/views/sub-list-views/supplier-sub-list-view/supplier-sub-list-view.component';
-import { InventorySubListViewComponent } from '../../shared/views/sub-list-views/inventory-sub-list-view/inventory-sub-list-view.component';
+import { InventorySubListViewComponent, Mode } from '../../shared/views/sub-list-views/inventory-sub-list-view/inventory-sub-list-view.component';
 import { InventoryOrderViewComponent } from '../../shared/views/model-view/process-models/inventory-order-view/inventory-order-view.component';
 import {InventoryOrder} from '../../data/models/inventory-order';
 import {
@@ -46,6 +46,7 @@ export class InventoryOrderCreateViewComponent implements OnInit {
   selectedInventoryItems: SelectedInventoryItem[] = [];
   showConfirmation = false;
   confirmedOrder: InventoryOrder | null = null;
+  mode: Mode = Mode.SubList;
 
   constructor(
     private supplierService: SupplierService,

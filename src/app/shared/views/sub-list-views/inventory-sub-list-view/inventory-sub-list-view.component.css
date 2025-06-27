@@ -1,5 +1,124 @@
+.inventory-container {
+  padding: 16px;
+  position: relative;
+  min-height: 300px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none;
+}
+
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.create-panel {
+  position: fixed;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 600px;
+  background: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  transition: bottom 0.3s ease-out;
+  padding: 24px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.create-panel.visible {
+  bottom: 0;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.create-form h2 {
+  margin: 0 0 16px 0;
+  color: #333;
+  text-align: center;
+}
+
+input{
+  width: 100%;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+}
+
 .empty-list-message {
   padding: 16px;
   text-align: center;
   color: #666;
+  font-size: 1.1em;
+}
+
+mat-grid-tile {
+  transition: transform 0.2s;
+}
+
+mat-grid-tile:hover {
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+button mat-icon {
+  margin-right: 8px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button.add-inventory {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 80%;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-inventory:hover {
+  border-color: #3f51b5;
+  background-color: rgba(168, 179, 227, 0.96);
+}
+
+button.add-inventory:active {
+  transform: scale(0.98);
+  background-color: rgba(168, 179, 227, 0.8);
+}
+
+.add-icon {
+  color: #3f51b5;
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
 }

@@ -33,7 +33,7 @@ export class AdminDashboardComponent {
       route: '/admin/laboratories'
     },
     {
-      title: 'Замовлення',
+      title: 'Замовлення клієнтів',
       cols: 1,
       rows: 1,
       content: 'Управління клієнтськими замовленнями',
@@ -66,6 +66,14 @@ export class AdminDashboardComponent {
       route: '/admin/analysis-results'
     },
     */
+    {
+      title: 'Інвентар',
+      cols: 1,
+      rows: 1,
+      content: 'Управління загальними типами інвентаря',
+      icon: 'vaccines',
+      route: '/admin/inventory'
+    },
     {
       title: 'Лабораторні запаси',
       cols: 1,

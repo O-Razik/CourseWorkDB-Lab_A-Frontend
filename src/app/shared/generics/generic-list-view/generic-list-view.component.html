@@ -24,6 +24,14 @@
         <ng-container *ngTemplateOutlet="itemListTemplate || defaultItemListTemplate;
                context: {$implicit: filteredItems, searchTerm: searchTerm, trackByFn: trackByFn}">
         </ng-container>
+
+        @if (canCreate && !filterShown) {
+          <!-- Create Button (always visible) -->
+          <button class="create-button empty-list-message" (click)="openCreatePanel()">
+            <mat-icon>add</mat-icon>
+            {{ createButtonText }}
+          </button>
+        }
       </div>
     </div>
   </div>

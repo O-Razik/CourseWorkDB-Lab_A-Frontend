@@ -14,23 +14,31 @@ import {
   standalone: true,
 })
 export class IManagerDashboardComponent {
-  columns: number = 2;
+  columns: number = 3;
   cards: DashboardCard[] = [
     {
       title: 'Замовлення запасів',
-      cols: 2,
-      rows: 1,
+      cols: 1,
+      rows: 2,
       content: 'Управління замовленнями запасів',
       icon: 'inventory',
       route: '/i-manager/inventory-orders'
     },
     {
       title: 'Лабораторні запаси',
-      cols: 1,
+      cols: 2,
       rows: 1,
       content: 'Перегляд лабораторних запасів',
-      icon: 'inventory',
+      icon: 'science',
       route: '/i-manager/laboratory-inventory'
+    },
+    {
+      title: 'Інвентар',
+      cols: 1,
+      rows: 1,
+      content: 'Управління загальними типами інвентаря',
+      icon: 'vaccines',
+      route: '/i-manager/inventory'
     },
     {
       title: 'Лабораторії',

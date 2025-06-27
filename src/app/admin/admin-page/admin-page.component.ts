@@ -61,6 +61,11 @@ export class AdminPageComponent {
     },
     */
     {
+      path: '/admin/inventory',
+      title: 'Інвентар',
+      icon: 'vaccines',
+    },
+    {
       path: '/admin/laboratory-inventory',
       title: 'Лабораторні запаси',
       icon: 'science'

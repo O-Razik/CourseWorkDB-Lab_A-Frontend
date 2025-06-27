@@ -93,6 +93,7 @@
       title="Доступний інвентар">
       <app-inventory-sub-list-view
         [inventories]="inventoryItems"
+        [mode]="mode"
         (inventorySelected)="addInventoryItem($event)">
       </app-inventory-sub-list-view>
     </app-bp-create-tab-content>

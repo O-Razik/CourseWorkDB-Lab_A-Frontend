@@ -137,6 +137,6 @@ export class ClientListViewComponent implements OnInit {
   }
 
   canCreate() {
-    return this.authService.getCurrentUserRole() === UserRole.ADMIN;
+    return this.authService.getCurrentUserRole() === UserRole.ADMIN || this.authService.getCurrentUserRole() === UserRole.CASHIER;
   }
 }

@@ -1,11 +1,57 @@
-<app-generic-sub-list-view [items]="inventories" [trackByFn]="trackByInventoryId">
-  <ng-template #itemListTemplate let-inventories>
-    <mat-grid-list [cols]="cols" rowHeight="120px" gutterSize="8px">
-      @for (inventory of inventories; track trackByInventoryId($index, inventory)) {
-        <mat-grid-tile>
-          <app-inventory-view [inventory]="inventory" (click)="selectInventory(inventory)"></app-inventory-view>
-        </mat-grid-tile>
-      }
-    </mat-grid-list>
-  </ng-template>
-</app-generic-sub-list-view>
+<!-- inventory-sub-list-view.component.html -->
+<div class="inventory-container">
+  <app-generic-sub-list-view [items]="inventories" [trackByFn]="trackByInventoryId">
+    <ng-template #itemListTemplate let-inventories>
+      <mat-grid-list [cols]="cols" rowHeight="180px" gutterSize="8px">
+        @for (inventory of inventories; track trackByInventoryId($index, inventory)) {
+          <mat-grid-tile>
+            <app-inventory-view
+              [inventory]="inventory"
+              [canEdit]="mode !== Mode.Display"
+              [isEditPerm]="mode === Mode.List"
+              (inventorySelected)="selectInventory($event)"
+            ></app-inventory-view>
+          </mat-grid-tile>
+        }
+        @if (mode === Mode.List) {
+          <mat-grid-tile>
+            <button class="add-inventory" (click)="startCreating()">
+              <mat-icon class="add-icon">add</mat-icon>
+            </button>
+          </mat-grid-tile>
+        }
+      </mat-grid-list>
+    </ng-template>
+  </app-generic-sub-list-view>
+
+  @if (isCreating) {
+    <div class="overlay"></div>
+    <div class="create-panel">
+      <div class="create-form">
+        <h2>Створити новий інвентар</h2>
+        <mat-form-field appearance="outline">
+          <mat-label>Назва інвентарю</mat-label>
+          <input matInput [(ngModel)]="newInventory.inventoryName" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Ціна</mat-label>
+          <input matInput type="number" [(ngModel)]="newInventory.price" required>
+          <span matSuffix>грн</span>
+        </mat-form-field>
+        <div class="form-actions">
+          <button mat-stroked-button (click)="cancelCreate()">Скасувати</button>
+          <button mat-flat-button color="primary" (click)="createInventory()"
+                  [disabled]="!newInventory.inventoryName || newInventory.price <= 0">
+            Створити
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (inventories.length === 0 && !isCreating) {
+    <div class="empty-list-message">
+      Інвентар не знайдено. @if (mode === Mode.List) {<span>Натисніть "+", щоб додати.</span>}
+    </div>
+  }
+</div>
