@@ -56,6 +56,7 @@ export class AdminDashboardComponent {
       icon: 'people',
       route: '/admin/clients'
     },
+    /*
     {
       title: 'Результати аналізів',
       cols: 1,
@@ -64,6 +65,7 @@ export class AdminDashboardComponent {
       icon: 'assignment_turned_in',
       route: '/admin/analysis-results'
     },
+    */
     {
       title: 'Інвентар',
       cols: 1,
