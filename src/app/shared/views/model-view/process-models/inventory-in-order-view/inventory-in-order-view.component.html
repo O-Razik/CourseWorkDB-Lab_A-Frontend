@@ -27,14 +27,34 @@
                   {{ delivery.deliveryDate | date:'dd.MM.yyyy' }}
                 </span>
                 <span class="delivery-location">
-                  {{ delivery.laboratoryFullAddress || 'Адреса не вказана' }}
+                  @if (delivery.laboratoryFullAddress != ', ') {
+                    {{ delivery.laboratoryFullAddress }}
+                  } @else {
+                    Адреса не вказана
+                  }
                 </span>
               </div>
               <div class="delivery-status-group">
                 <span class="delivery-quantity">{{ delivery.quantity }} шт.</span>
-                <span class="delivery-status">
-                  {{ delivery.status.statusName }}
-                </span>
+                @if (delivery.status.statusId === 3) {
+                  <span class="delivery-status completed">
+                    {{ delivery.status.statusName }}
+                  </span>
+                } @else if (delivery.status.statusId === 4) {
+                  <span class="delivery-status cancelled">
+                    {{ delivery.status.statusName }}
+                  </span>
+                } @else {
+                  <mat-form-field appearance="fill" class="status-select">
+                    <mat-label>Статус</mat-label>
+                    <mat-select [value]="delivery.status.statusId"
+                                (selectionChange)="changeDeliveryStatus(delivery, $event.value)">
+                      <mat-option *ngFor="let status of statuses" [value]="status.statusId">
+                        {{status.statusName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                }
               </div>
             </div>
           }
@@ -44,7 +64,6 @@
           </div>
         }
 
-        <!-- Add delivery form (shown only when can add more deliveries) -->
         @if (canAddMoreDeliveries() && showAddDeliveryForm) {
           <div class="add-delivery-form">
             <form [formGroup]="deliveryForm" class="delivery-form">
@@ -75,8 +94,7 @@
           </div>
         }
 
-        <!-- Add delivery button (shown when can add but form isn't visible) -->
-        @if (canAddMoreDeliveries() && !showAddDeliveryForm) {
+        @if (canCreateDelivery() && !showAddDeliveryForm) {
           <div class="add-delivery-button">
             <button mat-raised-button color="primary" (click)="startAddDelivery()">
               <mat-icon>add</mat-icon>

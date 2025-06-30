@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import { environment } from '../environments/environment';
 import { InventoryOrder } from '../models/inventory-order';
 import { InventoryInOrder } from '../models/inventory-in-order';
 import {InventoryOrderFilter} from '../filters/inventory-order-filter';
+import {ClientOrder} from '../models/client-order';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,15 @@ export class InventoryOrderService {
   // Update existing inventory order
   updateInventoryOrder(order: InventoryOrder): Observable<InventoryOrder> {
     return this.http.put<InventoryOrder>(this.baseUrl, order);
+  }
+
+  cancelOrder(id: number): Observable<InventoryOrder> {
+    return this.http.patch<InventoryOrder>(`${this.baseUrl}/cancel/${id}`, {}).pipe(
+      catchError(err => {
+        console.error('Cancel failed', err);
+        return throwError(() => new Error('Скасування не вдалося.'));
+      })
+    );
   }
 
   // Delete inventory order

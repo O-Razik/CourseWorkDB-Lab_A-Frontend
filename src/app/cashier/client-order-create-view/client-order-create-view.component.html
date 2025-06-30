@@ -121,10 +121,12 @@
                     <input type="number"
                            id="volume-{{biomaterial.biomaterialId}}"
                            class="volume-input"
-                           min="100"
-                           max="1000"
+                           min="10"
+                           max="5000"
                            [(ngModel)]="biomaterialVolumeMap[biomaterial.biomaterialId]"
                            (click)="$event.stopPropagation()"
+                           (keydown)="preventInvalidInput($event)"
+                           (change)="validateVolume(biomaterial.biomaterialId)"
                            placeholder="Введіть об'єм">
                   </div>
                 }

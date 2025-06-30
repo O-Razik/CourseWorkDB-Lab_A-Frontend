@@ -428,4 +428,21 @@ export class ClientOrderCreateViewComponent implements OnInit {
   closeConfirmation(): void {
     this.confirmedOrder = null;
   }
+
+  preventInvalidInput(event: KeyboardEvent) {
+    const forbiddenKeys = ['e', 'E', '+', '-', '.'];
+    if (forbiddenKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  validateVolume(biomaterialId: number) {
+    const inputValue = this.biomaterialVolumeMap[biomaterialId];
+
+    if (inputValue < 1) {
+      this.biomaterialVolumeMap[biomaterialId] = 1;
+    } else if (inputValue > 5000) {
+      this.biomaterialVolumeMap[biomaterialId] = 5000;
+    }
+  }
 }

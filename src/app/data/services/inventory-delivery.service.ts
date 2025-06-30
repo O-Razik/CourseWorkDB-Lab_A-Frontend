@@ -96,6 +96,11 @@ export class InventoryDeliveryService {
     return this.http.put<InventoryDelivery>(this.baseUrl, delivery);
   }
 
+  // Update inventory delivery status
+  updateInventoryDeliveryStatus(id: number, statusId: number): Observable<InventoryDelivery> {
+    return this.http.patch<InventoryDelivery>(`${this.baseUrl}/${id}/status/${statusId}`, null);
+  }
+
   // Delete inventory delivery
   deleteInventoryDelivery(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);

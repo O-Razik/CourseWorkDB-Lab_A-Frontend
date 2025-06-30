@@ -20,6 +20,8 @@ import {Laboratory} from '../../../../../data/models/laboratory';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {InventoryDeliveryService} from '../../../../../data/services/inventory-delivery.service';
 import {LaboratoryService} from '../../../../../data/services/laboratory.service';
+import {Status} from '../../../../../data/models/status';
+import {StatusService} from '../../../../../data/services/status.service';
 
 @Component({
   selector: 'app-inventory-in-order-view',
@@ -58,15 +60,19 @@ export class InventoryInOrderViewComponent implements OnInit {
   deliveryForm!: FormGroup;
   isSubmitting = false;
 
+  statuses: Status[] = [];
+
   constructor(
     private laboratoryService: LaboratoryService,
     private inventoryDeliveryService: InventoryDeliveryService,
+    private statusService: StatusService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.initializeForm();
     this.loadLaboratories();
+    this.loadStatuses();
   }
 
   initializeForm(): void {
@@ -92,18 +98,42 @@ export class InventoryInOrderViewComponent implements OnInit {
     });
   }
 
+  loadStatuses(): void {
+    this.statusService.getStatuses().subscribe({
+      next: (statuses) => this.statuses = statuses,
+      error: (err) => {
+        console.error('Failed to load statuses', err);
+        this.snackBar.open('Помилка завантаження статусів', 'Закрити', {
+          duration: 3000
+        });
+      }
+    });
+  }
+
   canAddMoreDeliveries(): boolean {
+    return this.remainingQuantity() > 0;
+  }
+
+  canCreateDelivery(): boolean {
     return this.remainingQuantity() > 0;
   }
 
   remainingQuantity(): number {
     if (!this.inventoryInOrder) return 0;
 
-    const deliveredQuantity = this.inventoryInOrder.inventoryDeliveries?.reduce(
-      (sum, delivery) => sum + delivery.quantity, 0
-    ) || 0;
+    const deliveredQuantity = this.inventoryInOrder.inventoryDeliveries
+      ?.filter((delivery: InventoryDelivery) => delivery.statusId !== 4)
+      .reduce((sum: number, delivery: InventoryDelivery) => sum + delivery.quantity, 0) || 0;
 
     return this.inventoryInOrder.quantity - deliveredQuantity;
+  }
+
+  getCancelledQuantity(): number {
+    if (!this.inventoryInOrder || !this.inventoryInOrder.inventoryDeliveries) return 0;
+
+    return this.inventoryInOrder.inventoryDeliveries
+      .filter((delivery: InventoryDelivery) => delivery.statusId === 4)
+      .reduce((sum: number, delivery: InventoryDelivery) => sum + delivery.quantity, 0);
   }
 
   startAddDelivery(): void {
@@ -142,7 +172,7 @@ export class InventoryInOrderViewComponent implements OnInit {
       inventoryInLaboratory: {
         inventoryInLaboratoryId: 0,
         expirationDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(),
-        quantity: formValue.quantity,
+        quantity: 0,
         inventoryId: this.inventoryInOrder.inventory.inventoryId,
         laboratoryId: formValue.laboratoryId,
         inventory: {
@@ -197,4 +227,30 @@ export class InventoryInOrderViewComponent implements OnInit {
       }
     });
   }
+
+  changeDeliveryStatus(delivery: InventoryDelivery, newStatusId: number): void {
+    if (delivery.status.statusId === newStatusId) return;
+
+    this.inventoryDeliveryService.updateInventoryDeliveryStatus(delivery.inventoryDeliveryId, newStatusId)
+      .subscribe({
+        next: (updated) => {
+          // Оновити статус у поточному об'єкті
+          const newStatus = this.statuses.find(s => s.statusId === newStatusId);
+          if (newStatus) {
+            delivery.status = newStatus;
+          }
+
+          this.snackBar.open('Статус доставки оновлено', 'Закрити', {
+            duration: 3000
+          });
+        },
+        error: (err) => {
+          console.error('Failed to update status', err);
+          this.snackBar.open('Не вдалося оновити статус доставки', 'Закрити', {
+            duration: 3000
+          });
+        }
+      });
+  }
+
 }
