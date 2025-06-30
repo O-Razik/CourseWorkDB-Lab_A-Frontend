@@ -42,13 +42,11 @@ export class CashierPageComponent {
       icon: 'store',
       path: '/cashier/laboratories'
     },
-    /*
     {
       title: 'Результати аналізів',
       icon: 'assignment',
       path: '/cashier/analysis-results'
     },
-    */
     {
       title: 'Лабораторні запаси',
       icon: 'inventory',

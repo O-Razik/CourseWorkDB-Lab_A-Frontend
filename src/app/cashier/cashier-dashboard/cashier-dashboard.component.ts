@@ -32,7 +32,6 @@ export class CashierDashboardComponent {
       icon: 'biotech',
       route: '/cashier/analyses'
     },
-    /*
     {
       title: 'Результати аналізів',
       cols: 1,
@@ -41,11 +40,10 @@ export class CashierDashboardComponent {
       icon: 'assignment',
       route: '/cashier/analysis-results'
     },
-    */
     {
       title: 'Лабораторії',
       cols: 1,
-      rows: 2,
+      rows: 1,
       content: 'Перегляд лабораторій',
       icon: 'store',
       route: '/cashier/laboratories'
@@ -56,11 +54,10 @@ export class CashierDashboardComponent {
       rows: 1,
       content: 'Перегляд лабораторних запасів',
       icon: 'inventory',
-      route: '/cashier/laboratory-inventory'
     },
     {
       title: 'Клієнти',
-      cols: 2,
+      cols: 1,
       rows: 1,
       content: 'Перегляд інформації про клієнтів',
       icon: 'people',

@@ -53,13 +53,11 @@ export class AdminPageComponent {
       title: 'Клієнти',
       icon: 'people'
     },
-    /*
     {
       path: '/admin/analysis-results',
       title: 'Результати аналізів',
       icon: 'assignment_turned_in'
     },
-    */
     {
       path: '/admin/inventory',
       title: 'Інвентар',
