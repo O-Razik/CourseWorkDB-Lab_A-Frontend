@@ -15,6 +15,7 @@ import {AnalysisResultViewComponent} from '../analysis-result-view/analysis-resu
 import {MatIconButton} from '@angular/material/button';
 import {AnalysisResult} from '../../../../../data/models/analysis-result';
 import {OrderAnalysis} from '../../../../../data/models/order-analysis';
+import {ClientOrderService} from '../../../../../data/services/client-order.service';
 
 @Component({
   selector: 'app-order-view',
@@ -47,6 +48,9 @@ export class OrderViewComponent {
   selectedAnalysisResults: AnalysisResult[] | null = null;
   selectedAnalysisFor: number | null = null;
 
+  constructor(private clientOrderService: ClientOrderService) {
+  }
+
   showAnalysisResults(results: AnalysisResult[], orderAnalysis: OrderAnalysis): void {
     this.selectedOrderAnalysis = orderAnalysis;
     this.selectedAnalysisResults = results;
@@ -67,4 +71,34 @@ export class OrderViewComponent {
       default: return 'status-default';
     }
   }
+
+  showCancelOption = false;
+
+  toggleCancelOption(): void {
+    if (this.canBeCancelled()) {
+      this.showCancelOption = !this.showCancelOption;
+    }
+  }
+
+  canBeCancelled(): boolean {
+    return this.order?.status?.statusName?.toLowerCase() !== 'завершений';
+  }
+
+  cancelOrder(event: Event): void {
+    event.stopPropagation();
+    this.showCancelOption = false;
+
+    if (!this.canBeCancelled()) return;
+
+    this.clientOrderService.cancelOrder(this.order.clientOrderId).subscribe({
+      next: (updatedOrder) => {
+        this.order.status = updatedOrder.status;
+      },
+      error: (err) => {
+        console.error('Failed to cancel order', err);
+        alert('Не вдалося скасувати замовлення.');
+      }
+    });
+  }
+
 }

@@ -120,6 +120,10 @@ mat-panel-description{
   background-color: #4caf50;
 }
 
+.delivery-status.cancelled {
+  background-color: #f44336;
+}
+
 .no-items {
   display: flex;
   align-items: center;
@@ -165,4 +169,10 @@ mat-panel-description{
   border: 1px solid #bbdefb;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
+}
+
+.status-select {
+  width: 160px;
+  font-size: 12px;
+  margin-left: 8px;
 }

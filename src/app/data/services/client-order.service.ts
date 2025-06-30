@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {forkJoin, map, Observable, of, switchMap} from 'rxjs';
+import {catchError, forkJoin, map, Observable, of, switchMap, throwError} from 'rxjs';
 import {environment} from '../environments/environment';
 
 import {ClientOrder} from '../models/client-order';
@@ -76,6 +76,16 @@ export class ClientOrderService {
   updateClientOrder(clientOrder: ClientOrder): Observable<ClientOrder> {
     return this.http.put<ClientOrder>(`${this.baseUrl}`, clientOrder);
   }
+
+  cancelOrder(id: number): Observable<ClientOrder> {
+    return this.http.patch<ClientOrder>(`${this.baseUrl}/cancel/${id}`, {}).pipe(
+      catchError(err => {
+        console.error('Cancel failed', err);
+        return throwError(() => new Error('Скасування не вдалося.'));
+      })
+    );
+  }
+
 
   deleteClientOrder(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);

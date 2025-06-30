@@ -70,6 +70,32 @@ background-color: #f44336; /* Red */
   color: #4e7ad0;
 }
 
+.order-status.clickable {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.order-status.clickable:hover {
+  background-color: #eeeeee;
+}
+
+.cancel-button {
+  margin-top: 6px;
+  padding: 4px 10px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f44336;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #d32f2f;
+}
+
+
 .info-table {
   width: 95%;
   padding: 4px 9px 0 9px;

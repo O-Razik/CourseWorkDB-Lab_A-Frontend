@@ -2,9 +2,14 @@
   <div class="panel-header" [ngClass]="getStatusClass(order.status.statusName)">
     <h3 class="order-number">№ {{ order.number }}</h3>
     @if (order.status) {
-      <div class="order-status">
+      <div class="order-status" (click)="toggleCancelOption()" [class.clickable]="canBeCancelled()">
         <h4 class="status-name">{{ order.status.statusName }}</h4>
+
+        @if (showCancelOption) {
+          <button class="cancel-button" (click)="cancelOrder($event)">Скасувати</button>
+        }
       </div>
+
     }
   </div>
 
