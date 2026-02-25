@@ -1,58 +1,40 @@
 # LabA
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.7.
+## 🇬🇧 English
 
-## Development server
+### Purpose
+This project is the frontend part of a medical laboratory management system. It provides a user-friendly interface for managing test orders, biomaterial processing, delivery tracking, and viewing research results. The frontend interacts with the backend API to ensure efficient and accurate laboratory workflow.
 
-To start a local development server, run:
+### Key Features
+- **User Authentication:** secure login and role-based access.
+- **Order Management:** create, view, and manage test orders.
+- **Biomaterial Processing:** register, track, and update biomaterial statuses.
+- **Delivery Tracking:** monitor the status of biomaterial deliveries.
+- **Results Display:** view and search laboratory test results.
 
-```bash
-ng serve
-```
+## Related repositories
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Backend:** [CourseWorkDB-Lab_A-Backend](https://github.com/O-Razik/CourseWorkDB-Lab_A-Backend)
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🇺🇦 Українською
 
-```bash
-ng generate component component-name
-```
+### Призначення
+Цей проєкт — фронтенд-частина системи управління медичними лабораторіями. Він забезпечує зручний інтерфейс для керування замовленнями на аналізи, обробкою біоматеріалів, відстеженням доставок та переглядом результатів досліджень. Фронтенд взаємодіє з бекендом через API для ефективної та точної роботи лабораторії.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Основні функції
+- **Аутентифікація користувачів:** безпечний вхід та розмежування доступу за ролями.
+- **Управління замовленнями:** створення, перегляд і керування замовленнями на аналізи.
+- **Обробка біоматеріалів:** реєстрація, відстеження та оновлення статусу біоматеріалів.
+- **Відстеження доставок:** моніторинг статусу доставок біоматеріалів.
+- **Відображення результатів:** перегляд і пошук результатів лабораторних досліджень.
 
-```bash
-ng generate --help
-```
+## Пов’язані репозиторії
 
-## Building
+- **Бекенд:** [CourseWorkDB-Lab_A-Backend](https://github.com/O-Razik/CourseWorkDB-Lab_A-Backend)
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---.
 
 ## Additional Resources
 
