@@ -34,8 +34,4 @@ This project is the frontend part of a medical laboratory management system. It 
 
 - **Бекенд:** [CourseWorkDB-Lab_A-Backend](https://github.com/O-Razik/CourseWorkDB-Lab_A-Backend)
 
----.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
